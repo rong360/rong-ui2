@@ -23,9 +23,9 @@ const webpackConfig = merge(baseWebpackConfig, {
   },
   output: {
     path: path.resolve(__dirname, '../dist/'),
-    filename: 'iview.js',
-    chunkFilename: 'iview.js',
-    library: 'iview-test',
+    filename: 'rong-ui2.js',
+    chunkFilename: 'rong-ui2.js',
+    library: 'rong-ui2-test',
     libraryTarget: 'umd',
     umdNamedDefine: true
   },
@@ -45,12 +45,12 @@ const webpackConfig = merge(baseWebpackConfig, {
     }),
     // extract css into its own file
     new ExtractTextPlugin({
-      filename: 'iview.css',
+      filename: 'rong-ui2.css',
       // Setting the following option to `false` will not extract CSS from codesplit chunks.
       // Their CSS will instead be inserted dynamically with style-loader when the codesplit chunk has been loaded by webpack.
       // It's currently set to `true` because we are seeing that sourcemaps are included in the codesplit bundle as well when it's `false`,
       // increasing file size: https://github.com/vuejs-templates/webpack/issues/1110
-      allChunks: false,
+      allChunks: false
     }),
     // Compress extracted CSS. We are using this plugin so that possible
     // duplicated CSS from different components can be deduped.

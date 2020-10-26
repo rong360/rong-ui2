@@ -1,10 +1,9 @@
 {
-  "name": "practice-view-design",
+  "name": "rong-ui2",
   "version": "1.0.0",
   "description": "",
   "author": "",
   "private": true,
-  "main": "dist/iview.js",
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
