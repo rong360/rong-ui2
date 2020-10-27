@@ -1,5 +1,7 @@
 <template>
-  <div :class="wrapCls" @click="onClick">
+  <div :class="wrapCls"
+       :style="btnStyleObj"
+       @click="onClick">
     <slot></slot>
   </div>
 </template>
@@ -7,24 +9,11 @@
 <script>
 const prefixCls = 'r--button'
 
-// 判断参数是否是其中之一
-function oneOf (value, validList) {
-  for (let i = 0; i < validList.length; i++) {
-    if (value === validList[i]) {
-      return true
-    }
-  }
-  return false
-}
-
 export default {
   name: 'Button',
   props: {
     type: {
       type: String,
-      validator (value) {
-        return oneOf(value, ['default', 'warning', 'disabled'])
-      },
       default: 'default'
     },
     radius: {
@@ -34,7 +23,8 @@ export default {
     fill: {
       type: Boolean,
       default: true
-    }
+    },
+    btnStyleObj: Object
   },
   computed: {
     wrapCls () {
@@ -66,20 +56,20 @@ export default {
   box-sizing: border-box;
   &-default {
     color: #fff;
-    background-image: -webkit-linear-gradient(0deg, #39B9FF, #4080E8);
+    background-image: -webkit-linear-gradient(0deg, #39b9ff, #4080e8);
   }
   &-default-empty {
-    color:#4080E8;
-    border: 1px solid #4080E8;
+    color: #4080e8;
+    border: 1px solid #4080e8;
     background-image: none;
   }
   &-warning {
     color: #fff;
-    background-image: -webkit-linear-gradient(0deg, #FF8A71, #FF3061);
+    background-image: -webkit-linear-gradient(0deg, #ff8a71, #ff3061);
   }
   &-warning-empty {
-    color:#FF3061;
-    border: 1px solid #FF3061;
+    color: #ff3061;
+    border: 1px solid #ff3061;
     background-image: none;
   }
   &-disabled {
@@ -88,7 +78,7 @@ export default {
     font-size: 16px;
   }
   &-disabled-empty {
-    color:#999999;
+    color: #999999;
     border: 1px solid #999999;
     background-color: #fff !important;
   }
