@@ -17,7 +17,7 @@
         <button @click="doChangeData">点击改变人群类别data</button>
         <div class="btn-wrap">
           <Button @on-click="getValue1">获取人群类别数据</Button>
-          <Button @on-click="getValue2">获取贷款期限数据</Button>
+          <Button @on-click="getValue2">获取人贷款期限数据</Button>
           <Button @on-click="getValue3">获取教育程度数据</Button>
         </div>
 
@@ -220,6 +220,7 @@ export default {
         title: "贷款期限",
         name: "loan_term",
         value: '2',
+        lblWidth: "4em",
         lr: "right",
         placeholder: "请选择贷款期限",
         data: [{
@@ -271,6 +272,7 @@ export default {
         title: "教育程度",
         name: "education",
         value: '2',
+        lblWidth: "4em",
         lr: "right",
         placeholder: "请选择贷款期限",
         readonly: true,

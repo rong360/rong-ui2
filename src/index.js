@@ -35,7 +35,6 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 const API = {
-  version: process.env.VERSION, // eslint-disable-line no-undef
   install,
   ...components
 };

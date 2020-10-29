@@ -64,17 +64,8 @@
 
 <script>
 import AsyncValidator from 'async-validator'
+import {oneOf} from '@/utils/assist.js'
 const prefixCls = 'r--input'
-
-// 判断参数是否是其中之一
-function oneOf (value, validList) {
-  for (let i = 0; i < validList.length; i++) {
-    if (value === validList[i]) {
-      return true
-    }
-  }
-  return false
-}
 
 function clearNonNumbers (str) {
   // 先把非数字的都替换掉，除了数字和.
@@ -483,6 +474,7 @@ export default {
     onClear (e) {
       if (this.blurTimer) clearTimeout(this.blurTimer)
       this.$emit('input', '')
+      this.$emit('on-clear', e)
       this.prevValue = ''
       this.focus()
     },

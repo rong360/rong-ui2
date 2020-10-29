@@ -6,9 +6,9 @@ rm -rf release
 
 mkdir release
 
-cp -r ./dist/ release/components/
+cp -r ./dist/ release/dist/
 
-cp -r ./src/ release/
+cp -r ./src/ release/src/
 
 version=$(grep "version" package.json | head -n 1 | awk -F'"' '{print $4}')
 
@@ -29,7 +29,7 @@ s=`cat <<EOF
         "type": "git",
         "url": "git+https://github.com/rong360/rong-ui2.git"
     },
-    "main": "components/rong-ui2.js",
+    "main": "dist/js/rong-ui.js",
     "dependencies": {
         "async-validator": "^3.3.0",
         "better-picker": "^1.1.3"

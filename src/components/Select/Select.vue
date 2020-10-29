@@ -55,17 +55,8 @@
 <script>
 import AsyncValidator from 'async-validator'
 import Picker from 'better-picker'
+import {oneOf} from '@/utils/assist.js'
 const prefixCls = 'r--select'
-
-// 判断参数是否是其中之一
-function oneOf (value, validList) {
-  for (let i = 0; i < validList.length; i++) {
-    if (value === validList[i]) {
-      return true
-    }
-  }
-  return false
-}
 
 export default {
   name: 'Select',

@@ -1,5 +1,17 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Home from '../views/index'
+import Titlebar from '../views/titlebar'
+import Button from '../views/button'
+import Flexfixed from '../views/flexfixed'
+import Form from '../views/form'
+import FormCss from '../views/form/index_css'
+import Range from '../views/range'
+import Input from '../views/input'
+import Select from '../views/select'
+import Dialog from '../views/dialog'
+import Toast from '../views/toast'
+import Loading from '../views/loading'
 
 Vue.use(VueRouter)
 
@@ -7,47 +19,51 @@ export default new VueRouter({
   routes: [
     {
       path: '/',
-      component: (resolve) => require(['../views/index'], resolve)
+      component: Home
     },
     {
       path: '/titlebar',
-      component: (resolve) => require(['../views/titlebar'], resolve)
+      component: Titlebar
     },
     {
       path: '/button',
-      component: (resolve) => require(['../views/button'], resolve)
+      component: Button
     },
     {
       path: '/flexfixed',
-      component: (resolve) => require(['../views/flexfixed'], resolve)
+      component: Flexfixed
     },
     {
       path: '/form',
-      component: (resolve) => require(['../views/form'], resolve)
+      component: Form
     },
     {
       path: '/range',
-      component: (resolve) => require(['../views/range'], resolve)
+      component: Range
     },
     {
       path: '/input',
-      component: (resolve) => require(['../views/input'], resolve)
+      component: Input
     },
     {
       path: '/select',
-      component: (resolve) => require(['../views/select'], resolve)
+      component: Select
     },
     {
       path: '/form/css',
-      component: (resolve) => require(['../views/form/index_css'], resolve)
+      component: FormCss
     },
     {
       path: '/dialog',
-      component: (resolve) => require(['../views/dialog'], resolve)
+      component: Dialog
     },
     {
       path: '/toast',
-      component: (resolve) => require(['../views/toast'], resolve)
+      component: Toast
+    },
+    {
+      path: '/loading',
+      component: Loading
     }
   ]
 })

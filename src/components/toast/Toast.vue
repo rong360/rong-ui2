@@ -50,17 +50,8 @@
 </template>
 
 <script>
+import {oneOf} from '@/utils/assist.js'
 const prefixCls = 'r-toast'
-
-// 判断参数是否是其中之一
-function oneOf (value, validList) {
-  for (let i = 0; i < validList.length; i++) {
-    if (value === validList[i]) {
-      return true
-    }
-  }
-  return false
-}
 
 export default {
   name: 'Toast',
@@ -85,7 +76,8 @@ export default {
     wrapStyleObj: {
       type: Object,
       default: function () { return {} }
-    }
+    },
+    callback: Function
   },
   computed: {
     wrapCls () {
@@ -110,6 +102,7 @@ export default {
       this.$el.remove();
       this.$destroy();
       clearTimeout(this.timeoutId);
+      this.callback && this.callback()
     }
   }
 }

@@ -1,21 +1,86 @@
-# member-center
+# rong-ui2
 
-> 会员中心
+> 基于Vue.js 2.0 UI组件库.
 
-## Build Setup
 
-``` bash
-# install dependencies
-npm install
+## 示例
 
-# serve with hot reload at localhost:8080
-npm run dev
+#### 链接
 
-# build for production with minification
-npm run build
+[点击链接查看示例](https://rong360.github.io/rong-ui2/demo/index.html#/)
 
-# build for production and view the bundle analyzer report
-npm run build --report
+#### 扫描二维码体验
+
+![Alt text](https://static.rong360.com/upload/png/52/2b/522b2db3748056c80e21fda4921c8123.png)
+
+## 使用说明
+
+### 安装
+
+```bash
+
+npm install rong-ui2 --save
+
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+### 引入
+
+#### 按需引用
+
+```js
+npm install babel-plugin-import --save-dev
+
+// .babelrc
+{
+  "plugins": [["import", {
+    "libraryName": "rong-ui2",
+    "libraryDirectory": "src/components"
+  }]]
+}
+
+然后这样按需引入组件，就可以减小体积了：
+import {Titlebar, Button} from 'rong-ui2';
+Vue.use(Titlebar)
+Vue.use(Button)
+```
+
+#### 引入所有组件
+
+```js
+import RongUi2 from 'rong-ui2';
+import 'rong-ui2/dist/styles/rong-ui.css'
+Vue.use(RongUi2)
+```
+
+
+### 使用
+
+Dialog提示框、Toast弹框、Loading加载中、Keyboard虚拟数字键盘 均以挂载到Vue.prototype，引入后，直接使用$dialog(options),$toast(options),$loading(options),$keyboard(options)使用
+
+其他组件未挂载到Vue.prototype上，组件名均已UpperCamelCase命名
+
+如Title标题组件，html如下：
+
+```html
+
+<Titlebar theme="a" title="Title标题"></Titlebar>
+
+```
+
+## 说明文档
+
+各组件说明文档如下：
+
+| 组件      | 文档地址    |
+|---------- |--------
+|Dialog 弹框| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/dialog.md)|
+|Toast 提示| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/toast.md)|
+|Loading 加载中 | [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/loading.md)|
+|FlexFixed 吸顶或吸底| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/flexfixed.md)|
+|Titlebar 标题栏| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/titlebar.md)|
+|Button 按钮| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/button.md)|
+|Form 表单| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/form.md)|
+|Input 输入框| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/input.md)|
+|Select 下拉列表| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/select.md)|
+|Range 滑动范围| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/range.md)|
+

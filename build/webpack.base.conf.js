@@ -74,6 +74,10 @@ module.exports = {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[ext]?t=[hash:7]')
         }
+      },
+      {
+        test: /.txt$/,
+        loader: path.resolve(__dirname, './txt-loader')
       }
     ]
   },

@@ -1,37 +1,43 @@
 <template>
   <div class="r--Loading">
-    <div class="r-content"
-         :style="wrapStyle">
-      <div class="r-content1">
-        <div class="r-arc1"
-             :style="arcStyle"></div>
-        <div class="r-arc2"
-             :style="arcStyle"></div>
-        <div class="r-arc3"
-             :style="arcStyle"></div>
-        <div class="r-arc4"
-             :style="arcStyle"></div>
+    <component :is="_customLoading"
+               v-if="_customLoading">
+      {{ text }}
+    </component>
+    <template v-else>
+      <div class="r-content"
+           :style="wrapStyle">
+        <div class="r-content1">
+          <div class="r-arc1"
+               :style="arcStyle"></div>
+          <div class="r-arc2"
+               :style="arcStyle"></div>
+          <div class="r-arc3"
+               :style="arcStyle"></div>
+          <div class="r-arc4"
+               :style="arcStyle"></div>
+        </div>
+        <div class="r-content2">
+          <div class="r-arc1"
+               :style="arcStyle"></div>
+          <div class="r-arc2"
+               :style="arcStyle"></div>
+          <div class="r-arc3"
+               :style="arcStyle"></div>
+          <div class="r-arc4"
+               :style="arcStyle"></div>
+        </div>
       </div>
-      <div class="r-content2">
-        <div class="r-arc1"
-             :style="arcStyle"></div>
-        <div class="r-arc2"
-             :style="arcStyle"></div>
-        <div class="r-arc3"
-             :style="arcStyle"></div>
-        <div class="r-arc4"
-             :style="arcStyle"></div>
-      </div>
-    </div>
-    <div :class="['r-content3', textInside ? 'inside':'outside']"
-         v-if="text!=''"
-         :style="txtStyle"
-         v-html="text" />
+      <div :class="['r-content3', textInside ? 'inside':'outside']"
+           v-if="text!=''"
+           :style="txtStyle"
+           v-html="text" />
+    </template>
   </div>
 </template>
 <script>
 export default {
-  name: "rLoading",
+  name: "Loading",
   data () {
     return {}
   },
@@ -95,6 +101,9 @@ export default {
         "font-size": this.textFontSize / 2 / 18.75 + "rem"
       }
       return obj;
+    },
+    _customLoading () {
+      return this.customLoading
     }
   },
   mounted () {

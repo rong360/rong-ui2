@@ -83,7 +83,7 @@ export default {
     background-color: #fff !important;
   }
   &-radius {
-    border-radius: 5px;
+    border-radius: 45px;
   }
 }
 </style>

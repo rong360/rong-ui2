@@ -11,6 +11,7 @@
       <li><router-link to="/range">Range</router-link></li>
       <li><router-link to="/dialog">Dialog</router-link></li>
       <li><router-link to="/toast">Toast</router-link></li>
+      <li><router-link to="/loading">Loading</router-link></li>
     </ul>
   </div>
 </template>

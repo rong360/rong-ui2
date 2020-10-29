@@ -8,6 +8,14 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const productionSourceMap = false
+var packageJson = require('../package.json')
+
+let banner =
+      '/*!\n' +
+      ' * RONG UI v' + packageJson.version + ' (http://gitlab.rong360.com/RFE/rong-ui2)\n' +
+      ' * (c) ' + new Date().getFullYear() + ' Rong360 FE Team \n' +
+      ' * Released under the MIT License.\n' +
+      ' */';
 
 const webpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -19,20 +27,22 @@ const webpackConfig = merge(baseWebpackConfig, {
   },
   devtool: productionSourceMap ? '#source-map' : false,
   entry: {
-    app: './src/index.js'
+    app: ['./src/utils/pollyfill.js', './src/index.js']
   },
   output: {
     path: path.resolve(__dirname, '../dist/'),
-    filename: 'rong-ui2.js',
-    chunkFilename: 'rong-ui2.js',
-    library: 'rong-ui2-test',
+    filename: 'js/rong-ui.js',
+    chunkFilename: 'js/rong-ui.js',
+    library: 'rong-ui2',
     libraryTarget: 'umd',
     umdNamedDefine: true
   },
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': "production"
+      'process.env': {
+        NODE_ENV: '"production"'
+      }
     }),
     new UglifyJsPlugin({
       uglifyOptions: {
@@ -45,7 +55,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     }),
     // extract css into its own file
     new ExtractTextPlugin({
-      filename: 'rong-ui2.css',
+      filename: 'styles/rong-ui.css',
       // Setting the following option to `false` will not extract CSS from codesplit chunks.
       // Their CSS will instead be inserted dynamically with style-loader when the codesplit chunk has been loaded by webpack.
       // It's currently set to `true` because we are seeing that sourcemaps are included in the codesplit bundle as well when it's `false`,
@@ -59,6 +69,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         ? { safe: true, map: { inline: false } }
         : { safe: true }
     }),
+    new webpack.BannerPlugin({banner: banner, raw: true, entryOnly: true}),
     // keep module.id stable when vendor modules does not change
     new webpack.HashedModuleIdsPlugin(),
     // enable scope hoisting

@@ -1,9 +1,10 @@
 <template>
   <div :class="wrapCls"
-       @touchstart="touchstartDialog($event)"
-       @touchmove="touchmoveDialog($event)">
+       :style="CliperStyleObj"
+       v-preventscroll>
     <div :class="innerCls"
          :style="dlgStyleObj"
+         @click="onclickDlg"
          ref="dlgContent">
       <div :class="titleCls"
            :style="titleStyleObj"
@@ -53,6 +54,8 @@
 </template>
 
 <script>
+import { getDirection } from '@/utils/assist.js'
+import preventscroll from '@/directives/preventscroll'
 const prefixCls = 'r-dialog'
 
 export default {
@@ -97,6 +100,8 @@ export default {
     confirmBtnStyleObj: Object,
     // dialog框
     dlgStyleObj: Object,
+    // 遮罩
+    CliperStyleObj: Object,
     // 显示位置
     position: {
       type: Object,
@@ -156,6 +161,9 @@ export default {
       return `${prefixCls}-confirm-btn`
     }
   },
+  directives: {
+    preventscroll
+  },
   components: {
     rContent: {
       template: '<div></div>'
@@ -184,6 +192,9 @@ export default {
     onClose (e) {
       this.$emit('on-close', e)
     },
+    onclickDlg () {
+      this.resetPos()
+    },
     remove () {
       this.$el.remove();
       this.$destroy();
@@ -200,37 +211,11 @@ export default {
       this.mouseInfo.startY = e.targetTouches[0].clientY
     },
     touchmoveDialog (e) {
-      this.mouseInfo.direction = this.getDirection(this.mouseInfo.startX, this.mouseInfo.startY, e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+      this.mouseInfo.direction = getDirection(this.mouseInfo.startX, this.mouseInfo.startY, e.changedTouches[0].clientX, e.changedTouches[0].clientY);
       if (!this.currentScrollArea || this.currentScrollArea && ((this.mouseInfo.direction == 2 && this.currentScrollArea.scrollTop == 0) || (this.mouseInfo.direction == 1 && this.currentScrollArea.scrollTop >= (this.currentScrollArea.scrollHeight - this.currentScrollArea.offsetHeight)))) {
         e.preventDefault();
         e.stopPropagation();
       }
-    },
-    // 获得角度
-    getAngle (angx, angy) {
-      return Math.atan2(angy, angx) * 180 / Math.PI
-    },
-    // 根据起点终 点返回方向 1向上 2向下 3向左 4向右 0未滑动
-    getDirection (startx, starty, endx, endy, oldx, oldy) {
-      var angx = endx - startx;
-      var angy = endy - starty;
-      var result = 0;
-
-      // 如果滑动距离太短
-      if (Math.abs(angx) < 5 && Math.abs(angy) < 5) {
-        return result
-      }
-      var angle = this.getAngle(angx, angy);
-      if (angle >= -135 && angle <= -45) {
-        result = 1
-      } else if (angle > 45 && angle < 135) {
-        result = 2
-      } else if ((angle >= 135 && angle <= 180) || (angle >= -180 && angle < -135)) {
-        result = 3
-      } else if (angle >= -45 && angle <= 45) {
-        result = 4
-      }
-      return result
     },
     resetPos () {
       if (!this.$refs.dlgContent) return
@@ -303,7 +288,6 @@ export default {
   &-inner {
     position: fixed;
     width: 270px;
-    margin-left: -135px;
     font-size: 15px;
     line-height: 1;
     background-color: #fff;
