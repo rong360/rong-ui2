@@ -220,7 +220,6 @@ export default {
         title: "贷款期限",
         name: "loan_term",
         value: '2',
-        lr: "right",
         placeholder: "请选择贷款期限",
         data: [{
           text: "1个月",

@@ -8,12 +8,20 @@
           text-position="right"
           placeholder="请输入"
           ref="form">
-      <components v-for="item in viewData.firstLevel"
-                  v-model="item.value"
-                  :is="item.componentType"
-                  :attrs="item"
-                  :key="item.id"
-                  ref="cpList" />
+      <Input :attrs="user"
+             v-model="user.value"></Input>
+      <Input :attrs="age"
+             v-model="age.value"></Input>
+      <Input :attrs="amount"
+             v-model="amount.value"></Input>
+      <Input :attrs="phone"
+             v-model="phone.value"></Input>
+      <Input :attrs="email"
+             v-model="email.value"></Input>
+      <Input :attrs="IDCard"
+             v-model="IDCard.value"></Input>
+      <Select :attrs="loanTerm"
+              v-model="loanTerm.value"></Select>
       <div class="btn-wrap">
         <div :class="['btn', isCompleted ? '' : 'disabled']"
              @click="doSubmit">
@@ -30,448 +38,36 @@
       </div>
     </Form>
     <div class="result">
-      <p v-for="item in viewData.basic"><span>{{item.title}}：</span>{{item.value}}</p>
+      <p><span>{{user.title}}：</span>{{user.value}}</p>
+      <p><span>{{age.title}}：</span>{{age.value}}</p>
+      <p><span>{{amount.title}}：</span>{{amount.value}}</p>
+      <p><span>{{phone.title}}：</span>{{phone.value}}</p>
+      <p><span>{{email.title}}：</span>{{email.value}}</p>
+      <p><span>{{IDCard.title}}：</span>{{IDCard.value}}</p>
     </div>
     <ViewSource :code="sourceCode" />
   </div>
 </template>
 
 <script>
-import _ from 'lodash'
 import sourceCode from './code.txt'
 
-let basicInfo = {
-  "status": 1,
-  "data": {
-    "basic": [{
-      "rely_policy_id": 0,
-      "id": "123277",
-      "category_id": "1",
-      "title": "本人姓名",
-      "placeholder": "",
-      "var_name": "user_name",
-      "type": "text",
-      "verify_type": "text",
-      "data": "",
-      "unit": "",
-      "material_type": "100",
-      "info_property": "1",
-      "level": 1,
-      "desc": "",
-      "value": "",
-      "readonly": 0,
-      "maxlength": 800,
-      "rules": [{
-        "required": true,
-        "message": "姓名不能为空",
-        "trigger": "blur"
-      }]
-    }, {
-      "rely_policy_id": 0,
-      "id": "323472",
-      "category_id": "1",
-      "title": "本人身份证号码",
-      "var_name": "user_id",
-      "type": "5",
-      "verify_type": "50",
-      "data": "",
-      "unit": "",
-      "material_type": "100",
-      "info_property": "1",
-      "level": 1,
-      "desc": "",
-      "value": "110101199003079614",
-      "readonly": 0
-    }, {
-      "rely_policy_id": 0,
-      "id": "832336",
-      "category_id": "2",
-      "title": "GPS信息",
-      "var_name": "gps_location",
-      "type": "5",
-      "verify_type": "0",
-      "data": "",
-      "unit": "",
-      "material_type": "0",
-      "info_property": "0",
-      "level": 1,
-      "desc": "",
-      "readonly": 0
-    }, {
-      "rely_policy_id": 0,
-      "id": "612321392",
-      "category_id": "1",
-      "title": "申请金额",
-      "var_name": "application_amount",
-      "type": "9",
-      "verify_type": "0",
-      "data": "",
-      "unit": "",
-      "material_type": "107",
-      "info_property": "1",
-      "level": 1,
-      "desc": "",
-      "value": "10000.00",
-      "fixed": 2,
-      "readonly": 0,
-      "maxlength": 8
-    }, {
-      "rely_policy_id": 0,
-      "id": "84821212",
-      "category_id": "1",
-      "title": "贷款申请期限",
-      "var_name": "apply_term",
-      "type": "2",
-      "verify_type": "0",
-      "data": [{
-        "value": 90,
-        "desc": "3个月",
-        "rely": []
-      }, {
-        "value": 180,
-        "desc": "6个月",
-        "rely": []
-      }, {
-        "value": 360,
-        "desc": "12个月",
-        "rely": []
-      }, {
-        "value": 540,
-        "desc": "18个月",
-        "rely": []
-      }, {
-        "value": 720,
-        "desc": "24个月",
-        "rely": []
-      }],
-      "unit": "",
-      "material_type": "107",
-      "info_property": "0",
-      "level": 1,
-      "desc": "",
-      "value": "",
-      "readonly": 0
-    }, {
-      "rely_policy_id": 0,
-      "id": "163",
-      "category_id": "1",
-      "title": "可接受最高月还款额度（元）",
-      "var_name": "max_repayment",
-      "type": "9",
-      "verify_type": "0",
-      "data": "",
-      "unit": "元/月",
-      "material_type": "100",
-      "info_property": "0",
-      "level": 1,
-      "desc": "",
-      "value": "2000",
-      "readonly": 0,
-      "maxlength": 8
-    }, {
-      "rely_policy_id": 0,
-      "id": "45256233",
-      "category_id": "112",
-      "title": "教育程度",
-      "var_name": "user_education",
-      "type": "2",
-      "verify_type": "0",
-      "data": [{
-        "value": "1",
-        "desc": "硕士及以上",
-        "rely": []
-      }, {
-        "value": "2",
-        "desc": "本科",
-        "rely": []
-      }, {
-        "value": "3",
-        "desc": "大专",
-        "rely": []
-      }, {
-        "value": "4",
-        "desc": "中专/高中及以下",
-        "rely": []
-      }],
-      "unit": "",
-      "material_type": "100",
-      "info_property": "1",
-      "level": 1,
-      "desc": "",
-      "value": "2",
-      "readonly": 0
-    }, {
-      "rely_policy_id": 0,
-      "id": "6351222",
-      "category_id": "1",
-      "title": "现单位是否缴纳社保",
-      "var_name": "social_security",
-      "type": "2",
-      "verify_type": "0",
-      "data": [{
-        "value": "1",
-        "desc": "缴纳本地社保",
-        "rely": []
-      }, {
-        "value": "2",
-        "desc": "未缴纳社保",
-        "rely": []
-      }],
-      "unit": "",
-      "material_type": "101",
-      "info_property": "1",
-      "level": 1,
-      "desc": "",
-      "value": "2",
-      "readonly": 0
-    }, {
-      "rely_policy_id": 0,
-      "id": "26",
-      "category_id": "1",
-      "title": "车辆情况",
-      "var_name": "auto_type",
-      "type": "2",
-      "verify_type": "0",
-      "data": [{
-        "value": "1",
-        "desc": "无车",
-        "rely": []
-      }, {
-        "value": "2",
-        "desc": "本人名下有车，无贷款",
-        "rely": []
-      }, {
-        "value": "3",
-        "desc": "本人名下有车，有按揭贷款",
-        "rely": []
-      }, {
-        "value": "4",
-        "desc": "本人名下有车，但已被抵押",
-        "rely": []
-      }, {
-        "value": "5",
-        "desc": "其他（请备注）",
-        "rely": []
-      }],
-      "unit": "",
-      "material_type": "103",
-      "info_property": "0",
-      "level": 1,
-      "desc": "",
-      "value": "1",
-      "readonly": 0
-    }, {
-      "rely_policy_id": 0,
-      "id": "26489",
-      "category_id": "1",
-      "title": "职业类别",
-      "var_name": "op_type",
-      "type": "2",
-      "verify_type": "0",
-      "data": [{
-        "value": "1",
-        "desc": "企业主",
-        "rely": ["20996", "28905"]
-      }, {
-        "value": "2",
-        "desc": "个体工商户",
-        "rely": ["20996", "28905"]
-      }, {
-        "value": "4",
-        "desc": "上班人群",
-        "rely": ["5998", "5256"]
-      }, {
-        "value": "5",
-        "desc": "学生",
-        "rely": []
-      }, {
-        "value": "10",
-        "desc": "无固定职业",
-        "rely": ["832"]
-      }],
-      "unit": "",
-      "material_type": "101",
-      "info_property": "0",
-      "level": 1,
-      "desc": "",
-      "value": "4",
-      "readonly": 0
-    }, {
-      "rely_policy_id": "26489",
-      "id": "5998",
-      "category_id": "1",
-      "title": "月工资收入（元）",
-      "var_name": "user_income_by_card",
-      "type": "9",
-      "verify_type": "0",
-      "data": "",
-      "unit": "元",
-      "material_type": "101",
-      "info_property": "1",
-      "level": 2,
-      "desc": "",
-      "value": "7000",
-      "readonly": 0
-    }, {
-      "rely_policy_id": "26489",
-      "id": "5256",
-      "category_id": "1",
-      "title": "现单位工作年限",
-      "var_name": "work_period",
-      "type": "2",
-      "verify_type": "0",
-      "data": [{
-        "value": "1",
-        "desc": "0-5个月",
-        "rely": []
-      }, {
-        "value": "2",
-        "desc": "6-12个月",
-        "rely": []
-      }, {
-        "value": "3",
-        "desc": "1-3年",
-        "rely": []
-      }, {
-        "value": "4",
-        "desc": "3-7年",
-        "rely": []
-      }, {
-        "value": "5",
-        "desc": "7年以上",
-        "rely": []
-      }],
-      "unit": "个月",
-      "material_type": "101",
-      "info_property": "1",
-      "level": 2,
-      "desc": "",
-      "value": "1",
-      "readonly": 0
-    }, {
-      "rely_policy_id": "26489",
-      "id": "20996",
-      "category_id": "1",
-      "title": "经营流水（对公流水）",
-      "var_name": "corporate_flow",
-      "type": "9",
-      "verify_type": "0",
-      "data": "",
-      "unit": "",
-      "material_type": "102",
-      "info_property": "0",
-      "level": 2,
-      "desc": "",
-      "readonly": 0
-    }, {
-      "rely_policy_id": "26489",
-      "id": "28905",
-      "category_id": "1",
-      "title": "经营年限",
-      "var_name": "operating_year",
-      "type": "2",
-      "verify_type": "0",
-      "data": [{
-        "value": "1",
-        "desc": "0-3个月",
-        "rely": []
-      }, {
-        "value": "2",
-        "desc": "3-6个月",
-        "rely": []
-      }, {
-        "value": "3",
-        "desc": "7-12个月",
-        "rely": []
-      }, {
-        "value": "4",
-        "desc": "1-2年",
-        "rely": []
-      }, {
-        "value": "5",
-        "desc": "3-4年",
-        "rely": []
-      }, {
-        "value": "6",
-        "desc": "5年以上",
-        "rely": []
-      }],
-      "unit": "",
-      "material_type": "102",
-      "info_property": "1",
-      "level": 2,
-      "desc": "",
-      "readonly": 0
-    }, {
-      "rely_policy_id": "26489",
-      "id": "832",
-      "category_id": "1",
-      "title": "月平均收入",
-      "var_name": "monthly_average_income",
-      "type": "9",
-      "verify_type": "0",
-      "unit": "",
-      "material_type": "101",
-      "info_property": "0",
-      "level": 2,
-      "desc": "",
-      "value": "8000",
-      "readonly": 0
-    }],
-    "loan_amount_min": "3000",
-    "loan_amount_max": "100000",
-    "is_pop": 1,
-    "pop_str": "xxxx"
-  }
-}
-
-function componentfactory (type) {
-  var component = { componentType: 'Input', verifyType: 'text' };
-  switch (type) {
-    case "3":
-    case "4":
-    case "9":
-      component = {
-        componentType: 'Input',
-        verifyType: 'number'
-      }
-      break;
-    case "email":
-      component = {
-        componentType: 'Input',
-        verifyType: 'email'
-      }
-      break;
-    case "50":
-      component = {
-        componentType: 'Input',
-        verifyType: 'IDCard'
-      }
-      break;
-    case "select":
-    case "2":
-    case "1":
-      component = {
-        componentType: 'Select',
-        verifyType: ''
-      }
-      break;
-  }
-  return component;
-}
-
 export default {
-  beforeRouteEnter (to, from, next) {
-    let basic = basicInfo.data.basic,
-      basicMap = {},
-      firstLevel = []
-    _.each(basic, item => {
-      let type = item.verify_type == 0 ? item.type : item.verify_type
-      item.componentType = componentfactory(type).componentType
-      item.type = componentfactory(type).verifyType
-      // 用户姓名特殊校验
-      if (item.id == 123277) {
-        item.rules.push({
+  data () {
+    return {
+      user: {
+        "type": "text",
+        "title": "本人姓名",
+        "name": "bureau_user_name",
+        "value": "zyx",
+        "placeholder": "",
+        "readonly": 0,
+        "maxlength": 800,
+        "rules": [{
+          "required": true,
+          "message": "姓名不能为空",
+          "trigger": "blur"
+        }, {
           validator (rule, value, callback) {
             if (value.length < 3) {
               return new Error('姓名最少三个字')
@@ -479,70 +75,116 @@ export default {
             callback()
           },
           trigger: 'blur'
-        })
-      }
-      // 申请金额不能为0
-      if (item.id == 612321392) {
-        item.rules = [{ required: true, message: '***申请金额不能为空***', trigger: 'blur' }]
-        item.rules.push({
+        }]
+      },
+      age: {
+        "type": "number",
+        "title": "年龄",
+        "name": "age",
+        "value": "23",
+        "placeholder": "",
+        "fixed": 0,
+        "unit": "",
+        "readonly": 0,
+        "maxlength": 3
+      },
+      amount: {
+        "type": "number",
+        "title": "申请金额",
+        "name": "application_amount",
+        "value": "10000.00",
+        "fixed": 2,
+        "placeholder": "",
+        "unit": "",
+        "readonly": 0,
+        "maxlength": 8
+      },
+      phone: {
+        "type": "tel",
+        "title": "手机号码",
+        "name": "phone_number",
+        "value": "13122222222",
+        "unit": "",
+        "placeholder": "",
+        "readonly": 0,
+        "maxlength": 11
+      },
+      email: {
+        "type": "email",
+        "title": "邮箱",
+        "name": "email",
+        "value": "test@qq.com",
+        "readonly": 0,
+        "placeholder": "",
+        "rules": [{
+          "required": true,
+          "message": "邮箱不能为空",
+          "trigger": "blur"
+        },
+        {
+          "type": "email",
+          "message": "邮箱格式不正确",
+          "trigger": "blur"
+        }]
+      },
+      IDCard: {
+        "type": "IDCard",
+        "title": "本人身份证号码",
+        "name": "user_id",
+        "value": "110101199003079614",
+        "placeholder": "",
+        "readonly": 0
+      },
+      loanTerm: {
+        title: "贷款期限",
+        name: "loan_term",
+        value: '2',
+        placeholder: "请选择贷款期限",
+        data: [{
+          text: "1个月",
+          value: "1"
+        }, {
+          text: "2个月",
+          value: '2'
+
+        }, {
+          text: "36个月",
+          value: "36"
+        }, {
+          text: "自己输入",
+          value: "0",
+          children: [{
+            componentType: 'Input',
+            type: "number",
+            title: "输入您的贷款期限",
+            name: "m_term",
+            value: "",
+            unit: "个月",
+            placeholder: "请输入您期望的贷款期限",
+            rules: [{
+              validator (rule, value, callback) {
+                if (value > 12) {
+                  return new Error('贷款期限最长12个月，以为您变更为12个月')
+                } else if (value < 3) {
+                  return new Error('贷款期限最短3个月，以为您变更为3个月')
+                }
+                callback()
+              },
+              trigger: 'blur'
+            }]
+          }]
+        }],
+        rules: [{
           validator (rule, value, callback) {
-            if (value == 0) {
-              return new Error('申请金额不能为零！')
+            if (value == 1) {
+              this.$toast('目前暂不支持1个月的贷款，请选择贷款期限');
+              return new Error('目前暂不支持1个月的贷款，请选择贷款期限')
             }
             callback()
           },
           trigger: 'blur'
-        })
-      }
-      if (item.id == 832336) {
-        item.componentType = 'Input'
-        item.type = 'hidden'
-        item.rules = []
-        if (window.navigator.geolocation) {
-          window.navigator.geolocation.getCurrentPosition && window.navigator.geolocation.getCurrentPosition(function (position) {
-            // coords.latitude十进制数的纬度
-            // coords.longitude十进制数的经度
-            item.value = position.coords.longitude + ',' + position.coords.latitude
-          }, function () { }, {
-            enableHighAccuracy: true,
-            timeout: 45000
-          })
-        } else {
-          _.remove(basic, { id: "836" })
-          item.value = '无法获取gps'
-          console.log('Your browser does not natively support geolocation.');
-        }
-      }
-      // basic生成map机构，方便数据查找
-      basicMap[item.id] = item
-      // 数据分级
-      if (item.level == 1) firstLevel.push(item)
-      // 添加name属性
-      item.name = item.id
-      item.var_name = ''
-    })
-    // 构造rSelect的children数据
-    _.each(basic, item => {
-      if (item.componentType == 'Select') {
-        item.data.forEach(option => {
-          option.text = option.desc
-          if (option.rely && option.rely.length) {
-            option.children = option.rely.map(id => {
-              return basicMap[id]
-            })
-          }
-        })
-      }
-    })
-    CONST.cache.userbasicinfo = {
-      basic: basic,
-      firstLevel: firstLevel
-    }
-    next();
-  },
-  data () {
-    return {
-      viewData: CONST.cache.userbasicinfo,
+        }]
+      },
       fields: [],
       isCompleted: false,
       sourceCode

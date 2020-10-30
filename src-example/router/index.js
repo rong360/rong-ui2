@@ -5,6 +5,7 @@ import Titlebar from '../views/titlebar'
 import Button from '../views/button'
 import Flexfixed from '../views/flexfixed'
 import Form from '../views/form'
+import FormDynamicRegistration from '../views/form/index_dynamic_registration'
 import FormCss from '../views/form/index_css'
 import Range from '../views/range'
 import Input from '../views/input'
@@ -34,10 +35,6 @@ export default new VueRouter({
       component: Flexfixed
     },
     {
-      path: '/form',
-      component: Form
-    },
-    {
       path: '/range',
       component: Range
     },
@@ -48,6 +45,14 @@ export default new VueRouter({
     {
       path: '/select',
       component: Select
+    },
+    {
+      path: '/form',
+      component: Form
+    },
+    {
+      path: '/form/dynamicregistration',
+      component: FormDynamicRegistration
     },
     {
       path: '/form/css',
