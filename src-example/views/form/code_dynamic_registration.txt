@@ -38,7 +38,7 @@
 
 <script>
 import _ from 'lodash'
-import sourceCode from './code_dynamic_registration.txt'
+import sourceCode from './code.txt'
 
 let basicInfo = {
   "status": 1,
