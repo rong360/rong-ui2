@@ -54,6 +54,8 @@ import sourceCode from './code.txt'
 
 export default {
   data () {
+    let self = this
+
     return {
       user: {
         "type": "text",
@@ -163,9 +165,12 @@ export default {
             placeholder: "请输入您期望的贷款期限",
             rules: [{
               validator (rule, value, callback) {
+                let component = self.fields.find(component => component.$options.propsData.attrs.name == 'm_term')
                 if (value > 12) {
+                  component.$emit('input', 12)
                   return new Error('贷款期限最长12个月，以为您变更为12个月')
                 } else if (value < 3) {
+                  component.$emit('input', 3)
                   return new Error('贷款期限最短3个月，以为您变更为3个月')
                 }
                 callback()
