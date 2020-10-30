@@ -38,12 +38,7 @@
       </div>
     </Form>
     <div class="result">
-      <p><span>{{user.title}}：</span>{{user.value}}</p>
-      <p><span>{{age.title}}：</span>{{age.value}}</p>
-      <p><span>{{amount.title}}：</span>{{amount.value}}</p>
-      <p><span>{{phone.title}}：</span>{{phone.value}}</p>
-      <p><span>{{email.title}}：</span>{{email.value}}</p>
-      <p><span>{{IDCard.title}}：</span>{{IDCard.value}}</p>
+      <p v-for="field in fields"><span>{{field.$options.propsData.attrs.title}}：</span>{{field.$options.propsData.attrs.value}}</p>
     </div>
     <ViewSource :code="sourceCode" />
   </div>
