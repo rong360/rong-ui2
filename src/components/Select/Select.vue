@@ -55,7 +55,7 @@
 <script>
 import AsyncValidator from 'async-validator'
 import Picker from 'better-picker'
-import {oneOf} from '@/utils/assist.js'
+import {oneOf} from '../../utils/assist.js'
 const prefixCls = 'r--select'
 
 export default {

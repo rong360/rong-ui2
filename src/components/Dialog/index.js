@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Dialog from './Dialog.vue'
+import Dialog from './dialog.vue'
 
 let DialogConstructor = Vue.extend(Dialog);
 

@@ -42,6 +42,9 @@ npm install babel-plugin-import --save-dev
 import {Titlebar, Button} from 'rong-ui2';
 Vue.use(Titlebar)
 Vue.use(Button)
+
+注意：项目需要安装less文件：
+npm install less less-loader --save-dev （低版本可以用less@^2.7.2 less-loader@^4.0.3）
 ```
 
 #### 引入所有组件

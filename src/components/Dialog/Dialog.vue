@@ -54,8 +54,7 @@
 </template>
 
 <script>
-import { getDirection } from '@/utils/assist.js'
-import preventscroll from '@/directives/preventscroll'
+import preventscroll from '../../directives/preventscroll'
 const prefixCls = 'r-dialog'
 
 export default {
@@ -199,23 +198,6 @@ export default {
       this.$el.remove();
       this.$destroy();
       this.removeDialogOnHashChange && window.removeEventListener('hashchange', this.remove)
-    },
-    touchstartDialog (e) {
-      this.currentScrollArea = null
-      this.scrollList.forEach(element => {
-        if (element.contains(e.target)) {
-          this.currentScrollArea = element
-        }
-      })
-      this.mouseInfo.startX = e.targetTouches[0].clientX
-      this.mouseInfo.startY = e.targetTouches[0].clientY
-    },
-    touchmoveDialog (e) {
-      this.mouseInfo.direction = getDirection(this.mouseInfo.startX, this.mouseInfo.startY, e.changedTouches[0].clientX, e.changedTouches[0].clientY);
-      if (!this.currentScrollArea || this.currentScrollArea && ((this.mouseInfo.direction == 2 && this.currentScrollArea.scrollTop == 0) || (this.mouseInfo.direction == 1 && this.currentScrollArea.scrollTop >= (this.currentScrollArea.scrollHeight - this.currentScrollArea.offsetHeight)))) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
     },
     resetPos () {
       if (!this.$refs.dlgContent) return

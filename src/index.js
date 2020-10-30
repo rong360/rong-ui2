@@ -1,13 +1,13 @@
-import Form from './components/Form/'
-import Input from './components/Input/'
-import Select from './components/Select/'
-import Titlebar from './components/Titlebar/'
-import Button from './components/Button/'
-import Range from './components/Range/'
-import FlexFixed from './components/FlexFixed/'
-import Loading from './components/Loading/'
-import Toast from './components/Toast/'
-import Dialog from './components/Dialog/'
+import Form from './components/form/'
+import Input from './components/input/'
+import Select from './components/select/'
+import Titlebar from './components/titlebar/'
+import Button from './components/button/'
+import Range from './components/range/'
+import FlexFixed from './components/flex-fixed/'
+import Loading from './components/loading/'
+import Toast from './components/toast/'
+import Dialog from './components/dialog/'
 
 const components = {
   Form,

@@ -64,7 +64,7 @@
 
 <script>
 import AsyncValidator from 'async-validator'
-import {oneOf} from '@/utils/assist.js'
+import {oneOf} from '../../utils/assist.js'
 const prefixCls = 'r--input'
 
 function clearNonNumbers (str) {

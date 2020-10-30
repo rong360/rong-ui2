@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import preventscroll from '@/directives/preventscroll'
+import preventscroll from '../../directives/preventscroll'
 const prefixCls = 'r--flexfixed'
 
 export default {

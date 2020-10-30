@@ -1,4 +1,4 @@
-import FlexFixed from './FlexFixed'
+import FlexFixed from './flex-fixed'
 
 FlexFixed.install = function (Vue) {
   Vue.component(FlexFixed.name, FlexFixed);
