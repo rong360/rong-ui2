@@ -55,7 +55,7 @@
 
 <script>
 import preventscroll from '../../directives/preventscroll'
-const prefixCls = 'r-dialog'
+const prefixCls = 'r--dialog'
 
 export default {
   name: 'Dialog',
@@ -257,7 +257,7 @@ export default {
 </script>
 
 <style lang="less">
-@dialogCls: r-dialog;
+@dialogCls: r--dialog;
 
 .@{dialogCls} {
   position: fixed;

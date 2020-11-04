@@ -17,6 +17,12 @@
            @click="showDialog6">配置btn</div>
       <div class="item"
            @click="showDialog7">宽度+位置变化</div>
+      <div class="item"
+           @click="showDialog8">this.$dialog.tip</div>
+      <div class="item"
+           @click="showDialog9">this.$dialog.confirm</div>
+      <div class="item"
+           @click="showDialog10">this.$dialog.select</div>
     </div>
     <ViewSource :code="sourceCode" />
   </div>
@@ -239,6 +245,18 @@ export default {
           }
         }
       });
+    },
+    // dialog拓展 - tip
+    showDialog8 () {
+      this.$dialog.tip({ message: 'hello', confirmBtnText: 'Ok', onConfirm: function () { this.remove() } })
+    },
+    // dialog拓展 - tip
+    showDialog9 () {
+      this.$dialog.confirm({ message: 'hello', confirmBtnText: 'confirm', cancelBtnText: 'cancel', onConfirm: function () { }, onCancel: function () { this.remove() } })
+    },
+    // dialog拓展 - tip
+    showDialog10 () {
+      this.$dialog.select({ menus: [{title: '操作1'}, {title: '操作2'}], cancelBtnText: '取消', onSelect: function (obj) { console.log(obj); this.remove() } })
     },
     onBack () {
       this.$router.push('/')
