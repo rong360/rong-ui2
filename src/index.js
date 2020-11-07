@@ -2,6 +2,7 @@ import Form from './components/form/'
 import Input from './components/input/'
 import Select from './components/select/'
 import Titlebar from './components/titlebar/'
+import Banner from './components/banner/'
 import Button from './components/button/'
 import Range from './components/range/'
 import FlexFixed from './components/flex-fixed/'
@@ -14,6 +15,7 @@ const components = {
   Input,
   Select,
   Titlebar,
+  Banner,
   Button,
   Range,
   FlexFixed,

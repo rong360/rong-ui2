@@ -49,22 +49,22 @@
               </g>
             </g>
           </svg></a>
-        <transition name="fade"
-                    mode="out-in">
-          <div v-if="validateState=='error' && (this.form?this.showMessage&&this.form.showMessage:this.showMessage)"
-               :class="errorCls">{{validateMessage}}</div>
-        </transition>
       </div>
       <div v-if="attrs.unit"
            :class="unitCls">{{attrs.unit}}</div>
       <slot name="append"></slot>
+      <transition name="fade"
+                  mode="out-in">
+        <div v-if="validateState=='error' && (this.form?this.showMessage&&this.form.showMessage:this.showMessage)"
+             :class="errorCls">{{validateMessage}}</div>
+      </transition>
     </div>
   </div>
 </template>
 
 <script>
 import AsyncValidator from 'async-validator'
-import {oneOf} from '../../utils/assist.js'
+import { oneOf } from '../../utils/assist.js'
 const prefixCls = 'r--input'
 
 function clearNonNumbers (str) {
@@ -227,6 +227,9 @@ export default {
     showMessage: {
       type: Boolean,
       default: true
+    },
+    mode: {
+      type: String
     }
   },
   data () {
@@ -255,12 +258,14 @@ export default {
     wrapCls () {
       let labelPosition = this.labelPosition || this.form && this.form.labelPosition || 'left'
       let textPosition = this.textPosition || this.form && this.form.textPosition || 'left'
+      let mode = this.mode || this.form && this.form.mode || 'default'
 
       return [
         this.form && 'form-item',
         `${prefixCls}`,
         `${prefixCls}-label-${labelPosition}`,
         `${prefixCls}-text-${textPosition}`,
+        `${prefixCls}-mode-${mode}`,
         {
           [`${prefixCls}-focused`]: this.focused,
           [`${prefixCls}-empty`]: this.value == '',
@@ -505,20 +510,46 @@ export default {
   &-inner {
     border-bottom: 1px solid #d8d9dc;
     padding-right: 15px;
-  }
-  &-label-right &-inner,
-  &-label-left &-inner,
-  &-label-top &-inner {
+    height: 46px;
     display: flex;
+    box-sizing: border-box;
     align-items: center;
   }
-  &-label-right &-content,
-  &-label-left &-content,
-  &-label-top &-content {
-    flex: 1;
+  &-mode-to-top {
+    margin-top: 20px;
+  }
+  &-mode-to-top&&-focused &-inner,
+  &-mode-to-top&:not(&-empty) &-inner {
+    padding-top: 20px;
+  }
+  &-mode-to-top&&-focused &-label,
+  &-mode-to-top&:not(&-empty) &-label {
+    position: absolute;
+    top: 5px;
+    font-size: 12px;
+    color: #bdbdbd;
+  }
+  &-mode-to-top &-label {
+    font-size: 16px;
+    color: #BDBDBD;
+  }
+  &-mode-to-top &-input {
+    font-size: 16px;
+    line-height: 21px;
+    color: #757575 ;
+  }
+  &-mode-default &-label {
+    font-size: 14px;
+    color: #333;
+  }
+  &-mode-default &-input {
+    font-size: 14px;
+    line-height: 20px;
+    color: #333;
   }
   &-label-right &-label {
     text-align: right;
+    padding-right: 10px;
   }
   &-label-top {
     padding-top: 14px;
@@ -529,18 +560,17 @@ export default {
     z-index: 1;
   }
   &-label {
-    font-size: 14px;
-    color: #333;
     line-height: 1;
     box-sizing: border-box;
     white-space: nowrap;
     padding-right: 10px;
+    transition: all 0.3s ease-out;
   }
   &-content {
     box-sizing: border-box;
-    height: 45px;
     line-height: 1;
     display: flex;
+    flex: 1;
     align-items: center;
     position: relative;
   }
@@ -549,9 +579,6 @@ export default {
     appearance: none;
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
     border: none;
-    font-size: 14px;
-    line-height: 20px;
-    color: #333;
     box-sizing: border-box;
     flex: 1;
     width: 100%;

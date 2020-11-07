@@ -44,6 +44,9 @@ export default {
     showMessage: {
       type: Boolean,
       default: true
+    },
+    mode: {
+      type: String
     }
   },
   computed: {

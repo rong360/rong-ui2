@@ -96,6 +96,9 @@ export default {
     showMessage: {
       type: Boolean,
       default: true
+    },
+    mode: {
+      type: String
     }
   },
   data () {
@@ -114,12 +117,14 @@ export default {
     wrapCls () {
       let labelPosition = this.labelPosition || this.form && this.form.labelPosition || 'right'
       let textPosition = this.textPosition || this.form && this.form.textPosition || 'left'
+      let mode = this.mode || this.form && this.form.mode || 'default'
 
       return [
         this.form && 'form-item',
         `${prefixCls}`,
         `${prefixCls}-label-${labelPosition}`,
         `${prefixCls}-text-${textPosition}`,
+        `${prefixCls}-mode-${mode}`,
         {
           [`${prefixCls}-focused`]: this.focused,
           [`${prefixCls}-empty`]: this.value == '',
@@ -287,16 +292,43 @@ export default {
   position: relative;
   &-inner {
     border-bottom: 1px solid #d8d9dc;
-    padding-right: 10px;
-  }
-  &-label-right &-inner,
-  &-label-left &-inner {
+    padding-right: 15px;
+    height: 46px;
     display: flex;
+    box-sizing: border-box;
     align-items: center;
   }
-  &-label-right &-content,
-  &-label-left &-content {
-    flex: 1;
+  &-mode-to-top {
+    margin-top: 20px;
+  }
+  &-mode-to-top&&-focused &-inner,
+  &-mode-to-top&:not(&-empty) &-inner {
+    padding-top: 20px;
+  }
+  &-mode-to-top&&-focused &-label,
+  &-mode-to-top&:not(&-empty) &-label {
+    position: absolute;
+    top: 5px;
+    font-size: 12px;
+    color: #bdbdbd;
+  }
+  &-mode-to-top &-label {
+    font-size: 16px;
+    color: #BDBDBD;
+  }
+  &-mode-to-top &-select {
+    font-size: 16px;
+    line-height: 21px;
+    color: #757575 ;
+  }
+  &-mode-default &-label {
+    font-size: 14px;
+    color: #333;
+  }
+  &-mode-default &-select {
+    font-size: 14px;
+    line-height: 20px;
+    color: #333;
   }
   &-label-right &-label {
     text-align: right;
@@ -311,14 +343,17 @@ export default {
     z-index: 1;
   }
   &-label {
-    font-size: 14px;
     line-height: 1;
     box-sizing: border-box;
+    white-space: nowrap;
+    padding-right: 10px;
+    transition: all 0.3s ease-out;
   }
   &-content {
     box-sizing: border-box;
-    height: 45px;
+    line-height: 1;
     display: flex;
+    flex: 1;
     align-items: center;
     position: relative;
   }
@@ -329,7 +364,7 @@ export default {
     flex: 1;
     display: flex;
     align-items: center;
-    padding: 0 10px 0 5px;
+    padding: 0 10px 0 0px;
   }
   &-placeholder &-select {
     color: #c5c8ce;
