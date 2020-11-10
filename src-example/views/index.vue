@@ -6,7 +6,7 @@
         <router-link to="/titlebar">Titlebar</router-link>
       </li>
        <li>
-        <router-link to="/banner">Banner</router-link>
+        <router-link to="/swiper">Swiper</router-link>
       </li>
       <li>
         <router-link to="/button">Button</router-link>

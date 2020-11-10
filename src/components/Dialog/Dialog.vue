@@ -119,8 +119,6 @@ export default {
   },
   data () {
     return {
-      scrollList: null,
-      currentScrollArea: null,
       mouseInfo: {
         startX: 0,
         startY: 0,
@@ -171,10 +169,6 @@ export default {
   mounted () {
     this.$nextTick(function () {
       this.resetPos()
-
-      if (this.scrollList === null) {
-        this.scrollList = this.$refs.dlgContent.querySelectorAll('.scroll-area')
-      }
     })
     this.removeDialogOnHashChange && window.addEventListener('hashchange', this.remove)
   },

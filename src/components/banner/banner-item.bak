@@ -1,5 +1,5 @@
 <template>
-  <div :class="wrapCls" :style="styleObj" ref="wrap" @click="onClick">
+  <div :class="wrapCls" @click="onClick">
     <slot></slot>
   </div>
 </template>
@@ -11,9 +11,6 @@ export default {
   name: 'BannerItem',
   inject: {
     banner: { default: null }
-  },
-  props: {
-    styleObj: Object
   },
   computed: {
     wrapCls () {
@@ -34,9 +31,15 @@ export default {
 <style lang="less">
 @bannerItemCls: r--banner-item;
 .@{bannerItemCls} {
-  img {
-    width: 100%;
-    display: block;
+  width: 100%;
+  flex-shrink: 0;
+  text-align: center;
+  min-height: 100px;
+  &:nth-child(even) {
+    background-color: #fff;
+  }
+  &:nth-child(odd) {
+    background-color: #fff;
   }
 }
 </style>

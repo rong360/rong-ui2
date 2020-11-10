@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/index'
 import Titlebar from '../views/titlebar'
-import Banner from '../views/banner'
+import Swiper from '../views/swiper'
 import Button from '../views/button'
 import Flexfixed from '../views/flexfixed'
 import Form from '../views/form'
@@ -28,8 +28,8 @@ export default new VueRouter({
       component: Titlebar
     },
     {
-      path: '/banner',
-      component: Banner
+      path: '/swiper',
+      component: Swiper
     },
     {
       path: '/button',

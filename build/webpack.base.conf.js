@@ -35,10 +35,11 @@ module.exports = {
         loader: 'vue-loader',
         options: vueLoaderConfig
       },
-      {
-        test: /\.less$/,
-        loader: "style-loader!css-loader!less-loader"
-      },
+      // 注意：如果utils.js文件里面已经添加了less、css这里不用添加上面后两个test了，否则会报错！！！
+      // {
+      //   test: /\.less$/,
+      //   loader: "style-loader!css-loader!less-loader"
+      // },
       {
         test: /\.js$/,
         loader: 'babel-loader',

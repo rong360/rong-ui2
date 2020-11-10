@@ -20,7 +20,6 @@ module.exports = {
     notifyOnErrors: true,
     poll: true, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
 
-
     /**
      * Source Maps
      */

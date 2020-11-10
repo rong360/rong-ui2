@@ -5,12 +5,12 @@
 </template>
 
 <script>
-const prefixCls = 'r--banner-item'
+const prefixCls = 'r--swiper-item'
 
 export default {
-  name: 'BannerItem',
+  name: 'SwiperItem',
   inject: {
-    banner: { default: null }
+    swiper: { default: null }
   },
   props: {
     styleObj: Object
@@ -21,7 +21,7 @@ export default {
     }
   },
   mounted () {
-    this.banner.list.push(this)
+    this.swiper.list.push(this)
   },
   methods: {
     onClick (e) {
@@ -32,8 +32,8 @@ export default {
 </script>
 
 <style lang="less">
-@bannerItemCls: r--banner-item;
-.@{bannerItemCls} {
+@swiperItemCls: r--swiper-item;
+.@{swiperItemCls} {
   img {
     width: 100%;
     display: block;

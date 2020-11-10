@@ -1,13 +1,13 @@
 <template>
   <div :class="wrapCls"
-       ref="banner">
+       ref="swiper">
     <div :class="wraperCls"
-         ref="bannerWraper">
+         ref="swiperWraper">
       <div :class="innerCls"
-           ref="bannerInner"
-           @touchstart="touchstartBannerInner"
-           @touchmove.prevent="touchmoveInner"
-           @touchend="touchendBannerInner">
+           ref="swiperInner"
+           @touchstart="tsSwiperInner"
+           @touchmove.prevent="tmSwiperInner"
+           @touchend="teSwiperInner">
         <div class="list"
              ref="list">
           <slot></slot>
@@ -28,13 +28,13 @@
 
 <script>
 import { oneOf } from '../../utils/assist.js'
-const prefixCls = 'r--banner'
+const prefixCls = 'r--swiper'
 
 export default {
-  name: 'Banner',
+  name: 'Swiper',
   provide () {
     return {
-      banner: this
+      swiper: this
     }
   },
   props: {
@@ -65,8 +65,8 @@ export default {
       distance: 0, // 一次运动距离
       startCoor: 0, // 鼠标起始位置
       lastScroll: 0, // 上一次滚动位置
-      bannerWidth: 0,
-      bannerHeight: 0
+      swiperWidth: 0,
+      swiperHeight: 0
     }
   },
   computed: {
@@ -97,43 +97,43 @@ export default {
       this.$refs.listCopy.innerHTML = this.$refs.list.innerHTML
       this.maxScroll = this.direction == 'scrollLeft' ? this.$refs.list.offsetWidth : this.$refs.list.offsetHeight
       this.distance = this.maxScroll / this.list.length || 0
-      this.bannerWidth = this.$refs.banner.offsetWidth
-      this.bannerHeight = this.$refs.banner.offsetHeight
+      this.swiperWidth = this.$refs.swiper.offsetWidth
+      this.swiperHeight = this.$refs.swiper.offsetHeight
       this.$emit('on-page', this.pointer + 1, this.list.length)
       this.startAnimation()
     })
   },
   methods: {
-    touchstartBannerInner (e) {
+    tsSwiperInner (e) {
       clearTimeout(this.gapTimer)
-      this.lastScroll = this.$refs.bannerWraper[this.direction]
+      this.lastScroll = this.$refs.swiperWraper[this.direction]
       this.startCoor = e.changedTouches[0][this.direction == 'scrollLeft' ? 'clientX' : 'clientY']
     },
-    touchmoveInner (e) {
+    tmSwiperInner (e) {
       let currCoor = e.changedTouches[0][this.direction == 'scrollLeft' ? 'clientX' : 'clientY']
       if (currCoor > this.startCoor && this.lastScroll == 0) {
-        this.$refs.bannerWraper[this.direction] = this.lastScroll = this.maxScroll
+        this.$refs.swiperWraper[this.direction] = this.lastScroll = this.maxScroll
         this.mark = this.list.length
       }
-      this.$refs.bannerWraper[this.direction] = this.lastScroll + this.startCoor - currCoor
+      this.$refs.swiperWraper[this.direction] = this.lastScroll + this.startCoor - currCoor
     },
-    touchendBannerInner (e) {
+    teSwiperInner (e) {
       let endCoor = e.changedTouches[0][this.direction == 'scrollLeft' ? 'clientX' : 'clientY']
-      let movePercent = Math.abs(this.startCoor - endCoor) / (this.direction == 'scrollLeft' ? this.bannerWidth : this.bannerHeight) * 100
+      let movePercent = Math.abs(this.startCoor - endCoor) / (this.direction == 'scrollLeft' ? this.swiperWidth : this.swiperHeight) * 100
       if (movePercent > 20) {
         endCoor > this.startCoor ? this.prev() : this.next()
       } else {
         if (endCoor > this.startCoor && this.lastScroll == this.maxScroll) {
-          this.$refs.bannerWraper[this.direction] = this.lastScroll = 0
+          this.$refs.swiperWraper[this.direction] = this.lastScroll = 0
           this.mark = 0
         }
-        this.$refs.bannerWraper[this.direction] = this.lastScroll
+        this.$refs.swiperWraper[this.direction] = this.lastScroll
         this.startAnimation()
       }
     },
     // 启动动画
     startAnimation () {
-      if (!this.$refs || !this.$refs.bannerWraper || !this.autoPlay) return
+      if (!this.autoPlay) return
       this.gapTimer = setTimeout(() => {
         this.next()
       }, this.gap);
@@ -144,7 +144,7 @@ export default {
     },
     prev () {
       if (this.mark == 0) {
-        this.$refs.bannerWraper[this.direction] = this.maxScroll
+        this.$refs.swiperWraper[this.direction] = this.maxScroll
         this.mark = this.list.length
       }
       this.mark -= 1
@@ -155,15 +155,15 @@ export default {
       if (self.gapTimer) clearTimeout(self.gapTimer)
       move({
         obj: this,
-        beginningValue: this.$refs.bannerWraper[this.direction],
+        beginningValue: this.$refs.swiperWraper[this.direction],
         endValue: this.mark * self.distance,
         step (v) {
-          self.$refs.bannerWraper[self.direction] = v
+          self.$refs.swiperWraper[self.direction] = v
         },
         callback () {
-          let d = self.$refs.bannerWraper[self.direction]
+          let d = self.$refs.swiperWraper[self.direction]
           if (d >= self.maxScroll) {
-            self.$refs.bannerWraper[self.direction] = 0
+            self.$refs.swiperWraper[self.direction] = 0
             self.mark = 0
           }
           if (self.gapTimer) clearTimeout(self.gapTimer)
@@ -171,11 +171,11 @@ export default {
           self.startAnimation()
         }
       })
-    },
-    beforeDestroy () {
-      clearInterval(this.moveTimer)
-      clearTimeout(this.gapTimer)
     }
+  },
+  beforeDestroy () {
+    clearInterval(this.moveTimer)
+    clearTimeout(this.gapTimer)
   }
 }
 /*
@@ -214,8 +214,8 @@ function move ({ obj, beginningValue, endValue, step, callback }) {
 </script>
 
 <style lang="less">
-@bannerCls: r--banner;
-.@{bannerCls} {
+@swiperCls: r--swiper;
+.@{swiperCls} {
   position: relative;
   &-wraper {
     position: relative;

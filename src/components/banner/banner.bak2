@@ -1,0 +1,141 @@
+<template>
+  <div :class="wrapCls"
+       ref="swiper"
+       style="padding: 30px 0; background: red">
+       {{wSwiperInner}}
+    <div :class="innerCls"
+         ref="swiperInner"
+         @touchstart="touchstartBannerInner"
+         @touchmove.prevent="touchmoveInner"
+         @touchend="touchendBannerInner">
+      <slot></slot>
+      <slot></slot>
+    </div>
+  </div>
+  </div>
+</template>
+
+<script>
+const prefixCls = 'r--banner'
+
+export default {
+  name: 'Banner',
+  provide () {
+    return {
+      banner: this
+    }
+  },
+  props: {
+    // 指针
+    pointer: {
+      type: Number,
+      default: 0
+    },
+    // 运动方向 scrollLeft or scrolTop
+    direction: {
+      type: String,
+      default: 'scrollLeft'
+    },
+    // 运动间隔
+    gap: {
+      type: Number,
+      default: 2000
+    },
+    // 运动距离，默认取swiper宽度或高度
+    distance: Number,
+    // 系数
+    rate: {
+      type: Number,
+      default: 0.08
+    }
+  },
+  data () {
+    return {
+      list: [],
+      wSwiper: 0,
+      hSwiper: 0,
+      wSwiperInner: 0,
+      hSwiperInner: 0,
+      mark: this.pointer, // swiper指针
+      mouseInfo: {
+        startCoor: 0,
+        direction: ''
+      }
+    }
+  },
+  mounted () {
+    this.$nextTick(() => {
+      this.wSwiper = this.$refs.swiper.offsetWidth
+      this.hSwiper = this.$refs.swiper.offsetHeight
+      this.wSwiperInner = this.$refs.swiperInner.scrollWidth
+      this.hSwiperInner = this.$refs.swiperInner.scrollHeight
+      // this.goto_timer = setTimeout(this.goto, this.gap)
+    })
+  },
+  computed: {
+    wrapCls () {
+      return [
+        prefixCls
+      ]
+    },
+    innerCls () {
+      return `${prefixCls}-inner`
+    },
+    oneDistance () {
+      return this.distance || this.direction == 'scrollLeft' ? this.wSwiper : this.hSwiper || 0
+    },
+    len () {
+      let maxLength = (this.direction == 'scrollLeft' ? this.wSwiperInner : this.hSwiperInner) / 2
+      return Math.floor(maxLength / this.oneDistance)
+    }
+  },
+  methods: {
+    touchstartBannerInner (e) {
+      this.mouseInfo.startCoor = this.direction == 'scrollLeft' ? e.changedTouches[0].clientX : e.changedTouches[0].clientY
+      clearInterval(this.gap_timer)
+      clearTimeout(this.goto_timer)
+      this.lastScroll = this.$refs.swiper[this.direction]
+    },
+    touchmoveInner (e) {
+      let endCoor = this.direction == 'scrollLeft' ? e.changedTouches[0].clientX : e.changedTouches[0].clientY
+      this.$refs.swiper[this.direction] = this.lastScroll + this.mouseInfo.startCoor - endCoor
+    },
+    touchendBannerInner (e) { },
+    goto () {
+      this.mark += 1
+      this.gap_timer = setInterval(() => {
+        this.plus()
+      }, 10)
+    },
+    // +动画
+    plus () {
+      clearTimeout(this.goto_timer)
+      let d = this.$refs.swiper[this.direction]
+      if (d < this.mark * this.oneDistance) {
+        this.$refs.swiper[this.direction] = Math.ceil(d + (this.mark * this.oneDistance - d) * this.rate)
+      } else {
+        clearInterval(this.gap_timer)
+        this.mark = this.mark < this.len ? this.mark : 0
+        this.$refs.swiper[this.direction] = this.mark * this.oneDistance
+        this.goto_timer = setTimeout(this.goto, this.gap)
+      }
+    }
+  }
+}
+</script>
+
+<style lang="less">
+@bannerCls: r--banner;
+.@{bannerCls} {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  &-inner {
+    display: flex;
+    position: relative;
+  }
+  &-inner-transition &-inner {
+    transition: transform 0.5s ease-out;
+  }
+}
+</style>

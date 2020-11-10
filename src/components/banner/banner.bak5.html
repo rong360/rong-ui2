@@ -1,33 +1,24 @@
 <template>
   <div :class="wrapCls"
        ref="banner">
-    <div :class="wraperCls"
-         ref="bannerWraper">
-      <div :class="innerCls"
-           ref="bannerInner"
-           @touchstart="touchstartBannerInner"
-           @touchmove.prevent="touchmoveInner"
-           @touchend="touchendBannerInner">
-        <div class="list"
-             ref="list">
-          <slot></slot>
-        </div>
-        <div class="list-copy"
-             ref="listCopy"></div>
+    <div :class="innerCls"
+         ref="bannerInner"
+         @touchstart="touchstartBannerInner"
+         @touchmove.prevent="touchmoveInner"
+         @touchend="touchendBannerInner">
+      <div class="list"
+           ref="list">
+        <slot></slot>
+      </div>
+      <div class="list-copy">
+        <slot></slot>
       </div>
     </div>
-    <slot name="pagination">
-      <div :class="pagination">
-        <span v-for="(item, index) in list"
-              :class="{active: index==pointer}"></span>
-      </div>
-    </slot>
-    <!-- <button @click="prev">prev</button> <button @click="next">next</button> -->
   </div>
 </template>
 
 <script>
-import { oneOf } from '../../utils/assist.js'
+import {oneOf} from '../../utils/assist.js'
 const prefixCls = 'r--banner'
 
 export default {
@@ -38,6 +29,11 @@ export default {
     }
   },
   props: {
+    // 指针
+    pointer: {
+      type: Number,
+      default: 0
+    },
     // 运动方向
     direction: {
       type: String,
@@ -46,23 +42,20 @@ export default {
       },
       default: 'scrollLeft'
     },
+    // 运动距离
+    distance: Number,
     // 运动间隔时长
     gap: {
       type: Number,
       default: 2000
-    },
-    // 自动播放
-    autoPlay: {
-      type: Boolean,
-      default: true
     }
   },
   data () {
     return {
       list: [],
-      mark: 0,
+      mark: this.pointer,
       maxScroll: 0, // 最大移动距离
-      distance: 0, // 一次运动距离
+      onceMoveDistance: 0, // 一次运动距离
       startCoor: 0, // 鼠标起始位置
       lastScroll: 0, // 上一次滚动位置
       bannerWidth: 0,
@@ -76,99 +69,99 @@ export default {
         `${prefixCls}-direction-${this.direction == 'scrollLeft' ? 'left' : 'top'}`
       ]
     },
-    wraperCls () {
-      return `${prefixCls}-wraper`
-    },
     innerCls () {
       return `${prefixCls}-inner`
     },
     listCls () {
       return `${prefixCls}-list`
-    },
-    pagination () {
-      return `${prefixCls}-pagination`
-    },
-    pointer () {
-      return this.mark < this.list.length ? this.mark : 0
     }
   },
   mounted () {
     this.$nextTick(() => {
-      this.$refs.listCopy.innerHTML = this.$refs.list.innerHTML
       this.maxScroll = this.direction == 'scrollLeft' ? this.$refs.list.offsetWidth : this.$refs.list.offsetHeight
-      this.distance = this.maxScroll / this.list.length || 0
+      this.onceMoveDistance = this.distance || this.maxScroll * 2 / this.list.length || 0
       this.bannerWidth = this.$refs.banner.offsetWidth
       this.bannerHeight = this.$refs.banner.offsetHeight
-      this.$emit('on-page', this.pointer + 1, this.list.length)
-      this.startAnimation()
+      // 启动动画
+      this.gapTimer = setTimeout(() => {
+        this.plus()
+      }, this.gap);
     })
   },
   methods: {
     touchstartBannerInner (e) {
+      clearInterval(this.moveTimer)
       clearTimeout(this.gapTimer)
-      this.lastScroll = this.$refs.bannerWraper[this.direction]
+      this.lastScroll = this.$refs.banner[this.direction]
       this.startCoor = e.changedTouches[0][this.direction == 'scrollLeft' ? 'clientX' : 'clientY']
     },
     touchmoveInner (e) {
       let currCoor = e.changedTouches[0][this.direction == 'scrollLeft' ? 'clientX' : 'clientY']
       if (currCoor > this.startCoor && this.lastScroll == 0) {
-        this.$refs.bannerWraper[this.direction] = this.lastScroll = this.maxScroll
-        this.mark = this.list.length
+        this.$refs.banner[this.direction] = this.lastScroll = this.maxScroll
+        this.mark = this.list.length / 2
       }
-      this.$refs.bannerWraper[this.direction] = this.lastScroll + this.startCoor - currCoor
+      this.$refs.banner[this.direction] = this.lastScroll + this.startCoor - currCoor
     },
     touchendBannerInner (e) {
       let endCoor = e.changedTouches[0][this.direction == 'scrollLeft' ? 'clientX' : 'clientY']
       let movePercent = Math.abs(this.startCoor - endCoor) / (this.direction == 'scrollLeft' ? this.bannerWidth : this.bannerHeight) * 100
       if (movePercent > 20) {
-        endCoor > this.startCoor ? this.prev() : this.next()
+        if (endCoor > this.startCoor) {
+          this.minus()
+        } else {
+          this.plus()
+        }
       } else {
         if (endCoor > this.startCoor && this.lastScroll == this.maxScroll) {
-          this.$refs.bannerWraper[this.direction] = this.lastScroll = 0
+          this.$refs.banner[this.direction] = this.lastScroll = 0
           this.mark = 0
         }
-        this.$refs.bannerWraper[this.direction] = this.lastScroll
-        this.startAnimation()
+        this.$refs.banner[this.direction] = this.lastScroll
+        // 启动动画
+        this.gapTimer = setTimeout(() => {
+          this.plus()
+        }, this.gap);
       }
     },
-    // 启动动画
-    startAnimation () {
-      if (!this.$refs || !this.$refs.bannerWraper || !this.autoPlay) return
-      this.gapTimer = setTimeout(() => {
-        this.next()
-      }, this.gap);
-    },
-    next () {
-      this.mark += 1
-      this.moving()
-    },
-    prev () {
-      if (this.mark == 0) {
-        this.$refs.bannerWraper[this.direction] = this.maxScroll
-        this.mark = this.list.length
-      }
-      this.mark -= 1
-      this.moving()
-    },
-    moving () {
+    // +动画
+    plus () {
       let self = this
-      if (self.gapTimer) clearTimeout(self.gapTimer)
+      this.mark += 1
       move({
         obj: this,
-        beginningValue: this.$refs.bannerWraper[this.direction],
-        endValue: this.mark * self.distance,
+        beginningValue: this.$refs.banner[this.direction],
+        endValue: this.mark * self.onceMoveDistance,
         step (v) {
-          self.$refs.bannerWraper[self.direction] = v
+          self.$refs.banner[self.direction] = v
         },
         callback () {
-          let d = self.$refs.bannerWraper[self.direction]
+          let d = self.$refs.banner[self.direction]
           if (d >= self.maxScroll) {
-            self.$refs.bannerWraper[self.direction] = 0
+            self.$refs.banner[self.direction] = 0
             self.mark = 0
           }
-          if (self.gapTimer) clearTimeout(self.gapTimer)
-          self.$emit('on-page', self.mark + 1, self.list.length)
-          self.startAnimation()
+          self.gapTimer = setTimeout(() => {
+            self.plus()
+          }, self.gap);
+        }
+      })
+    },
+    // -动画
+    minus () {
+      let self = this
+      this.mark -= 1
+      move({
+        obj: this,
+        beginningValue: this.$refs.banner[this.direction],
+        endValue: this.mark * self.onceMoveDistance,
+        step (v) {
+          self.$refs.banner[self.direction] = v
+        },
+        callback () {
+          self.gapTimer = setTimeout(() => {
+            self.plus()
+          }, self.gap);
         }
       })
     },
@@ -192,6 +185,7 @@ var Tween = {
 }
 
 function move ({ obj, beginningValue, endValue, step, callback }) {
+  if (!obj) return
   if (obj.isMoving) return
   obj.isMoving = true
   let b = beginningValue // 初始化值
@@ -217,11 +211,8 @@ function move ({ obj, beginningValue, endValue, step, callback }) {
 @bannerCls: r--banner;
 .@{bannerCls} {
   position: relative;
-  &-wraper {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-  }
+  width: 100%;
+  overflow: hidden;
   &-direction-left &-inner {
     width: 90000px;
   }
@@ -231,8 +222,7 @@ function move ({ obj, beginningValue, endValue, step, callback }) {
   }
   &-direction-left &-item {
     float: left;
-    width: 375px;
-    box-sizing: border-box;
+    width: 20rem;
   }
   &-direction-left &-inner::after {
     content: "";
@@ -241,24 +231,6 @@ function move ({ obj, beginningValue, endValue, step, callback }) {
   }
   &-direction-top &-inner {
     height: 100px;
-  }
-  &-pagination {
-    position: absolute;
-    bottom: 5px;
-    width: 100%;
-    text-align: center;
-  }
-  &-pagination span {
-    display: inline-block;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.6);
-    margin: 0 2px;
-    transition: all 0.2s linear;
-    &.active {
-      background-color: #fa2c19;
-    }
   }
 }
 </style>
