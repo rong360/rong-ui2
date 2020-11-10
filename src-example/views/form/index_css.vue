@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import sourceCode from './code.txt'
+import sourceCode from './code_css.txt'
 
 export default {
   data () {
