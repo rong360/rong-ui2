@@ -10,7 +10,7 @@
           @scroll.passive="onScroll">
       <slot></slot>
     </main>
-    <footer @touchmove.prevent>
+    <footer>
       <slot name="footer"></slot>
     </footer>
   </div>
