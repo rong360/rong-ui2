@@ -250,13 +250,13 @@ export default {
     showDialog8 () {
       this.$dialog.tip({ message: 'hello', confirmBtnText: 'Ok', onConfirm: function () { this.remove() } })
     },
-    // dialog拓展 - tip
+    // dialog拓展 - confirm
     showDialog9 () {
       this.$dialog.confirm({ message: 'hello', confirmBtnText: 'confirm', cancelBtnText: 'cancel', onConfirm: function () { }, onCancel: function () { this.remove() } })
     },
-    // dialog拓展 - tip
+    // dialog拓展 - select
     showDialog10 () {
-      this.$dialog.select({ menus: [{title: '操作1'}, {title: '操作2'}], cancelBtnText: '取消', onSelect: function (obj) { console.log(obj); this.remove() } })
+      this.$dialog.select({ menus: [{title: '操作1'}, {title: '操作2'}], cancelBtnText: '取消', onCancel: function () { this.remove() }, onSelect: function (obj) { console.log(obj); this.remove() } })
     },
     onBack () {
       this.$router.push('/')

@@ -1,6 +1,7 @@
 import Form from './components/form/'
 import Input from './components/input/'
 import Select from './components/select/'
+import Switch from './components/switch/'
 import Titlebar from './components/titlebar/'
 import Swiper from './components/swiper/'
 import Button from './components/button/'
@@ -14,6 +15,7 @@ const components = {
   Form,
   Input,
   Select,
+  Switch,
   Titlebar,
   Swiper,
   Button,

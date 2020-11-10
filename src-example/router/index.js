@@ -11,6 +11,7 @@ import FormCss from '../views/form/index_css'
 import Range from '../views/range'
 import Input from '../views/input'
 import Select from '../views/select'
+import Switch from '../views/switch'
 import Dialog from '../views/dialog'
 import Toast from '../views/toast'
 import Loading from '../views/loading'
@@ -50,6 +51,10 @@ export default new VueRouter({
     {
       path: '/select',
       component: Select
+    },
+    {
+      path: '/switch',
+      component: Switch
     },
     {
       path: '/form',
