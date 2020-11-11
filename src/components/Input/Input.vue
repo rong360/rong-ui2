@@ -294,7 +294,7 @@ export default {
       return this.attrs.placeholder || this.placeholder || (this.form && this.form.placeholder) || ''
     },
     clearStyle () {
-      let style = { color: '#999999', width: '11px', height: '11px' }
+      let style = { color: '#999999' }
       return this.inputClearStyle || (this.form && this.form.inputClearStyle) || style
     },
     contentCls () {
@@ -618,6 +618,10 @@ export default {
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
     display: flex;
     align-items: center;
+  }
+  &-clear svg {
+    width: 30x;
+    height: 30x;
   }
   &-error &-inner {
     border-color: #ed4014;

@@ -23,7 +23,8 @@
            @click="showDialog9">this.$dialog.confirm</div>
       <div class="item"
            @click="showDialog10">this.$dialog.select</div>
-      <div class="item">模板方式插入Dialog <button @click="showDialog11">显示dialog</button>
+      <div class="item"
+           @click="showDialog11">模板方式插入Dialog
         <Dialog v-model="showDlg11"
                 @on-cancel="onCancelDialog11">
           <div style="text-align: center; padding: 50px 0">hello</div>
@@ -266,10 +267,10 @@ export default {
       this.$dialog.select({ menus: [{ title: '操作1' }, { title: '操作2' }], cancelBtnText: '取消', onCancel: function () { this.remove() }, onSelect: function (obj) { console.log(obj); this.remove() } })
     },
     showDialog11 () {
-      this.showDlg11 = !this.showDlg11
+      this.showDlg11 = this.true
     },
     onCancelDialog11 (e, dialog) {
-      // this.showDlg11 = f alse
+      // this.showDlg11 = false
       dialog.remove()
     },
     onBack () {

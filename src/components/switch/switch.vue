@@ -50,6 +50,7 @@ export default {
       if (this.disabled) return
       this.onOff = !this.onOff
       this.$emit('input', this.onOff)
+      this.$emit('on-change', this.onOff)
     }
   }
 }
