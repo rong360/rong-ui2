@@ -1,56 +1,62 @@
 <template>
-  <div :class="wrapCls"
-       :style="CliperStyleObj"
-       v-preventscroll>
-    <div :class="innerCls"
-         :style="dlgStyleObj"
-         @click="onclickDlg"
-         ref="dlgContent">
-      <div :class="titleCls"
-           :style="titleStyleObj"
-           v-if="title">{{title}}</div>
-      <div :class="closeCls"
-           :style="closeStyleObj"
-           @click="onClose"
-           v-if="showCloseBtn"><svg width="11px"
-             height="11px"
-             viewBox="0 0 11 11"
-             version="1.1"
-             xmlns="http://www.w3.org/2000/svg"
-             xmlns:xlink="http://www.w3.org/1999/xlink">
-          <g stroke="none"
-             stroke-width="1"
-             fill="none"
-             fill-rule="evenodd">
-            <g transform="translate(-249.000000, -10.000000)"
-               fill="#999999">
-              <path d="M254.50013,14.8683272 L249.762514,10.1306735 C249.588122,9.95644215 249.305423,9.95644215 249.130794,10.1306735 C248.956402,10.3052215 248.956402,10.5880359 249.130794,10.7624255 L253.868428,15.500023 L249.130795,20.2376113 C248.956402,20.4120016 248.956402,20.6948302 249.130795,20.8692073 C249.305425,21.0435976 249.588125,21.0435976 249.76228,20.8692073 L254.499971,16.1315614 L259.237665,20.8692176 C259.411819,21.0435941 259.694768,21.0435941 259.869384,20.8692176 C260.043539,20.694828 260.043539,20.4120004 259.869384,20.2376239 L255.131668,15.4998705 L259.869205,10.7623788 C260.043598,10.5880017 260.043598,10.3053314 259.869205,10.1307828 C259.694588,9.95640572 259.411875,9.95640572 259.23772,10.1307828 L254.50013,14.8683272 Z"></path>
+  <transition appear
+              :name="transitionName"
+              @after-leave="afterLeave">
+    <div :class="wrapCls"
+         :style="CliperStyleObj"
+         v-show="showDlg"
+         v-preventscroll>
+      <div :class="innerCls"
+           :style="dlgStyleObj"
+           @click="onclickDlg"
+           ref="dlgContent">
+        <div :class="titleCls"
+             :style="titleStyleObj"
+             v-if="title">{{title}}</div>
+        <div :class="closeCls"
+             :style="closeStyleObj"
+             @click="onClose"
+             v-if="showCloseBtn"><svg width="11px"
+               height="11px"
+               viewBox="0 0 11 11"
+               version="1.1"
+               xmlns="http://www.w3.org/2000/svg"
+               xmlns:xlink="http://www.w3.org/1999/xlink">
+            <g stroke="none"
+               stroke-width="1"
+               fill="none"
+               fill-rule="evenodd">
+              <g transform="translate(-249.000000, -10.000000)"
+                 fill="#999999">
+                <path d="M254.50013,14.8683272 L249.762514,10.1306735 C249.588122,9.95644215 249.305423,9.95644215 249.130794,10.1306735 C248.956402,10.3052215 248.956402,10.5880359 249.130794,10.7624255 L253.868428,15.500023 L249.130795,20.2376113 C248.956402,20.4120016 248.956402,20.6948302 249.130795,20.8692073 C249.305425,21.0435976 249.588125,21.0435976 249.76228,20.8692073 L254.499971,16.1315614 L259.237665,20.8692176 C259.411819,21.0435941 259.694768,21.0435941 259.869384,20.8692176 C260.043539,20.694828 260.043539,20.4120004 259.869384,20.2376239 L255.131668,15.4998705 L259.869205,10.7623788 C260.043598,10.5880017 260.043598,10.3053314 259.869205,10.1307828 C259.694588,9.95640572 259.411875,9.95640572 259.23772,10.1307828 L254.50013,14.8683272 Z"></path>
+              </g>
             </g>
-          </g>
-        </svg></div>
-      <slot>
-        <div :class="contentCls"
-             :style="contentStyleObj"
-             v-if="message"
-             v-html="message"></div>
-        <rContent :rContentData="rContentData"
-                  ref="rContent"></rContent>
-      </slot>
-      <div :class="btnCls"
-           v-if="showCancelBtn || showConfirmBtn">
-        <div :class="cancelBtnCls"
-             :style="cancelBtnStyleObj"
-             @click="onCancel"
-             v-if="showCancelBtn"
-             v-html="cancelBtnText"></div>
-        <div :class="confirmBtnCls"
-             :style="confirmBtnStyleObj"
-             @click="onConfirm"
-             v-if="showConfirmBtn"
-             v-html="confirmBtnText"></div>
+          </svg></div>
+        <slot>
+          <div :class="contentCls"
+               :style="contentStyleObj"
+               v-if="message"
+               v-html="message"></div>
+          <rContent :rContentData="rContentData"
+                    ref="rContent"></rContent>
+        </slot>
+        <div :class="btnCls"
+             v-if="showCancelBtn || showConfirmBtn">
+          <div :class="cancelBtnCls"
+               :style="cancelBtnStyleObj"
+               @click="onCancel"
+               v-if="showCancelBtn"
+               v-html="cancelBtnText"></div>
+          <div :class="confirmBtnCls"
+               :style="confirmBtnStyleObj"
+               @click="onConfirm"
+               v-if="showConfirmBtn"
+               v-html="confirmBtnText"></div>
+        </div>
       </div>
     </div>
-  </div>
+  </transition>
+
 </template>
 
 <script>
@@ -60,6 +66,11 @@ const prefixCls = 'r--dialog'
 export default {
   name: 'Dialog',
   props: {
+    // template模板方式插入dialog时，控制dialog是否显示
+    value: {
+      type: Boolean,
+      default: true
+    },
     // 标题
     title: String,
     showTitle: {
@@ -114,7 +125,7 @@ export default {
     // hash变化时移除dialog
     removeDialogOnHashChange: {
       type: Boolean,
-      default: false
+      default: true
     }
   },
   data () {
@@ -123,7 +134,13 @@ export default {
         startX: 0,
         startY: 0,
         direction: ''
-      }
+      },
+      showDlg: this.value
+    }
+  },
+  watch: {
+    value: function (newVal, oldVal) {
+      this.showDlg = newVal
     }
   },
   computed: {
@@ -156,6 +173,9 @@ export default {
     },
     confirmBtnCls () {
       return `${prefixCls}-confirm-btn`
+    },
+    transitionName () {
+      return `${prefixCls}-fade`
     }
   },
   directives: {
@@ -170,28 +190,41 @@ export default {
     this.$nextTick(function () {
       this.resetPos()
     })
-    this.removeDialogOnHashChange && window.addEventListener('hashchange', this.remove)
+    this.removeDialogOnHashChange && this.$data.fromDlgCst && window.addEventListener('hashchange', this.remove)
   },
   updated () {
     this.resetPos()
   },
   methods: {
     onCancel (e) {
-      this.$emit('on-cancel', e)
+      this.$emit('on-cancel', e, this)
     },
     onConfirm (e) {
-      this.$emit('on-confirm', e)
+      this.$emit('on-confirm', e, this)
     },
     onClose (e) {
-      this.$emit('on-close', e)
+      this.$emit('on-close', e, this)
     },
     onclickDlg () {
       this.resetPos()
     },
+    afterLeave () {
+      if (this.$data.fromDlgCst) {
+        this._remove()
+      } else {
+        this.$emit('input', false)
+      }
+    },
     remove () {
+      this.showDlg = false
+    },
+    _remove () {
       this.$el.remove();
       this.$destroy();
-      this.removeDialogOnHashChange && window.removeEventListener('hashchange', this.remove)
+      this.removeDialogOnHashChange && this.$data.fromDlgCst && window.removeEventListener('hashchange', this.remove)
+    },
+    beforeDestroy () {
+      this._remove()
     },
     resetPos () {
       if (!this.$refs.dlgContent) return
@@ -309,6 +342,14 @@ export default {
   }
   &-cancel-btn-show&-confirm-btn-show &-cancel-btn {
     border-right: 1px solid #e5e5e5;
+  }
+  &-fade-enter-active,
+  &-fade-leave-active {
+    transition: opacity 0.3s;
+  }
+  &-fade-enter,
+  &-fade-leave-to {
+    opacity: 0;
   }
 }
 </style>
