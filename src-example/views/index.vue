@@ -15,6 +15,9 @@
         <router-link to="/flexfixed">FlexFixed</router-link>
       </li>
       <li>
+        <router-link to="/steps">Steps</router-link>
+      </li>
+      <li>
         <router-link to="/input">Input</router-link>
       </li>
       <li>

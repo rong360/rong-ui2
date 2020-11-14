@@ -7,6 +7,7 @@ import Swiper from './components/swiper/'
 import Button from './components/button/'
 import Range from './components/range/'
 import FlexFixed from './components/flex-fixed/'
+import Steps from './components/steps/'
 import Loading from './components/loading/'
 import Toast from './components/toast/'
 import Dialog from './components/dialog/'
@@ -21,6 +22,7 @@ const components = {
   Button,
   Range,
   FlexFixed,
+  Steps,
   Loading,
   Toast,
   Dialog

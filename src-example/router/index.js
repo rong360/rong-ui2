@@ -5,6 +5,7 @@ import Titlebar from '../views/titlebar'
 import Swiper from '../views/swiper'
 import Button from '../views/button'
 import Flexfixed from '../views/flexfixed'
+import Steps from '../views/steps'
 import Form from '../views/form'
 import FormDynamicRegistration from '../views/form/index_dynamic_registration'
 import FormCss from '../views/form/index_css'
@@ -39,6 +40,10 @@ export default new VueRouter({
     {
       path: '/flexfixed',
       component: Flexfixed
+    },
+    {
+      path: '/steps',
+      component: Steps
     },
     {
       path: '/range',
