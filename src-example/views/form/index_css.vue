@@ -79,7 +79,7 @@ export default {
         "type": "number",
         "title": "年龄",
         "name": "age",
-        "value": "23",
+        "value": "",
         "placeholder": "",
         "fixed": 0,
         "unit": "",

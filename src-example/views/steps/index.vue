@@ -19,11 +19,23 @@
     <div class="box">
       <Steps :current="current"
              :progressLine="{backgroundColor:'#F43838'}"
-             :notProgressLine="{backgroundColor:'lightgray'}">
-        <Step><div class="icon" slot="icon"></div>基本信息<br>utama</Step>
-        <Step><div class="icon gray" slot="icon"></div>个人信息<br>darurat</Step>
-        <Step><div class="icon gray" slot="icon"></div>联系人<br>wajah</Step>
-        <Step><div class="icon gray" slot="icon"></div>活体识别<br>wajah</Step>
+             :notProgressLine="{backgroundColor:'#f5f5f5'}">
+        <Step>
+          <div class="icon"
+               slot="icon"></div>基本信息<br>utama
+        </Step>
+        <Step>
+          <div class="icon gray"
+               slot="icon"></div>个人信息<br>darurat
+        </Step>
+        <Step>
+          <div class="icon gray"
+               slot="icon"></div>联系人<br>wajah
+        </Step>
+        <Step>
+          <div class="icon gray"
+               slot="icon"></div>活体识别<br>wajah
+        </Step>
       </Steps>
     </div>
     <ViewSource :code="sourceCode" />
@@ -35,7 +47,7 @@ import sourceCode from './code.txt'
 export default {
   data () {
     return {
-      current: 2,
+      current: 1,
       sourceCode
     }
   },
@@ -66,7 +78,7 @@ export default {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background-color:darkturquoise;
+    background-color: darkturquoise;
     &.gray {
       background-color: lightgrey;
     }

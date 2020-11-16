@@ -26,7 +26,7 @@
       <div class="item"
            @click="showDialog11">模板方式插入Dialog
         <Dialog v-model="showDlg11"
-                @on-cancel="onCancelDialog11">
+                @on-cancel="onCancelDialog11" @on-mask="onMaskDialog11">
           <div style="text-align: center; padding: 50px 0">hello</div>
         </Dialog>
       </div>
@@ -120,6 +120,10 @@ export default {
           onClose: function () {
             self.$toast('这是点击关闭按钮的自定义回调');
             this.remove();
+          },
+          // 遮罩层
+          onMask: function () {
+            this.remove()
           }
         }
       });
@@ -271,6 +275,9 @@ export default {
     },
     onCancelDialog11 (e, dialog) {
       // this.showDlg11 = false
+      dialog.remove()
+    },
+    onMaskDialog11 (e, dialog) {
       dialog.remove()
     },
     onBack () {

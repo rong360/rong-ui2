@@ -4,6 +4,7 @@
               @after-leave="afterLeave">
     <div :class="wrapCls"
          :style="CliperStyleObj"
+         @click.self="onMask"
          v-show="showDlg"
          v-preventscroll>
       <div :class="innerCls"
@@ -197,13 +198,16 @@ export default {
   },
   methods: {
     onCancel (e) {
-      this.$emit('on-cancel', e, this)
+      !this.$data.fromDlgCst && this.$emit('on-cancel', e, this)
     },
     onConfirm (e) {
-      this.$emit('on-confirm', e, this)
+      !this.$data.fromDlgCst && this.$emit('on-confirm', e, this)
     },
     onClose (e) {
-      this.$emit('on-close', e, this)
+      !this.$data.fromDlgCst && this.$emit('on-close', e, this)
+    },
+    onMask (e) {
+      !this.$data.fromDlgCst && this.$emit('on-mask', e, this)
     },
     onclickDlg () {
       this.resetPos()
