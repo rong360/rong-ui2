@@ -8,7 +8,7 @@ import ViewSource from './components/ViewSource'
 import './assets/css/common.less'
 // import {Loading, Input, Titlebar} from 'rong-ui2'
 // Loading.config({
-//   loading: require('./components/LoadingCattle.vue')
+//   loading: require('./components/LoadingCircle.vue')
 // })
 // Vue.use(Loading)
 // Vue.use(Input)

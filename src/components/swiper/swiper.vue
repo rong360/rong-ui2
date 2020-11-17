@@ -111,6 +111,7 @@ export default {
     },
     tmSwiperInner (e) {
       let currCoor = e.changedTouches[0][this.direction == 'scrollLeft' ? 'clientX' : 'clientY']
+      if (this.list.length <= 1) return
       if (currCoor > this.startCoor && this.lastScroll == 0) {
         this.$refs.swiperWraper[this.direction] = this.lastScroll = this.maxScroll
         this.mark = this.list.length
@@ -120,6 +121,7 @@ export default {
     teSwiperInner (e) {
       let endCoor = e.changedTouches[0][this.direction == 'scrollLeft' ? 'clientX' : 'clientY']
       let movePercent = Math.abs(this.startCoor - endCoor) / (this.direction == 'scrollLeft' ? this.swiperWidth : this.swiperHeight) * 100
+      if (this.list.length <= 1) return
       if (movePercent > 20) {
         endCoor > this.startCoor ? this.prev() : this.next()
       } else {
@@ -133,7 +135,7 @@ export default {
     },
     // 启动动画
     startAnimation () {
-      if (!this.autoPlay) return
+      if (!this.autoPlay || this.list.length <= 1) return
       this.gapTimer = setTimeout(() => {
         this.next()
       }, this.gap);
