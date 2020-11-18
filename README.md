@@ -79,14 +79,14 @@ Dialog提示框、Toast弹框、Loading加载中、Keyboard虚拟数字键盘 �
 |Dialog 弹框| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/dialog.md)|
 |Toast 提示| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/toast.md)|
 |Loading 加载中 | [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/loading.md)|
-|FlexFixed 吸顶或吸底| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/flexfixed.md)|
 |Titlebar 标题栏| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/titlebar.md)|
+|FlexFixed 吸顶或吸底| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/flexfixed.md)|
+|TextScroll 吸顶或吸底| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/textscroll.md)|
 |Swiper 按钮| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/swiper.md)|
 |Steps 按钮| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/steps.md)|
 |Button 按钮| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/button.md)|
-|Form 表单| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/form.md)|
 |Input 输入框| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/input.md)|
 |Select 下拉列表| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/select.md)|
-|Switch 下拉列表| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/switch.md)|
+|Form 表单| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/form.md)|
 |Range 滑动范围| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/range.md)|
-
+|Switch 下拉列表| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/switch.md)|

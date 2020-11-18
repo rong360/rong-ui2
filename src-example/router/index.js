@@ -5,6 +5,7 @@ import Titlebar from '../views/titlebar'
 import Swiper from '../views/swiper'
 import Button from '../views/button'
 import Flexfixed from '../views/flexfixed'
+import TextScroll from '../views/textscroll'
 import Steps from '../views/steps'
 import Form from '../views/form'
 import FormDynamicRegistration from '../views/form/index_dynamic_registration'
@@ -40,6 +41,10 @@ export default new VueRouter({
     {
       path: '/flexfixed',
       component: Flexfixed
+    },
+    {
+      path: '/textscroll',
+      component: TextScroll
     },
     {
       path: '/steps',

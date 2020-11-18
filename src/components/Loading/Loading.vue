@@ -169,28 +169,28 @@ export default {
     .r-arc3{ right:0; bottom:0;}
     .r-arc4{ left:0; bottom:0;}
     .r-content1{
-        .r-arc1{ -webkit-animation-delay:-1.5s;}
+        .r-arc1{ animation-delay:-1.5s;}
     }
     .r-content2{
-        .r-arc1{ -webkit-animation-delay:-1.3s;}
+        .r-arc1{ animation-delay:-1.3s;}
     }
     .r-content1{
-        .r-arc2{ -webkit-animation-delay:-1.1s;}
+        .r-arc2{ animation-delay:-1.1s;}
     }
     .r-content2{
-        .r-arc2{ -webkit-animation-delay:-0.9s;}
+        .r-arc2{ animation-delay:-0.9s;}
     }
     .r-content1{
-        .r-arc3{ -webkit-animation-delay:-0.7s;}
+        .r-arc3{ animation-delay:-0.7s;}
     }
     .r-content2{
-        .r-arc3{ -webkit-animation-delay:-0.5s;}
+        .r-arc3{ animation-delay:-0.5s;}
     }
     .r-content1{
-        .r-arc4{ -webkit-animation-delay:-0,3s;}
+        .r-arc4{ animation-delay:-0,3s;}
     }
     .r-content2{
-        .r-arc4{ -webkit-animation-delay:-0.1s;}
+        .r-arc4{ animation-delay:-0.1s;}
     }
     .r-content3{
         position: absolute;
