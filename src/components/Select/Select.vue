@@ -29,11 +29,6 @@
             </g>
           </svg>
         </div>
-        <transition name="fade"
-                    mode="out-in">
-          <div v-if="validateState=='error' && (this.form?this.showMessage&&this.form.showMessage:this.showMessage)"
-               :class="errorCls">{{validateMessage}}</div>
-        </transition>
       </div>
       <div v-if="attrs.unit"
            :class="unitCls">{{attrs.unit}}</div>
@@ -49,13 +44,18 @@
                    :key="child.name"></component>
       </template>
     </div>
+    <transition name="fade"
+                mode="out-in">
+      <div v-if="validateState=='error' && (this.form?this.showMessage&&this.form.showMessage:this.showMessage)"
+           :class="errorCls">{{validateMessage}}</div>
+    </transition>
   </div>
 </template>
 
 <script>
 import AsyncValidator from 'async-validator'
 import Picker from 'better-picker'
-import {oneOf} from '../../utils/assist.js'
+import { oneOf } from '../../utils/assist.js'
 const prefixCls = 'r--select'
 
 export default {
@@ -319,7 +319,7 @@ export default {
   &-mode-to-top &-select {
     font-size: 16px;
     line-height: 21px;
-    color: #757575 ;
+    color: #757575;
   }
   &-mode-default &-label {
     font-size: 14px;
@@ -393,6 +393,7 @@ export default {
     position: absolute;
     left: 0;
     top: 100%;
+    width: 100%;
     line-height: 1;
     padding-top: 6px;
     font-size: 12px;

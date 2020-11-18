@@ -137,7 +137,7 @@ export default {
         title: "贷款期限",
         name: "loan_term",
         value: '',
-        placeholder: "请选择贷款期限",
+        placeholder: "",
         data: [{
           text: "1个月",
           value: "1"
@@ -180,6 +180,8 @@ export default {
             if (value == 1) {
               this.$toast('目前暂不支持1个月的贷款，请选择贷款期限');
               return new Error('目前暂不支持1个月的贷款，请选择贷款期限')
+            } else if (value == '') {
+              return new Error('贷款期限不能为空')
             }
             callback()
           },
