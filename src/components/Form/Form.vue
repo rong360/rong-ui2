@@ -45,6 +45,8 @@ export default {
       type: Boolean,
       default: true
     },
+    selectCancelBtnText: String,
+    selectConfirmBtnText: String,
     mode: {
       type: String
     }

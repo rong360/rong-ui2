@@ -10,6 +10,8 @@
                 ref="select1"></Select>
         <Select :attrs="config2"
                 v-model="config2.value"
+                cancel-btn-text="cancel"
+                confirm-btn-text="confirm"
                 ref="select2"></Select>
         <Select :attrs="config3"
                 v-model="config3.value"
@@ -42,6 +44,8 @@ export default {
         title: "人群类别-before",
         name: "population_category0",
         value: '',
+        cancelBtnText: 'cancel',
+        confirmBtnText: 'confirm',
         data: [
           {
             text: '企业主',

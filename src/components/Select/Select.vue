@@ -8,26 +8,28 @@
            @click="showPicker">
         <div :class="selectCls">{{selectedOption.text || placeholderText}}</div>
         <div :class="arrowCls">
-          <svg width="8px"
-               height="15px"
-               :style="arrowStyle"
-               viewBox="0 0 8 15"
-               version="1.1"
-               xmlns="http://www.w3.org/2000/svg"
-               xmlns:xlink="http://www.w3.org/1999/xlink">
-            <g stroke="none"
-               stroke-width="1"
-               fill="none"
-               fill-rule="evenodd">
-              <g transform="translate(-352.000000, -60.000000)"
-                 :fill="arrowStyle.color || '#C8C7CC'">
-                <g transform="translate(0.000000, 45.000000)">
-                  <polygon transform="translate(356.000000, 22.500000) rotate(180.000000) translate(-356.000000, -22.500000) "
-                           points="352 22.5 359.396709 15.5 360 16.0561744 353.208809 22.5 360 28.944874 359.396709 29.5"></polygon>
+          <slot name="arrow-icon">
+            <svg width="8px"
+                 height="15px"
+                 :style="arrowStyle"
+                 viewBox="0 0 8 15"
+                 version="1.1"
+                 xmlns="http://www.w3.org/2000/svg"
+                 xmlns:xlink="http://www.w3.org/1999/xlink">
+              <g stroke="none"
+                 stroke-width="1"
+                 fill="none"
+                 fill-rule="evenodd">
+                <g transform="translate(-352.000000, -60.000000)"
+                   :fill="arrowStyle.color || '#C8C7CC'">
+                  <g transform="translate(0.000000, 45.000000)">
+                    <polygon transform="translate(356.000000, 22.500000) rotate(180.000000) translate(-356.000000, -22.500000) "
+                             points="352 22.5 359.396709 15.5 360 16.0561744 353.208809 22.5 360 28.944874 359.396709 29.5"></polygon>
+                  </g>
                 </g>
               </g>
-            </g>
-          </svg>
+            </svg>
+          </slot>
         </div>
       </div>
       <div v-if="attrs.unit"
@@ -97,6 +99,8 @@ export default {
       type: Boolean,
       default: true
     },
+    cancelBtnText: String,
+    confirmBtnText: String,
     mode: {
       type: String
     }
@@ -203,7 +207,9 @@ export default {
     showPicker (e) {
       let pickerData = this.attrs.data || [],
         selectedIndex = this.selectedIndex > -1 ? this.selectedIndex : 0,
-        pickerTitle = this.attrs.pickerTitle || ''
+        pickerTitle = this.attrs.pickerTitle || '',
+        cancelBtnText = this.attrs.cancelBtnText || this.cancelBtnText || (this.form && this.form.selectCancelBtnText),
+        confirmBtnText = this.attrs.confirmBtnText || this.confirmBtnText || (this.form && this.form.selectConfirmBtnText)
       if (this.attrs.readonly || this.attrs.disabled) return
       if (!this.picker) {
         this.picker = new Picker({
@@ -211,6 +217,8 @@ export default {
           selectedIndex: [selectedIndex],
           title: pickerTitle
         })
+        cancelBtnText && (this.picker.cancelEl.innerHTML = cancelBtnText)
+        confirmBtnText && (this.picker.confirmEl.innerHTML = confirmBtnText)
         this.picker.on('picker.change', (index, selectedIndex) => { })
         this.picker.on('picker.select', (selectedVal, selectedIndex) => {
           let selectedOption = this.attrs.data[selectedIndex]
@@ -314,7 +322,7 @@ export default {
   }
   &-mode-to-top &-label {
     font-size: 16px;
-    color: #BDBDBD;
+    color: #bdbdbd;
   }
   &-mode-to-top &-select {
     font-size: 16px;

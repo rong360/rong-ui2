@@ -36,7 +36,7 @@ export default {
     }
     const touchmoveHandler = (e) => {
       mouseInfo.direction = getDirection(mouseInfo.startX, mouseInfo.startY, e.changedTouches[0].clientX, e.changedTouches[0].clientY);
-      if (!currentScrollArea || currentScrollArea && ((mouseInfo.direction == 2 && currentScrollArea.scrollTop == 0) || (mouseInfo.direction == 1 && currentScrollArea.scrollTop >= (currentScrollArea.scrollHeight - currentScrollArea.offsetHeight)))) {
+      if (!currentScrollArea || currentScrollArea && ((mouseInfo.direction == 2 && currentScrollArea.scrollTop == 0) || (mouseInfo.direction == 1 && currentScrollArea.scrollTop >= (currentScrollArea.scrollHeight - currentScrollArea.offsetHeight))) && e.cancelable) {
         e.preventDefault();
         e.stopPropagation();
       }
