@@ -67,7 +67,7 @@ export default {
         !checked && index > -1 && arr.splice(index, 1)
         this.$emit('change', arr)
       }
-      this.$emit('onchange', e)
+      this.$emit('on-change', e)
     },
     getChecked (checkedValue) {
       if (typeof checkedValue === 'boolean') {
