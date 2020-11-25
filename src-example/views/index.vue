@@ -36,6 +36,9 @@
         <router-link to="/select">Select</router-link>
       </li>
       <li>
+        <router-link to="/checkbox">Checkbox</router-link>
+      </li>
+      <li>
         <router-link to="/form">Form</router-link> &nbsp;&nbsp;&nbsp;&nbsp;
         <router-link to="/form/dynamicregistration">Form (动态注册)</router-link> &nbsp;&nbsp;&nbsp;&nbsp;
         <router-link to="/form/css">Form（css效果）</router-link>

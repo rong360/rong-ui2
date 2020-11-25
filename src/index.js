@@ -2,6 +2,7 @@ import Form from './components/form/'
 import Input from './components/input/'
 import Select from './components/select/'
 import Switch from './components/switch/'
+import Checkbox from './components/checkbox/'
 import Titlebar from './components/titlebar/'
 import Swiper from './components/swiper/'
 import Button from './components/button/'
@@ -20,6 +21,7 @@ const components = {
   Switch,
   Titlebar,
   Swiper,
+  Checkbox,
   Button,
   Range,
   FlexFixed,

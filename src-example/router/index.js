@@ -14,6 +14,7 @@ import Range from '../views/range'
 import Input from '../views/input'
 import Select from '../views/select'
 import Switch from '../views/switch'
+import Checkbox from '../views/checkbox'
 import Dialog from '../views/dialog'
 import Toast from '../views/toast'
 import Loading from '../views/loading'
@@ -65,6 +66,10 @@ export default new VueRouter({
     {
       path: '/switch',
       component: Switch
+    },
+    {
+      path: '/checkbox',
+      component: Checkbox
     },
     {
       path: '/form',
