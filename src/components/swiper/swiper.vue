@@ -6,7 +6,7 @@
       <div :class="innerCls"
            ref="swiperInner"
            @touchstart="tsSwiperInner"
-           @touchmove.prevent="tmSwiperInner"
+           @touchmove="tmSwiperInner"
            @touchend="teSwiperInner">
         <div class="list"
              ref="list">
@@ -66,7 +66,11 @@ export default {
       startCoor: 0, // 鼠标起始位置
       lastScroll: 0, // 上一次滚动位置
       swiperWidth: 0,
-      swiperHeight: 0
+      swiperHeight: 0,
+      mouseInfo: {
+        startX: 0,
+        startY: 0
+      }
     }
   },
   computed: {
@@ -108,6 +112,8 @@ export default {
       clearTimeout(this.gapTimer)
       this.lastScroll = this.$refs.swiperWraper[this.direction]
       this.startCoor = e.changedTouches[0][this.direction == 'scrollLeft' ? 'clientX' : 'clientY']
+      this.mouseInfo.startX = e.changedTouches[0].clientX
+      this.mouseInfo.startY = e.changedTouches[0].clientY
     },
     tmSwiperInner (e) {
       let currCoor = e.changedTouches[0][this.direction == 'scrollLeft' ? 'clientX' : 'clientY']
@@ -117,6 +123,9 @@ export default {
         this.mark = this.list.length
       }
       this.$refs.swiperWraper[this.direction] = this.lastScroll + this.startCoor - currCoor
+      if (Math.abs(e.changedTouches[0].clientX - this.mouseInfo.startX) > Math.abs(e.changedTouches[0].clientY - this.mouseInfo.startY)) {
+        e.preventDefault()
+      }
     },
     teSwiperInner (e) {
       let endCoor = e.changedTouches[0][this.direction == 'scrollLeft' ? 'clientX' : 'clientY']
