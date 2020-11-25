@@ -193,9 +193,6 @@ export default {
     })
     this.removeDialogOnHashChange && this.$data.fromDlgCst && window.addEventListener('hashchange', this.remove)
   },
-  updated () {
-    this.resetPos()
-  },
   methods: {
     onCancel (e) {
       !this.$data.fromDlgCst && this.$emit('on-cancel', e, this)
