@@ -1,6 +1,7 @@
 <template>
   <transition appear
               :name="transitionName"
+              @enter="enter"
               @after-leave="afterLeave">
     <div :class="wrapCls"
          :style="CliperStyleObj"
@@ -207,6 +208,9 @@ export default {
       !this.$data.fromDlgCst && this.$emit('on-mask', e, this)
     },
     onclickDlg () {
+      this.resetPos()
+    },
+    enter () {
       this.resetPos()
     },
     afterLeave () {
