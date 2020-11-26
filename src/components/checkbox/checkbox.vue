@@ -1,10 +1,5 @@
 <template>
-  <label :class="wrapCls">
-    <input :class="inputCls"
-           type="checkbox"
-           :value="value"
-           :checked="currentValue"
-           @change="onChange">
+  <label :class="wrapCls" @touchstart.prevent="touchstartLabel">
     <span :class="iconCls"></span>
     <slot></slot>
   </label>
@@ -47,9 +42,6 @@ export default {
         }
       ]
     },
-    inputCls () {
-      return `${prefixCls}-input`
-    },
     iconCls () {
       return `${prefixCls}-icon`
     }
@@ -57,6 +49,21 @@ export default {
   methods: {
     onChange (e) {
       let checked = e.target.checked
+      this.currentValue = checked
+      if (typeof this.checkedValue === 'boolean') {
+        this.$emit('change', checked)
+      } else if (Array.isArray(this.checkedValue)) {
+        let arr = this.checkedValue
+        let index = arr.findIndex(item => item === this.value)
+        checked && index == -1 && arr.push(this.value)
+        !checked && index > -1 && arr.splice(index, 1)
+        this.$emit('change', arr)
+      }
+      this.$emit('on-change', e)
+    },
+    touchstartLabel (e) {
+      let checked = this.currentValue
+      checked = !checked
       this.currentValue = checked
       if (typeof this.checkedValue === 'boolean') {
         this.$emit('change', checked)
@@ -88,9 +95,6 @@ export default {
   font-size: 14px;
   line-height: 1;
   margin-right: 8px;
-  &-input {
-    display: none;
-  }
   &-icon {
     display: inline-block;
     width: 16px;

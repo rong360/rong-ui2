@@ -1,5 +1,5 @@
 <template>
-  <label :class="wrapCls" @touchstart="touchstartLabel">
+  <label :class="wrapCls" @touchstart.prevent="touchstartLabel">
     <span :class="iconCls"></span>
     <slot></slot>
   </label>
