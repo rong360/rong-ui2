@@ -3,6 +3,7 @@ import Input from './components/input/'
 import Select from './components/select/'
 import Switch from './components/switch/'
 import Checkbox from './components/checkbox/'
+import Radio from './components/radio/'
 import Titlebar from './components/titlebar/'
 import Swiper from './components/swiper/'
 import Button from './components/button/'
@@ -22,6 +23,7 @@ const components = {
   Titlebar,
   Swiper,
   Checkbox,
+  Radio,
   Button,
   Range,
   FlexFixed,

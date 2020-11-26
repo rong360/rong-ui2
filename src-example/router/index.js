@@ -15,6 +15,7 @@ import Input from '../views/input'
 import Select from '../views/select'
 import Switch from '../views/switch'
 import Checkbox from '../views/checkbox'
+import Radio from '../views/radio'
 import Dialog from '../views/dialog'
 import Toast from '../views/toast'
 import Loading from '../views/loading'
@@ -70,6 +71,10 @@ export default new VueRouter({
     {
       path: '/checkbox',
       component: Checkbox
+    },
+    {
+      path: '/radio',
+      component: Radio
     },
     {
       path: '/form',
