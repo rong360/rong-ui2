@@ -124,6 +124,10 @@ export default {
           // 遮罩层
           onMask: function () {
             this.remove()
+          },
+          // dialog 内容区域
+          onDlg () {
+            this.resetPos()
           }
         }
       });

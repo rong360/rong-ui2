@@ -10,7 +10,7 @@
          v-preventscroll>
       <div :class="innerCls"
            :style="dlgStyleObj"
-           @click="onclickDlg"
+           @click="onDlg"
            ref="dlgContent">
         <div :class="titleCls"
              :style="titleStyleObj"
@@ -207,8 +207,9 @@ export default {
     onMask (e) {
       !this.$data.fromDlgCst && this.$emit('on-mask', e, this)
     },
-    onclickDlg () {
-      this.resetPos()
+    onDlg (e) {
+      // this.resetPos()
+      !this.$data.fromDlgCst && this.$emit('on-dlg', e, this)
     },
     enter () {
       this.resetPos()
