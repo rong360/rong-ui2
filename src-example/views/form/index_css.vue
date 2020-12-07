@@ -23,6 +23,9 @@
              v-model="IDCard.value"></Input>
       <Select :attrs="loanTerm"
               v-model="loanTerm.value"></Select>
+      <SelectDate :attrs="birthday"
+                  v-model="birthday.value"></SelectDate>
+
       <div class="btn-wrap">
         <div :class="['btn', isCompleted ? '' : 'disabled']"
              @click="doSubmit">
@@ -178,7 +181,6 @@ export default {
         rules: [{
           validator (rule, value, callback) {
             if (value == 1) {
-              this.$toast('目前暂不支持1个月的贷款，请选择贷款期限');
               return new Error('目前暂不支持1个月的贷款，请选择贷款期限')
             } else if (value == '') {
               return new Error('贷款期限不能为空')
@@ -187,6 +189,13 @@ export default {
           },
           trigger: 'blur'
         }]
+      },
+      birthday: {
+        title: '妹妹出生日期',
+        name: 'birthday',
+        value: '',
+        valueFormat: 'yyyy/mm/dd',
+        textFormat: 'yyyy年mm月dd日'
       },
       fields: [],
       isCompleted: false,

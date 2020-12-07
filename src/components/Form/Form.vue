@@ -47,6 +47,8 @@ export default {
     },
     selectCancelBtnText: String,
     selectConfirmBtnText: String,
+    datePickerCancelBtnText: String,
+    datePickerConfirmBtnText: String,
     mode: {
       type: String
     }

@@ -1,6 +1,6 @@
 
 <template>
-  <div :class="wrapCls" @touchend="clickSwitch" ref="switch">
+  <div :class="wrapCls" @click="clickSwitch" ref="switch">
     <div :class="innerCls">
       <div class="open"><slot name="open"></slot></div>
       <div class="close"><slot name="close"></slot></div>
@@ -69,6 +69,7 @@ export default {
   position: relative;
   user-select: none;
   transition: all 0.2s ease-in-out;
+  -webkit-tap-highlight-color:transparent;
   & .circle {
     width: 18px;
     height: 18px;

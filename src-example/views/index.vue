@@ -35,6 +35,12 @@
       <li>
         <router-link to="/select">Select</router-link>
       </li>
+       <li>
+        <router-link to="/selectdate">SelectDate</router-link>
+      </li>
+      <li>
+        <router-link to="/datepicker">DatePicker</router-link>
+      </li>
       <li>
         <router-link to="/checkbox">Checkbox</router-link>
       </li>

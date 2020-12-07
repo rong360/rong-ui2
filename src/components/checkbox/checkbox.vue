@@ -1,5 +1,5 @@
 <template>
-  <label :class="wrapCls" @touchstart.prevent="touchstartLabel">
+  <label :class="wrapCls" @click.prevent="clickLabel">
     <span :class="iconCls"></span>
     <slot></slot>
   </label>
@@ -61,7 +61,7 @@ export default {
       }
       this.$emit('on-change', e)
     },
-    touchstartLabel (e) {
+    clickLabel (e) {
       let checked = this.currentValue
       checked = !checked
       this.currentValue = checked
@@ -95,6 +95,7 @@ export default {
   font-size: 14px;
   line-height: 1;
   margin-right: 8px;
+  -webkit-tap-highlight-color:transparent;
   &-icon {
     display: inline-block;
     width: 16px;

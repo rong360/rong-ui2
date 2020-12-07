@@ -369,11 +369,15 @@ export default {
       const validator = new AsyncValidator(descriptor)
       let model = {}
       model[prop] = this.value
-      validator.validate(model, { firstFields: true }, errors => {
-        this.validateState = !errors ? 'success' : 'error'
-        this.validateMessage = errors ? errors[0].message : ''
+      validator.validate(model).then(() => {
+        this.validateState = 'success'
+        this.validateMessage = ''
         callback(this.validateMessage)
-      })
+      }).catch(({ errors, fields }) => {
+        this.validateState = 'error'
+        this.validateMessage = errors[0].message || ''
+        callback(this.validateMessage)
+      });
     },
     resetField () {
       this.validateState = ''
@@ -531,13 +535,13 @@ export default {
   }
   &-mode-to-top &-label {
     font-size: 16px;
-    color: #BDBDBD;
+    color: #bdbdbd;
     position: absolute;
   }
   &-mode-to-top &-input {
     font-size: 16px;
     line-height: 21px;
-    color: #757575 ;
+    color: #757575;
   }
   &-mode-default &-label {
     font-size: 14px;

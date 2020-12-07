@@ -1,12 +1,17 @@
+tem
 <template>
   <div :class="wrapCls">
     <div :class="innerCls">
       <label :class="labelCls"
              :style="labelStyle">{{attrs.title}}</label>
       <slot name="prepend"></slot>
-      <div :class="contentCls"
-           @click="showPicker">
-        <div :class="selectCls">{{selectedOption.text || placeholderText}}</div>
+      <div :class="contentCls">
+        <DatePicker :attrs="attrs"
+                    :pickerTitle="pickerTitle"
+                    :pickerCancelBtnText="pickerCancelBtnText"
+                    :pickerConfirmBtnText="pickerConfirmBtnText"
+                    @onconfirm="onConfirm"
+                    :class="selectCls"></DatePicker>
         <div :class="arrowCls">
           <slot name="arrow-icon">
             <svg width="8px"
@@ -36,16 +41,6 @@
            :class="unitCls">{{attrs.unit}}</div>
       <slot name="append"></slot>
     </div>
-    <div :class="wrapChildrenCls"
-         v-if="children && children.length">
-      <template v-for="(child,index) in children">
-        <component :is="child.componentType"
-                   :attrs="child"
-                   v-model="child.value"
-                   :ref="child.name"
-                   :key="child.name"></component>
-      </template>
-    </div>
     <transition name="fade"
                 mode="out-in">
       <div v-if="validateState=='error' && (this.form?this.showMessage&&this.form.showMessage:this.showMessage)"
@@ -56,12 +51,12 @@
 
 <script>
 import AsyncValidator from 'async-validator'
-import Picker from 'better-picker'
 import { oneOf } from '../../utils/assist.js'
-const prefixCls = 'r--select'
+import DatePicker from '../date-picker/date-picker'
+const prefixCls = 'r--selectdate'
 
 export default {
-  name: 'Select',
+  name: 'SelectDate',
   props: {
     attrs: {
       type: Object,
@@ -99,7 +94,9 @@ export default {
       type: Boolean,
       default: true
     },
-    cancelBtnText: String,
+    pickerTitle: String,
+    pickerCancelBtnText: String,
+    pickerConfirmBtnText: String,
     confirmBtnText: String,
     mode: {
       type: String
@@ -110,8 +107,7 @@ export default {
       initialValue: '',
       validateState: '',
       validateMessage: '',
-      validateDisabled: false,
-      selectedIndex: -1
+      validateDisabled: false
     }
   },
   inject: {
@@ -119,9 +115,9 @@ export default {
   },
   computed: {
     wrapCls () {
-      let labelPosition = this.labelPosition || this.form && this.form.labelPosition || 'right'
-      let textPosition = this.textPosition || this.form && this.form.textPosition || 'left'
-      let mode = this.mode || this.form && this.form.mode || 'default'
+      let labelPosition = this.attrs.labelPosition || this.labelPosition || this.form && this.form.labelPosition || 'right'
+      let textPosition = this.attrs.textPosition || this.textPosition || this.form && this.form.textPosition || 'left'
+      let mode = this.attrs.mode || this.mode || this.form && this.form.mode || 'default'
 
       return [
         this.form && 'form-item',
@@ -141,9 +137,6 @@ export default {
     innerCls () {
       return `${prefixCls}-inner`
     },
-    wrapChildrenCls () {
-      return `${prefixCls}-children`
-    },
     labelCls () {
       return `${prefixCls}-label`
     },
@@ -155,21 +148,6 @@ export default {
         style.width = this.form.labelWidth
       }
       return style
-    },
-    selectedOption () {
-      let data = this.attrs.data || []
-      let selectedOption = {}
-      for (var i = 0; i < data.length; i++) {
-        if (data[i].value == this.value) {
-          selectedOption = data[i]
-          this.selectedIndex = i
-          break
-        }
-      }
-      return selectedOption
-    },
-    placeholderText () {
-      return this.attrs.placeholder || this.placeholder || (this.form && this.form.placeholder) || ''
     },
     arrowStyle () {
       let style = { color: '#C8C7CC', width: '8px', height: '15px' }
@@ -194,48 +172,22 @@ export default {
       let defaultRules = [{ required: true, message: `${this.attrs.title}不能为空` }]
       let rules = this.attrs.rules || this.rules || defaultRules
       return [].concat(rules)
-    },
-    children () {
-      return this.selectedOption.children || []
     }
+  },
+  components: {
+    DatePicker
   },
   mounted () {
     this.form && this.form.fields.push(this)
     this.initialValue = this.value
   },
   methods: {
-    showPicker (e) {
-      let pickerData = this.attrs.data || [],
-        selectedIndex = this.selectedIndex > -1 ? this.selectedIndex : 0,
-        pickerTitle = this.attrs.pickerTitle || '',
-        cancelBtnText = this.attrs.cancelBtnText || this.cancelBtnText || (this.form && this.form.selectCancelBtnText),
-        confirmBtnText = this.attrs.confirmBtnText || this.confirmBtnText || (this.form && this.form.selectConfirmBtnText)
-      if (this.attrs.readonly || this.attrs.disabled) return
-      if (!this.picker) {
-        this.picker = new Picker({
-          data: [pickerData],
-          selectedIndex: [selectedIndex],
-          title: pickerTitle
-        })
-        cancelBtnText && (this.picker.cancelEl.innerHTML = cancelBtnText)
-        confirmBtnText && (this.picker.confirmEl.innerHTML = confirmBtnText)
-        this.picker.on('picker.change', (index, selectedIndex) => { })
-        this.picker.on('picker.select', (selectedVal, selectedIndex) => {
-          let selectedOption = this.attrs.data[selectedIndex]
-          this.selectedIndex = selectedIndex;
-          this.$emit('input', selectedOption.value)
-          this.$emit("on-confirm", selectedOption);
-          this.validateState = ''
-          this.validateMessage = ''
-          this.validateDisabled = true
-        })
-        this.picker.on('picker.cancel', () => { })
-
-        this.$once('hook:beforeDestroy', () => {
-          this.removePicker()
-        })
-      }
-      this.picker.show()
+    onConfirm (date) {
+      this.$emit('input', date.value)
+      this.$emit("on-confirm", date);
+      this.validateState = ''
+      this.validateMessage = ''
+      this.validateDisabled = true
     },
     getFilterRules (trigger) {
       return this.fieldRules.filter(rule => !rule.trigger || rule.trigger.indexOf(trigger) != -1)
@@ -274,13 +226,6 @@ export default {
       this.validateMessage = ''
       this.validateDisabled = true
       this.$emit('input', this.initialValue)
-      this.removePicker()
-    },
-    removePicker () {
-      if (this.picker && this.picker.pickerEl) {
-        this.picker.pickerEl.parentNode.removeChild(this.picker.pickerEl);
-        this.picker = null
-      }
     },
     /* 获取表单数据 */
     getValue () {
@@ -298,9 +243,9 @@ export default {
 </script>
 
 <style lang="less">
-@selectCls: r--select;
+@selectdateCls: r--selectdate;
 
-.@{selectCls} {
+.@{selectdateCls} {
   position: relative;
   &-inner {
     border-bottom: 1px solid #d8d9dc;
@@ -411,9 +356,6 @@ export default {
     font-size: 12px;
     color: #ed4014;
     z-index: 1;
-  }
-  &-children {
-    padding: 0px 0 0 15px;
   }
 }
 </style>

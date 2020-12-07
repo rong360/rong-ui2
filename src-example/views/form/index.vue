@@ -24,6 +24,8 @@
              v-model="IDCard.value"></Input>
       <Select :attrs="loanTerm"
               v-model="loanTerm.value"></Select>
+      <SelectDate :attrs="birthday"
+                  v-model="birthday.value"></SelectDate>
       <div class="btn-wrap">
         <div :class="['btn', isCompleted ? '' : 'disabled']"
              @click="doSubmit">
@@ -186,6 +188,13 @@ export default {
           },
           trigger: 'blur'
         }]
+      },
+      birthday: {
+        title: '妹妹出生日期',
+        name: 'birthday',
+        value: '',
+        valueFormat: 'yyyy/mm/dd',
+        textFormat: 'yyyy年mm月dd日'
       },
       fields: [],
       isCompleted: false,
