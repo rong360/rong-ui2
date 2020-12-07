@@ -228,6 +228,9 @@ export default {
           this.validateState = ''
           this.validateMessage = ''
           this.validateDisabled = true
+          this.$nextTick(() => {
+            this.validate('select')
+          })
         })
         this.picker.on('picker.cancel', () => { })
 

@@ -47,6 +47,20 @@ export default {
         pickerCancelBtnText: 'cancel',
         pickerConfirmBtnText: 'confirm',
         textPosition: 'right',
+        rules: [
+          {
+            validator: (rule, value, cb) => {
+              console.log(value)
+              var d = new Date(value)
+              var y = d.getFullYear()
+              if (y >= 2021) {
+                return new Error('father is too yong')
+              }
+              cb()
+            },
+            trigger: 'select'
+          }
+        ],
         mode: ''
       },
       config1: {

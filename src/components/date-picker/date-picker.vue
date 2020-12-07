@@ -66,11 +66,6 @@ export default {
   created () {
     this.initPickerData();
   },
-  watch: {
-    conf () {
-      this.initPickerData();
-    }
-  },
   methods: {
     initPickerData () {
       let today = new Date(),

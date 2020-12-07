@@ -188,6 +188,9 @@ export default {
       this.validateState = ''
       this.validateMessage = ''
       this.validateDisabled = true
+      this.$nextTick(() => {
+        this.validate('select')
+      })
     },
     getFilterRules (trigger) {
       return this.fieldRules.filter(rule => !rule.trigger || rule.trigger.indexOf(trigger) != -1)
