@@ -81,16 +81,16 @@ Dialog提示框、Toast弹框、Loading加载中、Keyboard虚拟数字键盘 �
 |Loading 加载中 | [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/loading.md)|
 |Titlebar 标题栏| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/titlebar.md)|
 |FlexFixed 吸顶或吸底| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/flexfixed.md)|
-|TextScroll 吸顶或吸底| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/textscroll.md)|
-|Swiper 按钮| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/swiper.md)|
-|Steps 按钮| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/steps.md)|
+|TextScroll 文字滚动| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/textscroll.md)|
+|Swiper 轮播图| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/swiper.md)|
+|Steps 步骤条| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/steps.md)|
 |Button 按钮| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/button.md)|
 |Input 输入框| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/input.md)|
 |Select 下拉列表| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/select.md)|
-|SelectDate 下拉列表| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/selectdate.md)|
-|Datepicker 下拉列表| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/datepicker.md)|
-|Checkbox 下拉列表| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/checkbox.md)|
-|Radio 下拉列表| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/radio.md)|
+|SelectDate 下拉列表-日期选择| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/selectdate.md)|
+|Datepicker 日期选择| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/datepicker.md)|
+|Checkbox 多选框| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/checkbox.md)|
+|Radio 单选框| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/radio.md)|
 |Form 表单| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/form.md)|
 |Range 滑动范围| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/range.md)|
-|Switch 下拉列表| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/switch.md)|
+|Switch 开关| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/switch.md)|
