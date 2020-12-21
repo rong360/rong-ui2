@@ -356,7 +356,8 @@ export default {
       this.validateState = 'validating'
       this.validateDisabled = false
 
-      if (this.attrs.readonly) {
+      let hasMaskCode = this.initialValue.indexOf('*') > -1 // 掩码
+      if (this.attrs.readonly || hasMaskCode && this.initialValue == this.value) {
         this.validateState = 'success'
         this.validateMessage = ''
         callback(this.validateMessage)
