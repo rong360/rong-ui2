@@ -7,6 +7,8 @@
       <div :class="contentCls"
            @click="showPicker">
         <div :class="selectCls">{{selectedOption.text || placeholderText}}</div>
+        <div v-if="validateState=='error' && (this.form?this.showMessage&&this.form.showMessage:this.showMessage) && isErrorAtPlaceholder"
+             :class="errorCls2">{{validateMessage}}</div>
         <div :class="arrowCls">
           <slot name="arrow-icon">
             <svg width="8px"
@@ -48,7 +50,7 @@
     </div>
     <transition name="fade"
                 mode="out-in">
-      <div v-if="validateState=='error' && (this.form?this.showMessage&&this.form.showMessage:this.showMessage)"
+      <div v-if="validateState=='error' && (this.form?this.showMessage&&this.form.showMessage:this.showMessage) && !isErrorAtPlaceholder"
            :class="errorCls">{{validateMessage}}</div>
     </transition>
   </div>
@@ -69,7 +71,10 @@ export default {
         return {}
       }
     },
-    value: [String, Number],
+    value: {
+      type: [String, Number],
+      default: ''
+    },
     rules: {
       type: Array
     },
@@ -103,7 +108,9 @@ export default {
     confirmBtnText: String,
     mode: {
       type: String
-    }
+    },
+    // 错误信息显示在placeholder位置
+    errorAtPlaceholder: Boolean
   },
   data () {
     return {
@@ -118,6 +125,9 @@ export default {
     form: { default: null }
   },
   computed: {
+    isErrorAtPlaceholder () {
+      return this.errorAtPlaceholder || this.form && this.form.errorAtPlaceholder || false
+    },
     wrapCls () {
       let labelPosition = this.labelPosition || this.form && this.form.labelPosition || 'right'
       let textPosition = this.textPosition || this.form && this.form.textPosition || 'left'
@@ -134,7 +144,8 @@ export default {
           [`${prefixCls}-empty`]: this.value == '',
           [`${prefixCls}-error`]: this.validateState == 'error',
           [`${prefixCls}-readonly`]: !!this.attrs.readonly,
-          [`${prefixCls}-placeholder`]: this.value == ''
+          [`${prefixCls}-placeholder`]: this.value == '',
+          [`${prefixCls}-error-at-placeholder`]: this.isErrorAtPlaceholder
         }
       ]
     },
@@ -189,6 +200,9 @@ export default {
     },
     errorCls () {
       return `${prefixCls}-error-tip`
+    },
+    errorCls2 () {
+      return `${prefixCls}-error-tip2`
     },
     fieldRules () {
       let defaultRules = [{ required: true, message: `${this.attrs.title}不能为空` }]
@@ -380,6 +394,8 @@ export default {
     display: flex;
     align-items: center;
     padding: 0 10px 0 0px;
+    z-index: 2;
+    box-sizing: border-box;
   }
   &-placeholder &-select {
     color: #c5c8ce;
@@ -414,6 +430,25 @@ export default {
     font-size: 12px;
     color: #ed4014;
     z-index: 1;
+  }
+  &-error-tip2 {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    line-height: 1;
+    font-size: 12px;
+    color: #ed4014;
+    z-index: 1;
+    transform: translateY(-50%);
+    box-sizing: border-box;
+  }
+  &-text-right &-error-tip2 {
+    text-align: right;
+    padding-right: 15px;
+  }
+  &-error-at-placeholder&-error &-select {
+    color: transparent;
   }
   &-children {
     padding: 0px 0 0 15px;

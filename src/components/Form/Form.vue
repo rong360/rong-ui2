@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import {oneOf} from '../../utils/assist.js'
+import { oneOf } from '../../utils/assist.js'
 const prefixCls = 'r--form'
 
 export default {
@@ -51,7 +51,9 @@ export default {
     datePickerConfirmBtnText: String,
     mode: {
       type: String
-    }
+    },
+    // 错误信息显示在placeholder位置
+    errorAtPlaceholder: Boolean
   },
   computed: {
     isCompleted () {

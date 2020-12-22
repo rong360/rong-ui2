@@ -27,6 +27,8 @@
                @keydown="onFieldKeydown"
                @keydown.delete="onFieldKeydownDelete"
                @keypress="onFieldKeypress" />
+        <div v-if="validateState=='error' && (this.form?this.showMessage&&this.form.showMessage:this.showMessage) && isErrorAtPlaceholder"
+             :class="errorCls2">{{validateMessage}}</div>
         <a v-show="showClear"
            :class="clearCls"
            @click.prevent.stop="onClear"
@@ -55,7 +57,7 @@
       <slot name="append"></slot>
       <transition name="fade"
                   mode="out-in">
-        <div v-if="validateState=='error' && (this.form?this.showMessage&&this.form.showMessage:this.showMessage)"
+        <div v-if="validateState=='error' && (this.form?this.showMessage&&this.form.showMessage:this.showMessage) && !isErrorAtPlaceholder"
              :class="errorCls">{{validateMessage}}</div>
       </transition>
     </div>
@@ -198,7 +200,10 @@ export default {
         return {}
       }
     },
-    value: [String, Number],
+    value: {
+      type: [String, Number],
+      default: ''
+    },
     rules: {
       type: Array
     },
@@ -230,7 +235,9 @@ export default {
     },
     mode: {
       type: String
-    }
+    },
+    // 错误信息显示在placeholder位置
+    errorAtPlaceholder: Boolean
   },
   data () {
     let ua = navigator.userAgent
@@ -255,6 +262,9 @@ export default {
     form: { default: null }
   },
   computed: {
+    isErrorAtPlaceholder () {
+      return this.errorAtPlaceholder || this.form && this.form.errorAtPlaceholder || false
+    },
     wrapCls () {
       let labelPosition = this.labelPosition || this.form && this.form.labelPosition || 'left'
       let textPosition = this.textPosition || this.form && this.form.textPosition || 'left'
@@ -271,7 +281,8 @@ export default {
           [`${prefixCls}-empty`]: this.value == '',
           [`${prefixCls}-error`]: this.validateState == 'error',
           [`${prefixCls}-show-clear`]: this.showClear,
-          [`${prefixCls}-hidden`]: this.attrs.type == 'hidden'
+          [`${prefixCls}-hidden`]: this.attrs.type == 'hidden',
+          [`${prefixCls}-error-at-placeholder`]: this.isErrorAtPlaceholder
         }
       ]
     },
@@ -314,6 +325,9 @@ export default {
     },
     errorCls () {
       return `${prefixCls}-error-tip`
+    },
+    errorCls2 () {
+      return `${prefixCls}-error-tip2`
     },
     fieldRules () {
       let defaultRules = [{ required: true, message: `${this.attrs.title}不能为空` }]
@@ -430,7 +444,7 @@ export default {
       let inputValue = e.target.value
       this.validateState = ''
       // 修复input 属性为 number，maxlength不起作用
-      if (this.attrs.maxlength && inputValue.length > this.attrs.maxlength) {
+      if (this.attrs.type == 'number' && this.attrs.maxlength && inputValue.length > this.attrs.maxlength) {
         inputValue = inputValue.slice(0, this.attrs.maxlength)
       }
       if (this.attrs.type == 'number') {
@@ -464,6 +478,7 @@ export default {
       this.focused = true
       this.$emit('on-focus', e)
       // e.target.scrollIntoView()
+      this.validateState = ''
     },
     onFieldKeyup (e) {
       if (this.attrs.type == 'number' && !this.isAndroid && this.value == '' && this.prevValue == '' && e.keyCode != 189) e.target.value = ''
@@ -524,11 +539,13 @@ export default {
     margin-top: 20px;
   }
   &-mode-to-top&&-focused &-inner,
-  &-mode-to-top&:not(&-empty) &-inner {
+  &-mode-to-top&:not(&-empty) &-inner,
+  &-mode-to-top&-error-at-placeholder&-error &-inner {
     padding-top: 20px;
   }
   &-mode-to-top&&-focused &-label,
-  &-mode-to-top&:not(&-empty) &-label {
+  &-mode-to-top&:not(&-empty) &-label,
+  &-mode-to-top&-error-at-placeholder&-error &-label {
     position: absolute;
     top: 5px;
     font-size: 12px;
@@ -589,6 +606,7 @@ export default {
     flex: 1;
     width: 100%;
     background-color: transparent;
+    z-index: 2;
     &[readonly],
     &[disabled] {
       color: #999;
@@ -624,6 +642,7 @@ export default {
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
     display: flex;
     align-items: center;
+    z-index: 2;
   }
   &-clear svg {
     width: 30x;
@@ -642,6 +661,25 @@ export default {
     font-size: 12px;
     color: #ed4014;
     z-index: 1;
+  }
+  &-error-tip2 {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    line-height: 1;
+    font-size: 12px;
+    color: #ed4014;
+    z-index: 1;
+    transform: translateY(-50%);
+    box-sizing: border-box;
+  }
+  &-text-right &-error-tip2 {
+    text-align: right;
+  }
+  &-error-at-placeholder&-error input,
+  &-error-at-placeholder&-error input::placeholder {
+    color: transparent;
   }
   &-hidden {
     display: none;

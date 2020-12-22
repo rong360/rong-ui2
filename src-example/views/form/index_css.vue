@@ -63,7 +63,7 @@ export default {
         "value": "zyx",
         "placeholder": "",
         "readonly": 0,
-        "maxlength": 800,
+        "maxlength": 6,
         "rules": [{
           "required": true,
           "message": "姓名不能为空",
