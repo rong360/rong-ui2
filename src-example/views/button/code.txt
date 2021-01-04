@@ -25,6 +25,9 @@
     <Button type="disabled"
             :fill="false"
             :radius="true">提交</Button>
+
+    <div class="title">自定义（type="dark-yellow", 样式表里定义.r--button-dark-yellow相关样式 ）</div>
+    <Button type="dark-yellow">提交</Button>
     <ViewSource :code="sourceCode" />
   </div>
 </template>
@@ -51,5 +54,16 @@ export default {
     font-size: 14px;
     margin-top: 30px;
   }
+}
+.r--button-dark-yellow {
+  width: 328px;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 20px;
+  background: #494949;
+  background-image: linear-gradient(90deg, #ff9300 16%, #ff5a00 87%);
+  font-size: 18px;
+  color: #fff;
+  margin: 0 auto;
 }
 </style>

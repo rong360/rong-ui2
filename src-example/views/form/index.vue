@@ -4,7 +4,6 @@
               @on-back="onBack">Form</Titlebar>
     <Form :select-arrow-style="{color: '#C8C7CC'}"
           :input-clear-style="{color: '#C8C7CC'}"
-          :error-at-placeholder="true"
           select-cancel-btn-text="cancel"
           select-confirm-btn-text="confirm"
           @on-iscompleted="setIsCompleted"

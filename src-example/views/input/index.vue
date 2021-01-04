@@ -17,7 +17,11 @@
 
     <div class="title">电话 type="tel" -- {{phone.value}}</div>
     <Input :attrs="phone"
-           v-model="phone.value"></Input>
+           v-model="phone.value"><span slot="prepend"
+          style="font-size: 0.74667rem; padding-right: .2rem">+91</span></Input>
+    <Input :attrs="OTP"
+           v-model="OTP.value"><span slot="append"
+          style="display: inline-block; border: 1px solid #bebebe; font-size: 0.74667rem; padding: .1rem .3rem; border-radius: 1rem">Get OTP code</span></Input>
 
     <div class="title">邮箱 type="email" -- {{email.value}}</div>
     <Input :attrs="email"
@@ -152,6 +156,25 @@ export default {
         "value": "",
         "readonly": 0,
         "maxlength": 11
+      },
+      OTP: {
+        "rely_policy_id": 0,
+        "id": "277",
+        "category_id": "1",
+        "title": "验证码",
+        "placeholder": "",
+        "var_name": "otp_code",
+        "type": "text",
+        "verify_type": "text",
+        "data": "",
+        "unit": "",
+        "material_type": "100",
+        "info_property": "1",
+        "level": 1,
+        "desc": "",
+        "value": "",
+        "readonly": 0,
+        "maxlength": 6
       },
       email: {
         "rely_policy_id": 0,
