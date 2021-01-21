@@ -37,32 +37,43 @@ export default {
   data () {
     return {
       config: {
-        value: '',
-        type: '',
+        value: '2022/10/22',
         placeholder: '请选择',
         valueFormat: 'yyyy/mm/dd',
-        textFormat: 'dd/mm/yyyy',
+        // textFormat: 'yyyy年mm月dd日',
+        textFormat (val) {
+          return `${val.year.text},${val.month.text.substr(0, 4)},${val.day.text}`
+        },
         startYear: '',
         endYear: '',
-        yearsLength: '4',
+        offsetYear: '',
+        yearsLength: '',
         disabled: false,
-        pickerYearUnit: '',
-        pickerMonthUnit: '',
-        pickerDateUnit: '',
+        language: 'en',
+        pickerFormatter: function (type, val) {
+          // if (type == 'year') {
+          //   return val + '年'
+          // } else if (type == 'month') {
+          //   return val + '月'
+          // } else if (type == 'day') {
+          //   return val + '日'
+          // }
+        },
         pickerTitle: 'hello',
         pickerCancelBtnText: 'cancel',
-        pickerConfirmBtnText: 'confirm'
+        pickerConfirmBtnText: 'confirm',
+        columnsOrder: ['year', 'month', 'day']
       },
       config1: {
-        type: 'year',
         valueFormat: 'yyyy',
-        textFormat: 'yyyy年'
+        textFormat: 'yyyy年',
+        columnsOrder: ['year']
       },
       config2: {
-        value: '1988/10',
-        type: 'month',
+        value: '2022/10',
         valueFormat: 'yyyy/mm',
-        textFormat: 'yyyy年mm月'
+        textFormat: 'yyyy年mm月',
+        columnsOrder: ['year', 'month']
       },
       sourceCode
     }

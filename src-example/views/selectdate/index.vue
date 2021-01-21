@@ -32,17 +32,14 @@ export default {
         title: '爸爸生日',
         name: 'birthday',
         value: '',
-        type: '',
         placeholder: '请选择',
         valueFormat: 'yyyy/mm/dd',
         textFormat: 'yyyy年mm月dd日',
         startYear: '',
         endYear: '',
         yearsLength: '4',
+        offsetYear: '',
         disabled: false,
-        yearUnit: '',
-        monthUnit: '',
-        dateUnit: '',
         pickerTitle: 'hello',
         pickerCancelBtnText: 'cancel',
         pickerConfirmBtnText: 'confirm',
@@ -65,17 +62,17 @@ export default {
       },
       config1: {
         title: '妈妈出生年份',
-        type: 'year',
         valueFormat: 'yyyy',
         textFormat: 'yyyy年',
-        textPosition: 'right'
+        textPosition: 'right',
+        columnsOrder: ['year']
       },
       config2: {
         title: '哥哥出生日期',
         value: '1988/10',
-        type: 'month',
         valueFormat: 'yyyy/mm',
-        textFormat: 'yyyy年mm月'
+        textFormat: 'yyyy年mm月',
+        columnsOrder: ['year', 'month']
       },
       config3: {
         title: '妹妹出生日期',
