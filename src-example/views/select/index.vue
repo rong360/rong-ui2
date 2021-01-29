@@ -26,6 +26,9 @@
         <div class="btn-wrap">
           <Button @on-click="getValue4">借助Form组件获取所有数据</Button>
         </div>
+        <div class="btn-wrap">
+          <Button @on-click="resetFields">重置</Button>
+        </div>
         <ViewSource :code="sourceCode" />
       </Form>
     </div>
@@ -367,6 +370,9 @@ export default {
           })
         }
       })
+    },
+    resetFields () {
+      this.$refs.form.resetFields()
     },
     onBack () {
       this.$router.push('/')

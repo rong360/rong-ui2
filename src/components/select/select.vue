@@ -124,6 +124,14 @@ export default {
   inject: {
     form: { default: null }
   },
+  watch: {
+    "attrs.data": function () {
+      this.validateState = ''
+      this.validateMessage = ''
+      this.validateDisabled = true
+      this.removePicker()
+    }
+  },
   computed: {
     isErrorAtPlaceholder () {
       return this.errorAtPlaceholder || this.form && this.form.errorAtPlaceholder || false
@@ -170,6 +178,7 @@ export default {
     selectedOption () {
       let data = this.attrs.data || []
       let selectedOption = {}
+      this.selectedIndex = -1
       for (var i = 0; i < data.length; i++) {
         if (data[i].value == this.value) {
           selectedOption = data[i]
