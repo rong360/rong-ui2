@@ -35,9 +35,11 @@
             </g>
           </svg></div>
         <slot>
+          <Render v-if="typeof message == 'function'"
+                  :render="message">fsdf</Render>
           <div :class="contentCls"
                :style="contentStyleObj"
-               v-if="message"
+               v-if="typeof message != 'function' && message"
                v-html="message"></div>
           <rContent :rContentData="rContentData"
                     ref="rContent"></rContent>
@@ -63,6 +65,7 @@
 
 <script>
 import preventscroll from '../../directives/preventscroll'
+import Render from '@/components/base/render'
 const prefixCls = 'r--dialog'
 
 export default {
@@ -87,7 +90,7 @@ export default {
     },
     closeStyleObj: Object,
     // 内容
-    message: String,
+    message: [String, Function],
     contentStyleObj: Object,
     rContentData: Object,
     // cancelBtn
@@ -186,7 +189,8 @@ export default {
   components: {
     rContent: {
       template: '<div></div>'
-    }
+    },
+    Render
   },
   mounted () {
     this.$nextTick(function () {

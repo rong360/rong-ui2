@@ -13,6 +13,8 @@
            @click="showDialog4">配置右上角关闭按钮</div>
       <div class="item"
            @click="showDialog5">配置内容</div>
+           <div class="item"
+           @click="showDialog5_2">自定义message</div>
       <div class="item"
            @click="showDialog6">配置btn</div>
       <div class="item"
@@ -181,6 +183,7 @@ export default {
     },
     // 配置内容
     showDialog5 () {
+      let self = this
       this.$dialog({
         propsData: {
           // 内容(普通文本或简单html)
@@ -195,6 +198,32 @@ export default {
         // rContent为内容区域组件，通过rContentData接收外部数据
         components: {
           rContent: resolve => resolve(require("./repaymentTip.vue"))
+        },
+        methods: {
+          // 取消按钮
+          onCancel: function () {
+            this.remove();
+          },
+          // 确认按钮
+          onConfirm: function () {
+            self.$toast('这是点击确认按钮的自定义回调');
+            this.remove();
+          }
+        }
+      });
+    },
+    // 自定义内容
+    showDialog5_2 () {
+      let self = this
+      let RepaymentTip = resolve => resolve(require("./repaymentTip.vue"))
+      this.$dialog({
+        propsData: {
+          // 内容(文本或自定义组件)
+          message: (h) => h(RepaymentTip, {
+            props: {
+              name: 'zyx'
+            }
+          })
         },
         methods: {
           // 取消按钮
