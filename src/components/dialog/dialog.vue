@@ -65,7 +65,7 @@
 
 <script>
 import preventscroll from '../../directives/preventscroll'
-import Render from '@/components/base/render'
+import Render from '../base/render'
 const prefixCls = 'r--dialog'
 
 export default {
