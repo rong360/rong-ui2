@@ -21,6 +21,7 @@ import Radio from '../views/radio'
 import Dialog from '../views/dialog'
 import Toast from '../views/toast'
 import Loading from '../views/loading'
+import ActionSheet from '../views/action-sheet'
 
 Vue.use(VueRouter)
 
@@ -109,6 +110,10 @@ export default new VueRouter({
     {
       path: '/loading',
       component: Loading
+    },
+    {
+      path: '/action-sheet',
+      component: ActionSheet
     }
   ]
 })

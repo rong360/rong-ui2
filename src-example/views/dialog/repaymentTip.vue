@@ -24,10 +24,16 @@ export default {
       showArea: false
     }
   },
+  mounted () {
+    this.$parent.resetPos()
+  },
   methods: {
     toggleScrollArea () {
       this.showArea = !this.showArea
     }
+  },
+  updated () {
+    this.$parent.resetPos()
   }
 }
 </script>

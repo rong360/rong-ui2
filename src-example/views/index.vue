@@ -12,6 +12,9 @@
         <router-link to="/loading">Loading</router-link>
       </li>
       <li>
+        <router-link to="/action-sheet">ActionSheet</router-link>
+      </li>
+      <li>
         <router-link to="/titlebar">Titlebar</router-link>
       </li>
       <li>

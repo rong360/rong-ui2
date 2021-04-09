@@ -301,7 +301,7 @@ export default {
     },
     // dialog拓展 - select
     showDialog10 () {
-      this.$dialog.select({ menus: [{ title: '操作1' }, { title: '操作2' }], cancelBtnText: '取消', onCancel: function () { this.remove() }, onSelect: function (obj) { console.log(obj); this.remove() } })
+      this.$dialog.select({ menus: [{ title: '操作1' }, { title: '操作2' }], cancelBtnText: '取消', onCancel: function () { this.remove() }, onSelect: function (obj) { console.log(obj); this.remove() }, onMask: function () { this.remove() } })
     },
     showDialog11 () {
       this.showDlg11 = this.true

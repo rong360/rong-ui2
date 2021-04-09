@@ -16,6 +16,7 @@ import Steps from './components/steps/'
 import Loading from './components/loading/'
 import Toast from './components/toast/'
 import Dialog from './components/dialog/'
+import ActionSheet from './components/action-sheet/'
 
 const components = {
   Form,
@@ -35,7 +36,8 @@ const components = {
   Steps,
   Loading,
   Toast,
-  Dialog
+  Dialog,
+  ActionSheet
 };
 
 const install = function (Vue, opts = {}) {

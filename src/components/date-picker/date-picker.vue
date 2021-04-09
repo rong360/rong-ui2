@@ -50,7 +50,10 @@ export default {
     pickerFormatter: Function,
     pickerTitle: String,
     pickerCancelBtnText: String,
-    pickerConfirmBtnText: String
+    pickerConfirmBtnText: String,
+    mode: {
+      type: String
+    }
   },
   data () {
     return {
@@ -86,8 +89,10 @@ export default {
       return defaultConfig;
     },
     wrapCls () {
+      let mode = this.attrs.mode || this.mode || this.form && this.form.mode || 'default'
       return [
         `${prefixCls}`,
+        `${prefixCls}-mode-${mode}`,
         {
           [`${prefixCls}-empty`]: this.currentValue == ''
         }
@@ -270,6 +275,9 @@ export default {
 @datepickerCls: r--datepicker;
 
 .@{datepickerCls} {
+  &-mode-to-top&-empty {
+    color: transparent;
+  }
   &-empty {
     color: #c8c7cc;
   }

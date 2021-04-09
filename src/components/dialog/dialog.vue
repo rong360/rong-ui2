@@ -89,7 +89,7 @@ export default {
       default: false
     },
     closeStyleObj: Object,
-    // 内容
+    // 内容 v1.1.2版本支持function
     message: [String, Function],
     contentStyleObj: Object,
     rContentData: Object,

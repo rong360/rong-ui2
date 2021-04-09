@@ -79,6 +79,7 @@ Dialog提示框、Toast弹框、Loading加载中、Keyboard虚拟数字键盘 �
 |Dialog 弹框| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/dialog.md)|
 |Toast 提示| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/toast.md)|
 |Loading 加载中 | [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/loading.md)|
+|ActionSheet 动作面板 (v1.1.2)| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/actionsheet.md)|
 |Titlebar 标题栏| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/titlebar.md)|
 |FlexFixed 吸顶或吸底| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/flexfixed.md)|
 |TextScroll 文字滚动| [点击查看](https://github.com/rong360/rong360.github.io/blob/master/rong-ui2/doc/textscroll.md)|

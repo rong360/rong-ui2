@@ -71,6 +71,11 @@ let select = function (options = {}) {
       onCancel () {
         let onCancel = options && options.onCancel && options.onCancel
         onCancel ? onCancel.call(this) : this.remove()
+      },
+      // v1.1.2
+      onMask () {
+        let onMask = options && options.onMask && options.onMask
+        onMask && onMask.call(this)
       }
     }
   })

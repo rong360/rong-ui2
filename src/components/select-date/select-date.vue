@@ -1,4 +1,3 @@
-tem
 <template>
   <div :class="wrapCls">
     <div :class="innerCls">
@@ -100,7 +99,9 @@ export default {
     confirmBtnText: String,
     mode: {
       type: String
-    }
+    },
+    // v1.1.2
+    required: Boolean
   },
   data () {
     return {
@@ -114,6 +115,17 @@ export default {
     form: { default: null }
   },
   computed: {
+    isRequired () {
+      let required
+      if (typeof this.attrs.required != 'undefined') {
+        required = this.attrs.required
+      } else if (this.required == true) {
+        required = true
+      } else {
+        required = this.fieldRules.some(item => item.required == true)
+      }
+      return required
+    },
     wrapCls () {
       let labelPosition = this.attrs.labelPosition || this.labelPosition || this.form && this.form.labelPosition || 'right'
       let textPosition = this.attrs.textPosition || this.textPosition || this.form && this.form.textPosition || 'left'
@@ -130,7 +142,8 @@ export default {
           [`${prefixCls}-empty`]: this.value == '',
           [`${prefixCls}-error`]: this.validateState == 'error',
           [`${prefixCls}-readonly`]: !!this.attrs.readonly,
-          [`${prefixCls}-placeholder`]: this.value == ''
+          [`${prefixCls}-placeholder`]: this.value == '',
+          [`${prefixCls}-required`]: this.isRequired
         }
       ]
     },
@@ -197,6 +210,12 @@ export default {
     },
     validate (trigger, callback = function () { }) {
       let rules = this.getFilterRules(trigger)
+
+      if (!this.isRequired) {
+        this.validateState = ''
+        callback()
+        return true
+      }
 
       this.validateState = 'validating'
       this.validateDisabled = false

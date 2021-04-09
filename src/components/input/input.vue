@@ -237,7 +237,9 @@ export default {
       type: String
     },
     // 错误信息显示在placeholder位置
-    errorAtPlaceholder: Boolean
+    errorAtPlaceholder: Boolean,
+    // v1.1.2
+    required: Boolean
   },
   data () {
     let ua = navigator.userAgent
@@ -265,6 +267,17 @@ export default {
     isErrorAtPlaceholder () {
       return this.errorAtPlaceholder || this.form && this.form.errorAtPlaceholder || false
     },
+    isRequired () {
+      let required
+      if (typeof this.attrs.required != 'undefined') {
+        required = this.attrs.required
+      } else if (this.required == true) {
+        required = true
+      } else {
+        required = this.fieldRules.some(item => item.required == true)
+      }
+      return required
+    },
     wrapCls () {
       let labelPosition = this.labelPosition || this.form && this.form.labelPosition || 'left'
       let textPosition = this.textPosition || this.form && this.form.textPosition || 'left'
@@ -282,7 +295,8 @@ export default {
           [`${prefixCls}-error`]: this.validateState == 'error',
           [`${prefixCls}-show-clear`]: this.showClear,
           [`${prefixCls}-hidden`]: this.attrs.type == 'hidden',
-          [`${prefixCls}-error-at-placeholder`]: this.isErrorAtPlaceholder
+          [`${prefixCls}-error-at-placeholder`]: this.isErrorAtPlaceholder,
+          [`${prefixCls}-required`]: this.isRequired
         }
       ]
     },
@@ -366,6 +380,12 @@ export default {
     },
     validate (trigger, callback = function () { }) {
       let rules = this.getFilterRules(trigger)
+
+      if (!this.isRequired) {
+        this.validateState = ''
+        callback()
+        return true
+      }
 
       this.validateState = 'validating'
       this.validateDisabled = false
@@ -556,6 +576,9 @@ export default {
     top: 5px;
     font-size: 12px;
     color: #bdbdbd;
+  }
+  &-mode-to-top&:not(&-focused) &-input::-webkit-input-placeholder{
+    color: transparent;
   }
   &-mode-to-top &-label {
     font-size: 16px;

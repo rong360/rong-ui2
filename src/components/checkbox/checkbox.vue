@@ -1,5 +1,6 @@
 <template>
   <label :class="wrapCls" @click.prevent="clickLabel">
+    <slot name="prepend"></slot>
     <span :class="iconCls"></span>
     <slot></slot>
   </label>
