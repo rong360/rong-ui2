@@ -1,32 +1,18 @@
 <template>
-  <div v-if="showWrap"
-       :class="wrapCls">
-    <transition appear
-                name="action-sheet--fade">
-      <div v-if="show"
-           :class="maskCls"
-           @click="show = false"></div>
+  <div v-if="showWrap" :class="wrapCls">
+    <transition appear name="action-sheet--fade">
+      <div v-if="show" :class="maskCls" @click="show = false"></div>
     </transition>
-    <transition appear
-                name="action-sheet--slideInUp"
-                v-on:after-leave="afterLeave">
-      <div v-if="show"
-           :class="contentCls">
+    <transition appear name="action-sheet--slideInUp" v-on:after-leave="afterLeave">
+      <div v-if="show" :class="contentCls">
         <slot>
-          <div v-if="title"
-               :class="headerCls">{{title}}</div>
-          <div v-if="showCloseBtn"
-               :class="closeCls"
-               @click="handleClose"></div>
-          <div v-for="(item, index) in actions"
-               :style="styleCls(item)"
-               :class="itemCls(item)"
-               @click="handleSelect(item, index)">{{item.name}}</div>
-          <div v-if="showCancelBtn"
-               :class="gapCls"></div>
-          <div v-if="showCancelBtn"
-               :class="cancelCls"
-               @click="handleCancel">{{cancelBtnText}}</div>
+          <div v-if="title" :class="headerCls">{{title}}</div>
+          <div v-if="showCloseBtn" :class="closeCls" @click="handleClose"></div>
+          <div :class="listCls">
+            <div v-for="(item, index) in actions" :style="styleCls(item)" :class="itemCls(item)" @click="handleSelect(item, index)">{{item.name}}</div>
+          </div>
+          <div v-if="showCancelBtn" :class="gapCls"></div>
+          <div v-if="showCancelBtn" :class="cancelCls" @click="handleCancel">{{cancelBtnText}}</div>
         </slot>
       </div>
     </transition>
@@ -84,6 +70,9 @@ export default {
     },
     styleCls () {
       return (item) => item
+    },
+    listCls () {
+      return `${prefixCls}--list`
     },
     itemCls () {
       return (item) => {
@@ -171,6 +160,10 @@ export default {
   &--gap {
     height: 8px;
     background-color: #f7f8fa;
+  }
+  &--list {
+    max-height: 450px;
+    overflow-y: scroll;
   }
   &--item,
   &--cancel {
