@@ -583,7 +583,7 @@ export default {
   &-mode-to-top &-label {
     font-size: 16px;
     color: #bdbdbd;
-    position: absolute;
+    // position: absolute;
   }
   &-mode-to-top &-input {
     font-size: 16px;
