@@ -3,7 +3,11 @@
     <div :class="innerCls">
       <label :class="labelCls"
              :style="labelStyle">{{attrs.title}}</label>
-      <slot name="prepend"></slot>
+      <slot name="prepend">
+        <div :class="prependCls"
+             v-if="attrs.prepend"
+             v-html="attrs.prepend"></div>
+      </slot>
       <div :class="contentCls">
         <input :class="inputCls"
                :value="value"
@@ -54,7 +58,11 @@
       </div>
       <div v-if="attrs.unit"
            :class="unitCls">{{attrs.unit}}</div>
-      <slot name="append"></slot>
+      <slot name="append">
+        <div :class="appendCls"
+             v-if="attrs.append"
+             v-html="attrs.append"></div>
+      </slot>
       <transition name="fade"
                   mode="out-in">
         <div v-if="validateState=='error' && (this.form?this.showMessage&&this.form.showMessage:this.showMessage) && !isErrorAtPlaceholder"
@@ -239,7 +247,9 @@ export default {
     // 错误信息显示在placeholder位置
     errorAtPlaceholder: Boolean,
     // v1.1.2
-    required: Boolean
+    required: Boolean,
+    // 自定义class v1.1.3
+    className: String
   },
   data () {
     let ua = navigator.userAgent
@@ -282,6 +292,7 @@ export default {
       let labelPosition = this.labelPosition || this.form && this.form.labelPosition || 'left'
       let textPosition = this.textPosition || this.form && this.form.textPosition || 'left'
       let mode = this.mode || this.form && this.form.mode || 'default'
+      let className = this.className || this.attrs.className
 
       return [
         this.form && 'form-item',
@@ -289,6 +300,7 @@ export default {
         `${prefixCls}-label-${labelPosition}`,
         `${prefixCls}-text-${textPosition}`,
         `${prefixCls}-mode-${mode}`,
+        className,
         {
           [`${prefixCls}-focused`]: this.focused,
           [`${prefixCls}-empty`]: this.value == '',
@@ -314,6 +326,12 @@ export default {
         style.width = this.form.labelWidth
       }
       return style
+    },
+    prependCls () {
+      return `${prefixCls}-prepend`
+    },
+    appendCls () {
+      return `${prefixCls}-append`
     },
     placeholderText () {
       return this.attrs.placeholder || this.placeholder || (this.form && this.form.placeholder) || ''
@@ -577,7 +595,7 @@ export default {
     font-size: 12px;
     color: #bdbdbd;
   }
-  &-mode-to-top&:not(&-focused) &-input::-webkit-input-placeholder{
+  &-mode-to-top&:not(&-focused) &-input::-webkit-input-placeholder {
     color: transparent;
   }
   &-mode-to-top &-label {
@@ -617,6 +635,18 @@ export default {
     white-space: nowrap;
     padding-right: 10px;
     transition: all 0.3s ease-out;
+  }
+  &-prepend,
+  &-append {
+    font-size: 16px;
+    color: #acb4c0;
+    position: relative;
+  }
+  &-prepend {
+    padding-right: 5px;
+  }
+  &-append {
+    padding-left: 5px;
   }
   &-content {
     box-sizing: border-box;
