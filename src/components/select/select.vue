@@ -2,7 +2,8 @@
   <div :class="wrapCls">
     <div :class="innerCls">
       <label :class="labelCls"
-             :style="labelStyle">{{attrs.title}}</label>
+             :style="labelStyle"
+             @click="showPicker">{{attrs.title}}</label>
       <slot name="prepend"></slot>
       <div :class="contentCls"
            @click="showPicker">
@@ -112,7 +113,9 @@ export default {
     // 错误信息显示在placeholder位置
     errorAtPlaceholder: Boolean,
     // v1.1.2
-    required: Boolean
+    required: Boolean,
+    // 自定义class v1.1.3
+    className: String
   },
   data () {
     return {
@@ -153,6 +156,7 @@ export default {
       let labelPosition = this.labelPosition || this.form && this.form.labelPosition || 'right'
       let textPosition = this.textPosition || this.form && this.form.textPosition || 'left'
       let mode = this.mode || this.form && this.form.mode || 'default'
+      let className = this.className || this.attrs.className
 
       return [
         this.form && 'form-item',
@@ -160,6 +164,7 @@ export default {
         `${prefixCls}-label-${labelPosition}`,
         `${prefixCls}-text-${textPosition}`,
         `${prefixCls}-mode-${mode}`,
+        className,
         {
           [`${prefixCls}-focused`]: this.focused,
           [`${prefixCls}-empty`]: this.value == '',
@@ -349,7 +354,7 @@ export default {
 .@{selectCls} {
   position: relative;
   &-inner {
-    border-bottom: 1px solid #F2F2F4;
+    border-bottom: 1px solid #f2f2f4;
     padding-right: 15px;
     height: 46px;
     display: flex;
@@ -377,7 +382,7 @@ export default {
   &-mode-to-top &-select {
     font-size: 16px;
     line-height: 21px;
-    color:#181C48;
+    color: #181c48;
   }
   &-mode-default &-label {
     font-size: 14px;
