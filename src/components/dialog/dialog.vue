@@ -39,7 +39,7 @@
                   :render="message">fsdf</Render>
           <div :class="contentCls"
                :style="contentStyleObj"
-               v-if="typeof message != 'function' && message"
+               v-if="(typeof message != 'function' && message)"
                v-html="message"></div>
           <rContent :rContentData="rContentData"
                     ref="rContent"></rContent>
@@ -131,7 +131,9 @@ export default {
     removeDialogOnHashChange: {
       type: Boolean,
       default: true
-    }
+    },
+    // 自定义class v1.1.3
+    className: String
   },
   data () {
     return {
@@ -152,6 +154,7 @@ export default {
     wrapCls () {
       return [
         `${prefixCls}`,
+        this.className,
         {
           [`${prefixCls}-cancel-btn-show`]: this.showCancelBtn,
           [`${prefixCls}-confirm-btn-show`]: this.showConfirmBtn

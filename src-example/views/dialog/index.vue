@@ -218,6 +218,7 @@ export default {
       let RepaymentTip = resolve => resolve(require("./repaymentTip.vue"))
       this.$dialog({
         propsData: {
+          className: 'custom-tip',
           // 内容(文本或自定义组件)
           message: (h) => h(RepaymentTip, {
             props: {
