@@ -349,7 +349,7 @@ export default {
 .@{selectCls} {
   position: relative;
   &-inner {
-    border-bottom: 1px solid #d8d9dc;
+    border-bottom: 1px solid #F2F2F4;
     padding-right: 15px;
     height: 46px;
     display: flex;
@@ -377,7 +377,7 @@ export default {
   &-mode-to-top &-select {
     font-size: 16px;
     line-height: 21px;
-    color: #757575;
+    color:#181C48;
   }
   &-mode-default &-label {
     font-size: 14px;

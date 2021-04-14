@@ -270,7 +270,7 @@ export default {
 .@{selectdateCls} {
   position: relative;
   &-inner {
-    border-bottom: 1px solid #d8d9dc;
+    border-bottom: 1px solid #F2F2F4;
     padding-right: 15px;
     height: 46px;
     display: flex;
