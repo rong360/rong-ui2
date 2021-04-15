@@ -3,11 +3,13 @@
     <div :class="innerCls">
       <label :class="labelCls"
              :style="labelStyle">{{attrs.title}}</label>
-      <slot name="prepend">
-        <div :class="prependCls"
-             v-if="attrs.prepend"
-             v-html="attrs.prepend"></div>
-      </slot>
+      <div :class="prependCls"
+           v-if="$slots.prepend">
+        <slot name="prepend"></slot>
+      </div>
+      <div :class="prependCls"
+           v-if="attrs.prepend"
+           v-html="attrs.prepend"></div>
       <div :class="contentCls">
         <input :class="inputCls"
                :value="value"
@@ -58,11 +60,13 @@
       </div>
       <div v-if="attrs.unit"
            :class="unitCls">{{attrs.unit}}</div>
-      <slot name="append">
-        <div :class="appendCls"
-             v-if="attrs.append"
-             v-html="attrs.append"></div>
-      </slot>
+      <div :class="appendCls"
+           v-if="$slots.append">
+        <slot name="append"></slot>
+      </div>
+      <div :class="appendCls"
+           v-if="attrs.append"
+           v-html="attrs.append"></div>
       <transition name="fade"
                   mode="out-in">
         <div v-if="validateState=='error' && (this.form?this.showMessage&&this.form.showMessage:this.showMessage) && !isErrorAtPlaceholder"
@@ -572,7 +576,7 @@ export default {
 .@{inputCls} {
   position: relative;
   &-inner {
-    border-bottom: 1px solid #F2F2F4;
+    border-bottom: 1px solid #f2f2f4;
     padding-right: 15px;
     height: 46px;
     display: flex;
@@ -598,15 +602,22 @@ export default {
   &-mode-to-top&:not(&-focused) &-input::-webkit-input-placeholder {
     color: transparent;
   }
+  &-mode-to-top &-prepend {
+    display: none;
+  }
+  &-mode-to-top&&-focused &-prepend,
+  &-mode-to-top&:not(&-empty) &-prepend {
+    display: block;
+  }
   &-mode-to-top &-label {
     font-size: 16px;
     color: #bdbdbd;
-    // position: absolute;
+    position: absolute;
   }
   &-mode-to-top &-input {
     font-size: 16px;
     line-height: 21px;
-    color: #181C48;
+    color: #181c48;
   }
   &-mode-default &-label {
     font-size: 14px;

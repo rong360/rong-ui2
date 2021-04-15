@@ -137,7 +137,8 @@ export default {
         "value": "10000.00",
         "fixed": 2,
         "readonly": 0,
-        "maxlength": 8
+        "maxlength": 8,
+        "prepend": "RP"
       },
       phone: {
         "rely_policy_id": 0,

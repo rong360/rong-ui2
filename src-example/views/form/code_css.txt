@@ -98,7 +98,8 @@ export default {
         "placeholder": "",
         "unit": "",
         "readonly": 0,
-        "maxlength": 8
+        "maxlength": 8,
+        "prepend": "RP"
       },
       phone: {
         "type": "tel",
