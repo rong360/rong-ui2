@@ -360,6 +360,7 @@ export default {
     display: flex;
     box-sizing: border-box;
     align-items: center;
+    transition: all 0.3s;
   }
   &-mode-to-top {
     margin-top: 20px;
@@ -452,7 +453,8 @@ export default {
     padding-left: 5px;
   }
   &-error &-inner {
-    border-color: #ed4014;
+    // border-color: #ed4014;
+    margin-bottom: 20px;
   }
   &-error-tip {
     position: absolute;

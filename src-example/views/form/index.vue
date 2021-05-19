@@ -139,7 +139,7 @@ export default {
       loanTerm: {
         title: "贷款期限",
         name: "loan_term",
-        value: '2',
+        value: '',
         placeholder: "请选择贷款期限",
         data: [{
           text: "1个月",
@@ -179,14 +179,16 @@ export default {
           }]
         }],
         rules: [{
+          required: true,
+          message: '贷款期限不能为空'
+        }, {
           validator (rule, value, callback) {
             if (value == 1) {
-              this.$toast('目前暂不支持1个月的贷款，请选择贷款期限');
+              // this.$toast('目前暂不支持1个月的贷款，请选择贷款期限');
               return new Error('目前暂不支持1个月的贷款，请选择贷款期限')
             }
             callback()
-          },
-          trigger: 'blur'
+          }
         }]
       },
       birthday: {
