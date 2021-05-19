@@ -377,6 +377,8 @@ export default {
           },
           trigger: 'blur'
         })
+      } else if (this.attrs.type == 'email') {
+        defaultRules.push({ type: "email", message: "邮箱格式不正确", trigger: "blur" })
       }
       let rules = this.attrs.rules || this.rules || defaultRules
       return [].concat(rules)
