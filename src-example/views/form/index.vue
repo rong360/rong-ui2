@@ -117,6 +117,19 @@ export default {
         "value": "test@qq.com",
         "readonly": 0,
         "placeholder": "",
+        "emailList": [
+          "qq.com",
+          "sina.com",
+          "sohu.com",
+          "163.com",
+          "foxmail.com",
+          "gmail.com",
+          "rong360.com",
+          "edu.cn",
+          "outlook.com",
+          "vip.qq.com",
+          "126.com"
+        ],
         "rules": [{
           "required": true,
           "message": "邮箱不能为空",

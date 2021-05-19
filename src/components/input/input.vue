@@ -67,12 +67,10 @@
       <div :class="appendCls"
            v-if="attrs.append"
            v-html="attrs.append"></div>
-      <transition name="fade"
-                  mode="out-in">
-        <div v-if="validateState=='error' && (this.form?this.showMessage&&this.form.showMessage:this.showMessage) && !isErrorAtPlaceholder"
-             :class="errorCls">{{validateMessage}}</div>
-      </transition>
+      <div v-if="validateState=='error' && (this.form?this.showMessage&&this.form.showMessage:this.showMessage) && !isErrorAtPlaceholder"
+           :class="errorCls">{{validateMessage}}</div>
     </div>
+    <!-- <div :class="emailPanel">xxx</div> -->
   </div>
 </template>
 
@@ -392,6 +390,9 @@ export default {
     },
     inputPattern () {
       return this.attrs.type == 'number' ? 'number' : ''
+    },
+    emailPanel () {
+      return []
     }
   },
   mounted () {
@@ -487,6 +488,7 @@ export default {
     onFieldInput (e) {
       let inputValue = e.target.value
       this.validateState = ''
+      this.validateMessage = ''
       // 修复input 属性为 number，maxlength不起作用
       if (this.attrs.type == 'number' && this.attrs.maxlength && inputValue.length > this.attrs.maxlength) {
         inputValue = inputValue.slice(0, this.attrs.maxlength)
@@ -522,7 +524,6 @@ export default {
       this.focused = true
       this.$emit('on-focus', e)
       // e.target.scrollIntoView()
-      this.validateState = ''
     },
     onFieldKeyup (e) {
       if (this.attrs.type == 'number' && !this.isAndroid && this.value == '' && this.prevValue == '' && e.keyCode != 189) e.target.value = ''
@@ -584,7 +585,6 @@ export default {
     display: flex;
     box-sizing: border-box;
     align-items: center;
-    transition: all 0.3s;
   }
   &-mode-to-top {
     margin-top: 20px;
@@ -722,7 +722,9 @@ export default {
     height: 30x;
   }
   &-error &-inner {
-    // border-color: #ed4014;
+    border-color: #ed4014;
+  }
+  &-error&-mode-default &-inner {
     margin-bottom: 20px;
   }
   &-error-tip {

@@ -40,11 +40,8 @@
            :class="unitCls">{{attrs.unit}}</div>
       <slot name="append"></slot>
     </div>
-    <transition name="fade"
-                mode="out-in">
-      <div v-if="validateState=='error' && (this.form?this.showMessage&&this.form.showMessage:this.showMessage)"
-           :class="errorCls">{{validateMessage}}</div>
-    </transition>
+    <div v-if="validateState=='error' && (this.form?this.showMessage&&this.form.showMessage:this.showMessage)"
+         :class="errorCls">{{validateMessage}}</div>
   </div>
 </template>
 
@@ -270,13 +267,12 @@ export default {
 .@{selectdateCls} {
   position: relative;
   &-inner {
-    border-bottom: 1px solid #F2F2F4;
+    border-bottom: 1px solid #f2f2f4;
     padding-right: 15px;
     height: 46px;
     display: flex;
     box-sizing: border-box;
     align-items: center;
-    transition: all 0.3s;
   }
   &-mode-to-top {
     margin-top: 20px;
@@ -367,7 +363,9 @@ export default {
     padding-left: 5px;
   }
   &-error &-inner {
-    // border-color: #ed4014;
+    border-color: #ed4014;
+  }
+  &-error&-mode-default &-inner {
     margin-bottom: 20px;
   }
   &-error-tip {
