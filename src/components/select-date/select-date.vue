@@ -2,7 +2,8 @@
   <div :class="wrapCls">
     <div :class="innerCls">
       <label :class="labelCls"
-             :style="labelStyle">{{attrs.title}}</label>
+             :style="labelStyle"
+             @click="showPicker">{{attrs.title}}</label>
       <slot name="prepend"></slot>
       <div :class="contentCls">
         <DatePicker :attrs="attrs"
@@ -10,7 +11,8 @@
                     :pickerCancelBtnText="pickerCancelBtnText"
                     :pickerConfirmBtnText="pickerConfirmBtnText"
                     @onconfirm="onConfirm"
-                    :class="selectCls"></DatePicker>
+                    :class="selectCls"
+                    ref="datePicker"></DatePicker>
         <div :class="arrowCls">
           <slot name="arrow-icon">
             <svg width="8px"
@@ -192,6 +194,9 @@ export default {
     this.initialValue = this.value
   },
   methods: {
+    showPicker () {
+      this.$refs.datePicker.showPicker()
+    },
     onConfirm (date) {
       this.$emit('input', date.value)
       this.$emit("on-confirm", date);

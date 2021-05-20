@@ -318,7 +318,8 @@ export default {
           [`${prefixCls}-hidden`]: this.attrs.type == 'hidden',
           [`${prefixCls}-email`]: this.attrs.type == 'email',
           [`${prefixCls}-error-at-placeholder`]: this.isErrorAtPlaceholder,
-          [`${prefixCls}-required`]: this.isRequired
+          [`${prefixCls}-required`]: this.isRequired,
+          [`${prefixCls}-readonly`]: !!this.attrs.readonly
         }
       ]
     },
