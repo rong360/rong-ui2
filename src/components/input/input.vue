@@ -67,16 +67,22 @@
       <div :class="appendCls"
            v-if="attrs.append"
            v-html="attrs.append"></div>
-      <div v-if="validateState=='error' && (this.form?this.showMessage&&this.form.showMessage:this.showMessage) && !isErrorAtPlaceholder"
+      <div v-if="validateState=='error' && (this.form?this.showMessage&&this.form.showMessage:this.showMessage) && !isErrorAtPlaceholder && !this.showEmailPan"
            :class="errorCls">{{validateMessage}}</div>
     </div>
-    <!-- <div :class="emailPanel">xxx</div> -->
+    <div v-if="showEmailPanel"
+         :class="emailPanel">
+      <div v-for="emailSuffix in filteredEmailList"
+           @click="setEmail"
+           :class="emailPanelItem">{{value.split('@')[0] + '@' + emailSuffix}}</div>
+    </div>
   </div>
 </template>
 
 <script>
 import AsyncValidator from 'async-validator'
 import { oneOf } from '../../utils/assist.js'
+
 const prefixCls = 'r--input'
 
 function clearNonNumbers (str) {
@@ -264,7 +270,8 @@ export default {
       validateDisabled: false,
       focused: false,
       isAndroid,
-      isBackSpace: false // 键盘后退键
+      isBackSpace: false, // 键盘后退键
+      showEmailPan: false
     }
   },
   watch: {
@@ -306,9 +313,10 @@ export default {
         {
           [`${prefixCls}-focused`]: this.focused,
           [`${prefixCls}-empty`]: this.value == '',
-          [`${prefixCls}-error`]: this.validateState == 'error',
+          [`${prefixCls}-error`]: this.validateState == 'error' && !this.showEmailPan,
           [`${prefixCls}-show-clear`]: this.showClear,
           [`${prefixCls}-hidden`]: this.attrs.type == 'hidden',
+          [`${prefixCls}-email`]: this.attrs.type == 'email',
           [`${prefixCls}-error-at-placeholder`]: this.isErrorAtPlaceholder,
           [`${prefixCls}-required`]: this.isRequired
         }
@@ -392,7 +400,29 @@ export default {
       return this.attrs.type == 'number' ? 'number' : ''
     },
     emailPanel () {
-      return []
+      return `${prefixCls}-email-panel`
+    },
+    emailPanelItem () {
+      return `${prefixCls}-email-panel--item`
+    },
+    filteredEmailList () {
+      let emailList = this.attrs.emailList || [],
+        emailSuffix = this.value.split('@')[1],
+        arr = []
+      for (var i = 0; i < emailList.length; i++) {
+        let email = emailList[i].replace('@', '')
+        if (email.indexOf(emailSuffix) > -1) {
+          arr.push(email)
+        }
+      }
+      return arr
+    },
+    showEmailPanel () {
+      let currEmailSuffix = this.value.split("@")[1]
+      return this.attrs.type == 'email' &&
+        this.showEmailPan &&
+        (this.filteredEmailList.length > 1 ||
+          (this.filteredEmailList.length == 1 && this.filteredEmailList[0] != currEmailSuffix))
     }
   },
   mounted () {
@@ -473,6 +503,7 @@ export default {
 
       this.blurTimer = setTimeout(() => {
         this.focused = false
+        if (this.attrs.type == 'email') this.showEmailPan = false
         this.validate('blur')
         if (inputValue == '') { e.target.value = '' }
       }, 200)
@@ -522,6 +553,7 @@ export default {
     onFieldFocus (e) {
       if (this.attrs.readonly) return
       this.focused = true
+      if (this.attrs.type == 'email') this.showEmailPan = true
       this.$emit('on-focus', e)
       // e.target.scrollIntoView()
     },
@@ -553,6 +585,9 @@ export default {
       this.$emit('on-clear', e)
       this.prevValue = ''
       this.focus()
+    },
+    setEmail (e) {
+      this.$emit('input', e.target.innerText)
     },
     // 手动聚焦输入框
     focus () {
@@ -759,6 +794,14 @@ export default {
   }
   &-hidden {
     display: none;
+  }
+  &-email-panel {
+    padding: 5px 15px;
+  }
+  &-email-panel--item {
+    line-height: 30px;
+    font-size: 14px;
+    color: #333;
   }
 }
 </style>
