@@ -2,44 +2,15 @@
   <div :class="wrapCls">
     <div :class="innerCls">
       <label :class="labelCls"
-             :style="labelStyle"
-             @click="showPicker">{{attrs.title}}</label>
+             :style="labelStyle">{{attrs.title}}</label>
       <slot name="prepend"></slot>
-      <div :class="contentCls"
-           @click="showPicker">
-        <div :class="selectCls">{{selectedOption.text || placeholderText}}</div>
-        <div v-if="validateState=='error' && (this.form?this.showMessage&&this.form.showMessage:this.showMessage) && isErrorAtPlaceholder"
-             :class="errorCls2">{{validateMessage}}</div>
-        <div :class="arrowCls">
-          <slot name="arrow-icon">
-            <svg width="6px"
-                 height="10px"
-                 :style="arrowStyle"
-                 viewBox="0 0 6 10"
-                 version="1.1"
-                 xmlns="http://www.w3.org/2000/svg"
-                 xmlns:xlink="http://www.w3.org/1999/xlink">
-              <g stroke="none"
-                 stroke-width="1"
-                 fill="none"
-                 fill-rule="evenodd">
-                <g transform="translate(-350.000000, -20.000000)"
-                   :fill="arrowStyle.color || '#C8C7CC'">
-                  <g>
-                    <g transform="translate(346.000000, 18.000000)">
-                      <g transform="translate(7.000000, 7.000000) rotate(-270.000000) translate(-7.000000, -7.000000) translate(2.750000, 4.500000)">
-                        <path d="M6.53188022,3.0259328 L3.02129527,6.5321515 C2.73046889,6.82261617 2.25894616,6.82261617 1.96811978,6.5321515 C1.67729341,6.24168683 1.67729341,5.77075056 1.96811978,5.48028589 L4.95211699,2.5 L1.96811978,-0.480285891 C1.67729341,-0.770750558 1.67729341,-1.24168683 1.96811978,-1.5321515 C2.25894616,-1.82261617 2.73046889,-1.82261617 3.02129527,-1.5321515 L6.53188022,1.9740672 C6.82270659,2.26453186 6.82270659,2.73546814 6.53188022,3.0259328 Z"
-                              fill-rule="nonzero"
-                              transform="translate(4.250000, 2.500000) rotate(-90.000000) translate(-4.250000, -2.500000) "></path>
-                      </g>
-                    </g>
-                  </g>
-                </g>
-              </g>
-            </svg>
-          </slot>
+      <div :class="contentCls">
+        <div :class="selectCls">
+          <div v-for="(item, index) in attrs.data"
+               :class="[selectOptionCls, {active: index == selectedIndex}]"
+               @click="onSelect(item, index, $event)">{{item.text}}</div>
+          </div>
         </div>
-      </div>
       <div v-if="attrs.unit"
            :class="unitCls">{{attrs.unit}}</div>
       <slot name="append"></slot>
@@ -54,19 +25,18 @@
                    :key="child.name"></component>
       </template>
     </div>
-    <div v-if="validateState=='error' && (this.form?this.showMessage&&this.form.showMessage:this.showMessage) && !isErrorAtPlaceholder"
+    <div v-if="validateState=='error' && (this.form?this.showMessage&&this.form.showMessage:this.showMessage)"
          :class="errorCls">{{validateMessage}}</div>
   </div>
 </template>
 
 <script>
 import AsyncValidator from 'async-validator'
-import Picker from 'better-picker'
 import { oneOf } from '../../utils/assist.js'
-const prefixCls = 'r--select'
+const prefixCls = 'r--select3'
 
 export default {
-  name: 'Select',
+  name: 'Select3',
   props: {
     attrs: {
       type: Object,
@@ -99,21 +69,14 @@ export default {
     placeholder: {
       type: String
     },
-    selectArrowStyle: {
-      type: Object
-    },
     // 是否显示校验错误信息
     showMessage: {
       type: Boolean,
       default: true
     },
-    cancelBtnText: String,
-    confirmBtnText: String,
     mode: {
       type: String
     },
-    // 错误信息显示在placeholder位置
-    errorAtPlaceholder: Boolean,
     // v1.1.2
     required: Boolean,
     // 自定义class v1.1.3
@@ -124,7 +87,6 @@ export default {
       initialValue: '',
       validateState: '',
       validateMessage: '',
-      validateDisabled: false,
       selectedIndex: -1
     }
   },
@@ -135,14 +97,9 @@ export default {
     "attrs.data": function () {
       this.validateState = ''
       this.validateMessage = ''
-      this.validateDisabled = true
-      this.removePicker()
     }
   },
   computed: {
-    isErrorAtPlaceholder () {
-      return this.errorAtPlaceholder || this.form && this.form.errorAtPlaceholder || false
-    },
     isRequired () {
       let required
       if (typeof this.attrs.required != 'undefined') {
@@ -172,8 +129,6 @@ export default {
           [`${prefixCls}-empty`]: this.value == '',
           [`${prefixCls}-error`]: this.validateState == 'error',
           [`${prefixCls}-readonly`]: !!this.attrs.readonly,
-          [`${prefixCls}-placeholder`]: this.value == '',
-          [`${prefixCls}-error-at-placeholder`]: this.isErrorAtPlaceholder,
           [`${prefixCls}-required`]: this.isRequired
         }
       ]
@@ -209,30 +164,20 @@ export default {
       }
       return selectedOption
     },
-    placeholderText () {
-      return this.attrs.placeholder || this.placeholder || (this.form && this.form.selectPlaceholder) || ''
-    },
-    arrowStyle () {
-      let style = { color: '#666', width: '0.32rem' }
-      return this.selectArrowStyle || (this.form && this.form.selectArrowStyle) || style
-    },
     contentCls () {
       return `${prefixCls}-content`
     },
     selectCls () {
       return `${prefixCls}-select`
     },
-    arrowCls () {
-      return `${prefixCls}-arrow-right`
-    },
     unitCls () {
       return `${prefixCls}-unit`
     },
+    selectOptionCls () {
+      return `${prefixCls}-select--option`
+    },
     errorCls () {
       return `${prefixCls}-error-tip`
-    },
-    errorCls2 () {
-      return `${prefixCls}-error-tip2`
     },
     fieldRules () {
       let defaultRules = [{ required: true, message: `${this.attrs.title}不能为空` }]
@@ -248,41 +193,16 @@ export default {
     this.initialValue = this.value
   },
   methods: {
-    showPicker (e) {
-      let pickerData = this.attrs.data || [],
-        selectedIndex = this.selectedIndex > -1 ? this.selectedIndex : 0,
-        pickerTitle = this.attrs.pickerTitle || '',
-        cancelBtnText = this.attrs.cancelBtnText || this.cancelBtnText || (this.form && this.form.selectCancelBtnText),
-        confirmBtnText = this.attrs.confirmBtnText || this.confirmBtnText || (this.form && this.form.selectConfirmBtnText)
-      if (this.attrs.readonly || this.attrs.disabled) return
-      if (!this.picker) {
-        this.picker = new Picker({
-          data: [pickerData],
-          selectedIndex: [selectedIndex],
-          title: pickerTitle
-        })
-        cancelBtnText && (this.picker.cancelEl.innerHTML = cancelBtnText)
-        confirmBtnText && (this.picker.confirmEl.innerHTML = confirmBtnText)
-        this.picker.on('picker.change', (index, selectedIndex) => { })
-        this.picker.on('picker.select', (selectedVal, selectedIndex) => {
-          let selectedOption = this.attrs.data[selectedIndex]
-          this.selectedIndex = selectedIndex;
-          this.$emit('input', selectedOption.value)
-          this.$emit("on-confirm", selectedOption);
-          this.validateState = ''
-          this.validateMessage = ''
-          this.validateDisabled = true
-          this.$nextTick(() => {
-            this.validate('select')
-          })
-        })
-        this.picker.on('picker.cancel', () => { })
-
-        this.$once('hook:beforeDestroy', () => {
-          this.removePicker()
-        })
-      }
-      this.picker.show()
+    onSelect (item, index, e) {
+      let selectedOption = this.attrs.data[index]
+      this.selectedIndex = index;
+      this.$emit('input', selectedOption.value)
+      this.$emit("on-confirm", selectedOption, e);
+      this.validateState = ''
+      this.validateMessage = ''
+      this.$nextTick(() => {
+        this.validate('select')
+      })
     },
     getFilterRules (trigger) {
       return this.fieldRules.filter(rule => !rule.trigger || rule.trigger.indexOf(trigger) != -1)
@@ -297,7 +217,6 @@ export default {
       }
 
       this.validateState = 'validating'
-      this.validateDisabled = false
 
       if (this.attrs.readonly) {
         this.validateState = 'success'
@@ -325,15 +244,7 @@ export default {
     resetField () {
       this.validateState = ''
       this.validateMessage = ''
-      this.validateDisabled = true
       this.$emit('input', this.initialValue)
-      this.removePicker()
-    },
-    removePicker () {
-      if (this.picker && this.picker.pickerEl) {
-        this.picker.pickerEl.parentNode.removeChild(this.picker.pickerEl);
-        this.picker = null
-      }
     },
     /* 获取表单数据 */
     getValue () {
@@ -351,7 +262,7 @@ export default {
 </script>
 
 <style lang="less">
-@selectCls: r--select;
+@selectCls: r--select3;
 
 .@{selectCls} {
   position: relative;
@@ -401,10 +312,6 @@ export default {
   &-mode-default&-text-left &-label {
     margin-right: 23px;
   }
-  &-mode-default &-select {
-    font-size: 14px;
-    line-height: 20px;
-  }
   &-label-right &-label {
     text-align: right;
   }
@@ -431,19 +338,41 @@ export default {
     position: relative;
   }
   &-select {
-    line-height: 1;
-    font-size: 14px;
-    color: #333;
     flex: 1;
     display: flex;
     align-items: center;
-    padding: 0 10px 0 0px;
-    z-index: 2;
     box-sizing: border-box;
   }
-  &-placeholder &-select {
-    color: #c8c7cc;
-    font-weight: normal;
+  &-select--option {
+    line-height: 1;
+    font-size: 12px;
+    color: #333333;
+    background: #F2F2F2;
+    height: 24px;
+    line-height: 24px;
+    padding: 0 16px;
+    border-radius: 12px;
+    position: relative;
+    margin-right: 10px;
+    &.active {
+      background: #E7F1FF;
+      color: #4084E8;
+      &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 200%;
+        height: 200%;
+        transform: scale(0.5);
+        transform-origin: left top;
+        border: 1px solid #4084E8;
+        border-radius: 24px;
+      }
+    }
+    &:last-child {
+      margin-right: 0;
+    }
   }
   &-readonly &-select {
     color: #999;
@@ -453,9 +382,6 @@ export default {
   }
   &-text-center &-select {
     justify-content: center;
-  }
-  &-arrow-right {
-    line-height: 1;
   }
   &-unit {
     font-size: 12px;
@@ -478,25 +404,6 @@ export default {
     font-size: 12px;
     color: #ed4014;
     z-index: 1;
-  }
-  &-error-tip2 {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    width: 100%;
-    line-height: 1;
-    font-size: 12px;
-    color: #ed4014;
-    z-index: 1;
-    transform: translateY(-50%);
-    box-sizing: border-box;
-  }
-  &-text-right &-error-tip2 {
-    text-align: right;
-    padding-right: 15px;
-  }
-  &-error-at-placeholder&-error &-select {
-    color: transparent;
   }
   &-children {
     padding: 0px 0 0 15px;

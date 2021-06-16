@@ -200,6 +200,9 @@ export default {
       this.resetPos()
     })
     this.removeDialogOnHashChange && this.$data.fromDlgCst && window.addEventListener('hashchange', this.remove)
+    this.removeDialogOnHashChange && this.$data.fromDlgCst && window.addEventListener('pushstate', this.remove)
+    this.removeDialogOnHashChange && this.$data.fromDlgCst && window.addEventListener('replacestate', this.remove)
+    this.removeDialogOnHashChange && this.$data.fromDlgCst && window.addEventListener('popstate', this.remove)
   },
   methods: {
     onCancel (e) {
@@ -235,6 +238,9 @@ export default {
       this.$el.remove();
       this.$destroy();
       this.removeDialogOnHashChange && this.$data.fromDlgCst && window.removeEventListener('hashchange', this.remove)
+      this.removeDialogOnHashChange && this.$data.fromDlgCst && window.removeEventListener('pushstate', this.remove)
+      this.removeDialogOnHashChange && this.$data.fromDlgCst && window.removeEventListener('replacestate', this.remove)
+      this.removeDialogOnHashChange && this.$data.fromDlgCst && window.removeEventListener('popstate', this.remove)
     },
     beforeDestroy () {
       this._remove()

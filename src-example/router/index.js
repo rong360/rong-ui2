@@ -14,6 +14,8 @@ import Range from '../views/range'
 import Input from '../views/input'
 import Select from '../views/select'
 import SelectDate from '../views/selectdate'
+import Select2 from '../views/select2'
+import Select3 from '../views/select3'
 import DatePicker from '../views/datepicker'
 import Switch from '../views/switch'
 import Checkbox from '../views/checkbox'
@@ -66,6 +68,14 @@ export default new VueRouter({
     {
       path: '/select',
       component: Select
+    },
+    {
+      path: '/select2',
+      component: Select2
+    },
+    {
+      path: '/select3',
+      component: Select3
     },
     {
       path: '/selectdate',

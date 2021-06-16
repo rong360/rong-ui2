@@ -38,6 +38,12 @@
       <li>
         <router-link to="/select">Select</router-link>
       </li>
+      <li>
+        <router-link to="/select2">Select2</router-link>
+      </li>
+      <li>
+        <router-link to="/select3">Select3</router-link>
+      </li>
        <li>
         <router-link to="/selectdate">SelectDate</router-link>
       </li>

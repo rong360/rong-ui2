@@ -2,6 +2,8 @@ import Form from './components/form/'
 import Input from './components/input/'
 import Select from './components/select/'
 import SelectDate from './components/select-date/'
+import Select2 from './components/select2/'
+import Select3 from './components/select3/'
 import DatePicker from './components/date-picker/'
 import Switch from './components/switch/'
 import Checkbox from './components/checkbox/'
@@ -23,6 +25,8 @@ const components = {
   Input,
   Select,
   SelectDate,
+  Select2,
+  Select3,
   DatePicker,
   Switch,
   Titlebar,

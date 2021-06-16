@@ -75,7 +75,7 @@ export default {
         value: this.attrs.value || '',
         valueFormat: this.attrs.valueFormat || this.valueFormat || 'yyyy/mm/dd',
         textFormat: this.attrs.textFormat || this.textFormat || 'yyyy/mm/dd',
-        placeholder: this.attrs.placeholder || this.placeholder || '',
+        placeholder: this.attrs.placeholder || this.placeholder || '请选择',
         startYear: parseInt(this.attrs.startYear || this.startYear),
         endYear: parseInt(this.attrs.endYear || this.endYear),
         offsetYear: parseInt(this.attrs.offsetYear || this.offsetYear),

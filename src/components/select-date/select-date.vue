@@ -15,10 +15,10 @@
                     ref="datePicker"></DatePicker>
         <div :class="arrowCls">
           <slot name="arrow-icon">
-            <svg width="8px"
-                 height="15px"
+            <svg width="6px"
+                 height="10px"
                  :style="arrowStyle"
-                 viewBox="0 0 8 15"
+                 viewBox="0 0 6 10"
                  version="1.1"
                  xmlns="http://www.w3.org/2000/svg"
                  xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -26,11 +26,16 @@
                  stroke-width="1"
                  fill="none"
                  fill-rule="evenodd">
-                <g transform="translate(-352.000000, -60.000000)"
+                <g transform="translate(-350.000000, -20.000000)"
                    :fill="arrowStyle.color || '#C8C7CC'">
-                  <g transform="translate(0.000000, 45.000000)">
-                    <polygon transform="translate(356.000000, 22.500000) rotate(180.000000) translate(-356.000000, -22.500000) "
-                             points="352 22.5 359.396709 15.5 360 16.0561744 353.208809 22.5 360 28.944874 359.396709 29.5"></polygon>
+                  <g>
+                    <g transform="translate(346.000000, 18.000000)">
+                      <g transform="translate(7.000000, 7.000000) rotate(-270.000000) translate(-7.000000, -7.000000) translate(2.750000, 4.500000)">
+                        <path d="M6.53188022,3.0259328 L3.02129527,6.5321515 C2.73046889,6.82261617 2.25894616,6.82261617 1.96811978,6.5321515 C1.67729341,6.24168683 1.67729341,5.77075056 1.96811978,5.48028589 L4.95211699,2.5 L1.96811978,-0.480285891 C1.67729341,-0.770750558 1.67729341,-1.24168683 1.96811978,-1.5321515 C2.25894616,-1.82261617 2.73046889,-1.82261617 3.02129527,-1.5321515 L6.53188022,1.9740672 C6.82270659,2.26453186 6.82270659,2.73546814 6.53188022,3.0259328 Z"
+                              fill-rule="nonzero"
+                              transform="translate(4.250000, 2.500000) rotate(-90.000000) translate(-4.250000, -2.500000) "></path>
+                      </g>
+                    </g>
                   </g>
                 </g>
               </g>
@@ -162,7 +167,7 @@ export default {
       return style
     },
     arrowStyle () {
-      let style = { color: '#C8C7CC', width: '8px', height: '15px' }
+      let style = { color: '#666', width: '0.32rem' }
       return this.selectArrowStyle || (this.form && this.form.selectArrowStyle) || style
     },
     contentCls () {
@@ -273,11 +278,18 @@ export default {
   position: relative;
   &-inner {
     border-bottom: 1px solid #f2f2f4;
-    padding-right: 15px;
-    height: 46px;
     display: flex;
     box-sizing: border-box;
     align-items: center;
+    padding-right: 15px;
+    position: relative;
+  }
+  &-mode-default &-inner {
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+  &-mode-to-top &-inner {
+    height: 46px;
   }
   &-mode-to-top {
     margin-top: 20px;
@@ -300,20 +312,22 @@ export default {
   &-mode-to-top &-select {
     font-size: 16px;
     line-height: 21px;
-    color: #757575;
+    color: #181c48;
   }
   &-mode-default &-label {
     font-size: 14px;
     color: #333;
+    line-height: 20px;
+  }
+  &-mode-default&-text-left &-label {
+    margin-right: 23px;
   }
   &-mode-default &-select {
     font-size: 14px;
     line-height: 20px;
-    color: #333;
   }
   &-label-right &-label {
     text-align: right;
-    padding-right: 10px;
   }
   &-label-top {
     padding-top: 14px;
@@ -326,8 +340,7 @@ export default {
   &-label {
     line-height: 1;
     box-sizing: border-box;
-    white-space: nowrap;
-    padding-right: 10px;
+    margin-right: 10px;
     transition: all 0.3s ease-out;
   }
   &-content {
@@ -348,7 +361,8 @@ export default {
     padding: 0 10px 0 0px;
   }
   &-placeholder &-select {
-    color: #c5c8ce;
+    color: #c8c7cc;
+    font-weight: normal;
   }
   &-readonly &-select {
     color: #999;

@@ -27,6 +27,9 @@ export default {
       sourceCode: sourceCode
     }
   },
+  mounted () {
+    this.$loading()
+  },
   methods: {
     showLoading0 () {
       var loading = this.$loading();

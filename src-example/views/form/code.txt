@@ -2,13 +2,16 @@
   <div class="form-example">
     <Titlebar theme="b"
               @on-back="onBack">Form</Titlebar>
-    <Form :select-arrow-style="{color: '#C8C7CC'}"
+    <Form :select-arrow-style="{color: '#666', width: '0.32rem'}"
           :input-clear-style="{color: '#C8C7CC'}"
           select-cancel-btn-text="cancel"
           select-confirm-btn-text="confirm"
           @on-iscompleted="setIsCompleted"
-          text-position="right"
+          text-position="left"
+          label-position="left"
+          label-width="4.48rem"
           placeholder="请输入"
+          select-placeholder="请选择"
           ref="form">
       <Input :attrs="user"
              v-model="user.value"></Input>
@@ -24,6 +27,13 @@
              v-model="IDCard.value"></Input>
       <Select :attrs="loanTerm"
               v-model="loanTerm.value"></Select>
+      <Select2 :attrs="contacts"
+               v-model="contacts.value"></Select2>
+      <Select2 :attrs="contacts2"
+               v-model="contacts2.value"></Select2>
+      <Select3 :attrs="shebao"
+               v-model="shebao.value"
+               ref="select1"></Select3>
       <SelectDate :attrs="birthday"
                   v-model="birthday.value"></SelectDate>
       <div class="btn-wrap">
@@ -149,11 +159,36 @@ export default {
         "placeholder": "",
         "readonly": 0
       },
+      shebao: {
+        "rely_policy_id": 0,
+        "id": "635",
+        "category_id": "1",
+        "title": "本地公积金",
+        "var_name": "user_social_security",
+        "type": "2",
+        "verify_type": "0",
+        "textPosition": 'right',
+        "data": [{
+          "value": "1",
+          "text": "有",
+          "rely": []
+        }, {
+          "value": "2",
+          "text": "无",
+          "rely": []
+        }],
+        "unit": "",
+        "material_type": "101",
+        "info_property": "1",
+        "level": 1,
+        "desc": "",
+        "value": "",
+        "readonly": 0
+      },
       loanTerm: {
         title: "贷款期限",
         name: "loan_term",
         value: '',
-        placeholder: "请选择贷款期限",
         data: [{
           text: "1个月",
           value: "1"
@@ -176,6 +211,10 @@ export default {
             unit: "个月",
             placeholder: "请输入您期望的贷款期限",
             rules: [{
+              required: true,
+              message: '贷款期限不能为空'
+            },
+            {
               validator (rule, value, callback) {
                 let component = self.fields.find(component => component.$options.propsData.attrs.name == 'm_term')
                 if (value > 12) {
@@ -204,8 +243,61 @@ export default {
           }
         }]
       },
+      contacts: {
+        title: "联系人",
+        name: "contacts",
+        value: '',
+        data: [{
+          text: "父母",
+          value: "1"
+        }, {
+          text: "配偶",
+          value: '2'
+
+        }, {
+          text: "子女",
+          value: "3"
+        }, {
+          text: "兄弟姐妹",
+          value: "4"
+        }]
+      },
+      contacts2: {
+        title: "联系人2",
+        name: "contacts2",
+        value: '',
+        data: [{
+          text: "父母",
+          value: "1"
+        }, {
+          text: "配偶",
+          value: '2'
+
+        }, {
+          text: "子女",
+          value: "3"
+        }, {
+          text: "兄弟姐妹",
+          value: "4"
+        }, {
+          text: "朋友",
+          value: "5"
+        }, {
+          text: "同学",
+          value: "6"
+        }, {
+          text: "老乡",
+          value: "7"
+        }, {
+          text: "战友",
+          value: "9"
+        }, {
+          text: "车友",
+          value: "10"
+        }]
+      },
       birthday: {
-        title: '妹妹出生日期',
+        title: '现单位工作年限(年)',
         name: 'birthday',
         value: '',
         valueFormat: 'yyyy/mm/dd',
@@ -306,6 +398,9 @@ export default {
   }
 }
 .form-example {
+  .r--form {
+    padding: 0 15px;
+  }
   .result {
     font-size: 14px;
     color: #333333;

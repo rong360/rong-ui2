@@ -43,6 +43,21 @@
       <div v-if="attrs.unit"
            :class="unitCls">{{attrs.unit}}</div>
       <slot name="append"></slot>
+      <action-sheet v-model="showActionSheet"
+                    :title="attrs.pickerTitle"
+                    :showCancelBtn="false"
+                    :showCloseBtn="true"
+                    :class="pickerCls"
+                    ref="picker"
+                    @on-close="closePicker"
+                    @on-mask="clickMask">
+        <div :class="pickerListCls"
+             ref="list">
+          <div v-for="(item, index) in attrs.data"
+               :class="[pickerItemCls, {active: index == selectedIndex}]"
+               @click="confirmPicker(item, index, $event)">{{item.text}}</div>
+        </div>
+      </action-sheet>
     </div>
     <div :class="wrapChildrenCls"
          v-if="children && children.length">
@@ -61,12 +76,12 @@
 
 <script>
 import AsyncValidator from 'async-validator'
-import Picker from 'better-picker'
 import { oneOf } from '../../utils/assist.js'
-const prefixCls = 'r--select'
+import ActionSheet from '../action-sheet/action-sheet'
+const prefixCls = 'r--select2'
 
 export default {
-  name: 'Select',
+  name: 'Select2',
   props: {
     attrs: {
       type: Object,
@@ -124,8 +139,9 @@ export default {
       initialValue: '',
       validateState: '',
       validateMessage: '',
-      validateDisabled: false,
-      selectedIndex: -1
+      selectedIndex: -1,
+      showActionSheet: false,
+      lastScrollTop: -1
     }
   },
   inject: {
@@ -135,8 +151,6 @@ export default {
     "attrs.data": function () {
       this.validateState = ''
       this.validateMessage = ''
-      this.validateDisabled = true
-      this.removePicker()
     }
   },
   computed: {
@@ -228,6 +242,23 @@ export default {
     unitCls () {
       return `${prefixCls}-unit`
     },
+    pickerCls () {
+      return `${prefixCls}-picker`
+    },
+    pickerTitleCls () {
+      return `${prefixCls}-picker--title`
+    },
+    pickerListCls () {
+      return [
+        `${prefixCls}-picker--list`,
+        {
+          'scroll-area': this.attrs.data.length > 6
+        }
+      ]
+    },
+    pickerItemCls () {
+      return `${prefixCls}-picker--item`
+    },
     errorCls () {
       return `${prefixCls}-error-tip`
     },
@@ -247,42 +278,40 @@ export default {
     this.form && this.form.fields.push(this)
     this.initialValue = this.value
   },
+  components: { ActionSheet },
   methods: {
-    showPicker (e) {
-      let pickerData = this.attrs.data || [],
-        selectedIndex = this.selectedIndex > -1 ? this.selectedIndex : 0,
-        pickerTitle = this.attrs.pickerTitle || '',
-        cancelBtnText = this.attrs.cancelBtnText || this.cancelBtnText || (this.form && this.form.selectCancelBtnText),
-        confirmBtnText = this.attrs.confirmBtnText || this.confirmBtnText || (this.form && this.form.selectConfirmBtnText)
+    showPicker () {
       if (this.attrs.readonly || this.attrs.disabled) return
-      if (!this.picker) {
-        this.picker = new Picker({
-          data: [pickerData],
-          selectedIndex: [selectedIndex],
-          title: pickerTitle
-        })
-        cancelBtnText && (this.picker.cancelEl.innerHTML = cancelBtnText)
-        confirmBtnText && (this.picker.confirmEl.innerHTML = confirmBtnText)
-        this.picker.on('picker.change', (index, selectedIndex) => { })
-        this.picker.on('picker.select', (selectedVal, selectedIndex) => {
-          let selectedOption = this.attrs.data[selectedIndex]
-          this.selectedIndex = selectedIndex;
-          this.$emit('input', selectedOption.value)
-          this.$emit("on-confirm", selectedOption);
-          this.validateState = ''
-          this.validateMessage = ''
-          this.validateDisabled = true
-          this.$nextTick(() => {
-            this.validate('select')
-          })
-        })
-        this.picker.on('picker.cancel', () => { })
 
-        this.$once('hook:beforeDestroy', () => {
-          this.removePicker()
-        })
-      }
-      this.picker.show()
+      this.showActionSheet = true
+
+      this.$nextTick(() => {
+        if (this.lastScrollTop > -1) {
+          this.$refs.list.scrollTop = this.lastScrollTop
+        } else {
+          let activeEl = this.$refs.picker.$el.querySelector('.active')
+          activeEl && activeEl.scrollIntoView()
+        }
+      })
+    },
+    confirmPicker (item, index, e) {
+      let selectedOption = this.attrs.data[index]
+      this.selectedIndex = index;
+      this.$emit('input', selectedOption.value)
+      this.$emit("on-confirm", selectedOption, e);
+      this.showActionSheet = false
+      this.validateState = ''
+      this.validateMessage = ''
+      this.lastScrollTop = this.$refs.list.scrollTop
+      this.$nextTick(() => {
+        this.validate('select')
+      })
+    },
+    closePicker () {
+      this.$emit('on-cancel')
+    },
+    clickMask () {
+      this.$emit('on-mask')
     },
     getFilterRules (trigger) {
       return this.fieldRules.filter(rule => !rule.trigger || rule.trigger.indexOf(trigger) != -1)
@@ -297,7 +326,6 @@ export default {
       }
 
       this.validateState = 'validating'
-      this.validateDisabled = false
 
       if (this.attrs.readonly) {
         this.validateState = 'success'
@@ -325,15 +353,7 @@ export default {
     resetField () {
       this.validateState = ''
       this.validateMessage = ''
-      this.validateDisabled = true
       this.$emit('input', this.initialValue)
-      this.removePicker()
-    },
-    removePicker () {
-      if (this.picker && this.picker.pickerEl) {
-        this.picker.pickerEl.parentNode.removeChild(this.picker.pickerEl);
-        this.picker = null
-      }
     },
     /* 获取表单数据 */
     getValue () {
@@ -351,7 +371,7 @@ export default {
 </script>
 
 <style lang="less">
-@selectCls: r--select;
+@selectCls: r--select2;
 
 .@{selectCls} {
   position: relative;
@@ -461,6 +481,46 @@ export default {
     font-size: 12px;
     line-height: 1;
     padding-left: 5px;
+  }
+  &-picker .action-sheet--content {
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    overflow: hidden;
+  }
+  &-picker .action-sheet--header {
+    background-color: #f9fafb;
+    line-height: 60px;
+    font-size: 18px;
+    min-height: 60px;
+  }
+  &-picker .action-sheet--close {
+    right: inherit;
+    left: 15px;
+    top: 23px;
+  }
+  &-picker--list {
+    max-height: 325px;
+    overflow-y: scroll;
+  }
+  &-picker--item {
+    line-height: 50px;
+    background-color: #fff;
+    text-align: center;
+    font-size: 16px;
+    color: #333;
+    position: relative;
+    &.active {
+      color: #4080e8;
+    }
+    &:after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 15px;
+      right: 15px;
+      height: 1px;
+      background-color: #f2f2f4;
+    }
   }
   &-error &-inner {
     border-color: #ed4014;

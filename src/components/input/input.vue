@@ -11,7 +11,13 @@
            v-if="attrs.prepend"
            v-html="attrs.prepend"></div>
       <div :class="contentCls">
-        <input :class="inputCls"
+        <div v-if="!showInput"
+             :class="inputCls"
+             :disabled="attrs.disabled"
+             :readonly="!!attrs.readonly"
+             @click="onClickInputMask">{{value || placeholderText}}</div>
+        <input v-if="showInput"
+               :class="inputCls"
                :value="value"
                :type="inputType"
                :pattern="inputPattern"
@@ -74,7 +80,8 @@
          :class="emailPanel">
       <div v-for="emailSuffix in filteredEmailList"
            @click="setEmail"
-           :class="emailPanelItem">{{value.split('@')[0] + '@' + emailSuffix}}</div>
+           :class="emailPanelItem"
+           v-html="(value.split('@')[0] + '@' + emailSuffix).replace(value, function(text){ return `<font>${text}</font>` })"></div>
     </div>
   </div>
 </template>
@@ -271,7 +278,8 @@ export default {
       focused: false,
       isAndroid,
       isBackSpace: false, // 键盘后退键
-      showEmailPan: false
+      showEmailPan: false,
+      showInput: false
     }
   },
   watch: {
@@ -298,8 +306,8 @@ export default {
       return required
     },
     wrapCls () {
-      let labelPosition = this.labelPosition || this.form && this.form.labelPosition || 'left'
-      let textPosition = this.textPosition || this.form && this.form.textPosition || 'left'
+      let labelPosition = this.labelPosition || this.attrs.labelPosition || this.form && this.form.labelPosition || 'left'
+      let textPosition = this.textPosition || this.attrs.textPosition || this.form && this.form.textPosition || 'left'
       let mode = this.mode || this.form && this.form.mode || 'default'
       let className = this.className || this.attrs.className
 
@@ -319,7 +327,8 @@ export default {
           [`${prefixCls}-email`]: this.attrs.type == 'email',
           [`${prefixCls}-error-at-placeholder`]: this.isErrorAtPlaceholder,
           [`${prefixCls}-required`]: this.isRequired,
-          [`${prefixCls}-readonly`]: !!this.attrs.readonly
+          [`${prefixCls}-readonly`]: !!this.attrs.readonly,
+          [`${prefixCls}-placeholder`]: this.value == ''
         }
       ]
     },
@@ -419,7 +428,7 @@ export default {
       return arr
     },
     showEmailPanel () {
-      let currEmailSuffix = this.value.split("@")[1]
+      let currEmailSuffix = String(this.value).split("@")[1]
       return this.attrs.type == 'email' &&
         this.showEmailPan &&
         (this.filteredEmailList.length > 1 ||
@@ -476,6 +485,13 @@ export default {
       this.validateDisabled = true
       this.$emit('input', this.initialValue)
     },
+    onClickInputMask () {
+      if (this.attrs.readonly) return
+      this.showInput = true
+      this.$nextTick(() => {
+        this.$refs.input.focus()
+      })
+    },
     onFieldBlur (e) {
       let inputValue = e.target.value
       this.$emit('on-blur', e)
@@ -507,6 +523,7 @@ export default {
         if (this.attrs.type == 'email') this.showEmailPan = false
         this.validate('blur')
         if (inputValue == '') { e.target.value = '' }
+        this.showInput = false
       }, 200)
     },
     onFieldChange (e) {
@@ -544,7 +561,7 @@ export default {
       } else if (this.attrs.type == 'IDCard') {
         inputValue = IDCardClearNonNumbers(inputValue)
       }
-      if (this.attrs.type != 'text') {
+      if (e.target.value == '' || e.target.value != inputValue) {
         e.target.value = inputValue
       }
       this.$emit('input', inputValue)
@@ -560,16 +577,10 @@ export default {
     },
     onFieldKeyup (e) {
       if (this.attrs.type == 'number' && !this.isAndroid && this.value == '' && this.prevValue == '' && e.keyCode != 189) e.target.value = ''
-      this.isBackSpace = false
-      // 修复整型数字最后一位小数点不能禁用的问题
-      if (this.attrs.type == 'number' && this.attrs.fixed == 0) {
-        let v = e.target.value
-        e.target.value = ''
-        e.target.value = v
-      }
       this.$emit('on-keyup', e)
     },
     onFieldKeydown (e) {
+      this.isBackSpace = false
       this.$emit('on-keydown', e)
     },
     onFieldKeydownDelete (e) {
@@ -616,11 +627,18 @@ export default {
   position: relative;
   &-inner {
     border-bottom: 1px solid #f2f2f4;
-    padding-right: 15px;
-    height: 46px;
     display: flex;
     box-sizing: border-box;
     align-items: center;
+    padding-right: 15px;
+    position: relative;
+  }
+  &-mode-default &-inner {
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+  &-mode-to-top &-inner {
+    height: 46px;
   }
   &-mode-to-top {
     margin-top: 20px;
@@ -661,6 +679,10 @@ export default {
   &-mode-default &-label {
     font-size: 14px;
     color: #333;
+    line-height: 20px;
+  }
+  &-mode-default&-text-left &-label {
+    margin-right: 23px;
   }
   &-mode-default &-input {
     font-size: 14px;
@@ -682,8 +704,7 @@ export default {
   &-label {
     line-height: 1;
     box-sizing: border-box;
-    white-space: nowrap;
-    padding-right: 10px;
+    margin-right: 10px;
     transition: all 0.3s ease-out;
   }
   &-prepend,
@@ -716,6 +737,7 @@ export default {
     width: 100%;
     background-color: transparent;
     z-index: 2;
+    min-height: 20px;
     &[readonly],
     &[disabled] {
       color: #999;
@@ -723,6 +745,10 @@ export default {
     &::placeholder {
       color: #c5c8ce;
     }
+  }
+  &-placeholder &-input {
+    color: #c8c7cc;
+    font-weight: normal;
   }
   &-text-right &-input {
     text-align: right;
@@ -803,6 +829,9 @@ export default {
     line-height: 30px;
     font-size: 14px;
     color: #333;
+    font {
+      color: #4084E8;
+    }
   }
 }
 </style>

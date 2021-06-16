@@ -1,6 +1,19 @@
 import Vue from 'vue'
 import Dialog from './dialog.vue'
 
+const bindEventListener = function (type) {
+  const historyEvent = history[type];
+  return function () {
+    const newEvent = historyEvent.apply(this, arguments);
+    const e = new Event(type.toLowerCase()); // pushState -> pushstate
+    e.arguments = arguments;
+    window.dispatchEvent(e);
+    return newEvent;
+  };
+};
+history.pushState = bindEventListener('pushState');
+history.replaceState = bindEventListener('replaceState');
+
 let DialogConstructor = Vue.extend(Dialog);
 
 let dlgCst = function (options) {

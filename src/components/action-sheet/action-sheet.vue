@@ -1,25 +1,47 @@
 <template>
-  <div v-if="showWrap" :class="wrapCls">
-    <transition appear name="action-sheet--fade">
-      <div v-if="show" :class="maskCls" @click="show = false"></div>
+  <div v-if="showWrap"
+       :class="wrapCls">
+    <transition appear
+                name="action-sheet--fade">
+      <div v-if="show"
+           :class="maskCls"
+           v-preventscroll
+           @click="handleMask"></div>
     </transition>
-    <transition appear name="action-sheet--slideInUp" v-on:after-leave="afterLeave">
-      <div v-if="show" :class="contentCls">
+    <transition appear
+                name="action-sheet--slideInUp"
+                v-on:enter="enter"
+                v-on:after-leave="afterLeave">
+      <div v-if="show"
+           v-preventscroll
+           :class="contentCls">
+        <div :class="headerCls"
+             v-html="title"></div>
+        <div v-if="showCloseBtn"
+             :class="closeCls"
+             @click="handleClose"></div>
         <slot>
-          <div v-if="title" :class="headerCls">{{title}}</div>
-          <div v-if="showCloseBtn" :class="closeCls" @click="handleClose"></div>
-          <div :class="listCls">
-            <div v-for="(item, index) in actions" :style="styleCls(item)" :class="itemCls(item)" @click="handleSelect(item, index)">{{item.name}}</div>
+          <div :class="listCls"
+               ref="list">
+            <div v-for="(item, index) in actions"
+                 :style="styleCls(item)"
+                 :class="itemCls(item)"
+                 @click="handleSelect(item, index)">{{item.name}}</div>
           </div>
-          <div v-if="showCancelBtn" :class="gapCls"></div>
-          <div v-if="showCancelBtn" :class="cancelCls" @click="handleCancel">{{cancelBtnText}}</div>
         </slot>
+        <div v-if="showCancelBtn"
+             :class="gapCls"></div>
+        <div v-if="showCancelBtn"
+             :class="cancelCls"
+             @click="handleCancel">{{cancelBtnText}}</div>
+
       </div>
     </transition>
   </div>
 </template>
 
 <script>
+import preventscroll from '../../directives/preventscroll'
 const prefixCls = 'action-sheet'
 
 export default {
@@ -50,7 +72,8 @@ export default {
   data () {
     return {
       showWrap: false,
-      show: false
+      show: false,
+      isScrollY: false
     }
   },
   computed: {
@@ -72,7 +95,12 @@ export default {
       return (item) => item
     },
     listCls () {
-      return `${prefixCls}--list`
+      return [
+        `${prefixCls}--list`,
+        {
+          'scroll-area': this.isScrollY
+        }
+      ]
     },
     itemCls () {
       return (item) => {
@@ -107,21 +135,39 @@ export default {
           this.show = false
         }
       },
-      deep: true
+      immediate: true
     }
+  },
+  directives: {
+    preventscroll
+  },
+  mounted () {
+    document.body.appendChild(this.$el)
+  },
+  beforeDestroy () {
+    document.body.removeChild(this.$el)
   },
   methods: {
     handleSelect (item, index) {
       if (item.disabled) return
       this.$emit('on-select', item, index)
     },
-    handleClose () {
+    handleClose (e) {
       this.show = false
       this.$emit('on-close')
     },
-    handleCancel () {
+    handleCancel (e) {
       this.show = false
-      this.$emit('on-cancel')
+      this.$emit('on-cancel', e)
+    },
+    handleMask (e) {
+      this.$emit('on-mask', e)
+    },
+    enter () {
+      let listEl = this.$refs.list
+      if (listEl) {
+        this.isScrollY = listEl.scrollHeight > listEl.offsetHeight
+      }
     },
     afterLeave: function (el) {
       this.showWrap = false
@@ -162,12 +208,12 @@ export default {
     background-color: #f7f8fa;
   }
   &--list {
-    max-height: 450px;
+    max-height: 325px;
     overflow-y: scroll;
   }
   &--item,
   &--cancel {
-    padding: 14px 16px;
+    line-height: 50px;
     font-size: 16px;
     text-align: center;
   }
@@ -182,15 +228,15 @@ export default {
     font-size: 16px;
     line-height: 48px;
     text-align: center;
-    font-weight: 500;
   }
   &--close {
     position: absolute;
     right: 15px;
-    top: 12px;
-    width: 16px;
-    height: 16px;
+    top: 13px;
+    width: 14px;
+    height: 14px;
     overflow: hidden;
+    z-index: 2;
     &:before,
     &:after {
       display: block;
@@ -198,7 +244,7 @@ export default {
       width: 200%;
       height: 1px;
       overflow: hidden;
-      background-color: #c8c9cc;
+      background-color: #999;
       position: absolute;
       top: 50%;
       left: 50%;
