@@ -19,6 +19,7 @@
     </Titlebar>
     <div>
       <p v-for="item in list">{{item}}</p>
+      <p><input type="text"></p>
     </div>
     <ViewSource :code="sourceCode" />
     <Button slot="footer">提交</Button>

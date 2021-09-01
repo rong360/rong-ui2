@@ -102,6 +102,11 @@ export default {
   beforeMount () {
     this.initPickerData()
   },
+  watch: {
+    'attrs.value': function () {
+      this.initPickerData()
+    }
+  },
   methods: {
     initPickerData () {
       let { columnsOrder, value } = this.conf
@@ -146,6 +151,7 @@ export default {
         let pickerTitle = this.attrs.pickerTitle || this.pickerTitle
         let pickerCancelBtnText = this.attrs.pickerCancelBtnText || this.pickerCancelBtnText || (this.form && this.form.datePickerCancelBtnText)
         let pickerConfirmBtnText = this.attrs.pickerConfirmBtnText || this.pickerConfirmBtnText || (this.form && this.form.datePickerConfirmBtnText)
+        let mode = this.attrs.pickerMode || this.pickerMode || this.form && this.form.mode || 'default'
         this.picker = new Picker({
           data: pickerData,
           selectedIndex: self.pickerSelectedIndex,
@@ -153,6 +159,7 @@ export default {
         });
         pickerCancelBtnText && (this.picker.cancelEl.innerHTML = pickerCancelBtnText)
         pickerConfirmBtnText && (this.picker.confirmEl.innerHTML = pickerConfirmBtnText)
+        this.picker.pickerEl.setAttribute('mode', mode)
         this.picker.on('picker.change', function (index, selectedIndex) {
           self.pickerSelectedIndex[index] = selectedIndex;
 
@@ -282,5 +289,9 @@ export default {
     color: #c8c7cc;
   }
   min-height: 20px;
+}
+.picker[mode='default'] .confirm,
+.picker[mode='default'] .wheel-item[style~='rotateX(0deg);'] {
+  color: #4080e8 !important;
 }
 </style>

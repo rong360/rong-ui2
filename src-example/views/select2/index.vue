@@ -50,6 +50,7 @@ export default {
         value: '',
         cancelBtnText: 'cancel',
         confirmBtnText: 'confirm',
+        pickerTitle: '标题',
         data: [
           {
             text: '企业主',

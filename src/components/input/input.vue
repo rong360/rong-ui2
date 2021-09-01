@@ -44,25 +44,15 @@
         <a v-show="showClear"
            :class="clearCls"
            @click.prevent.stop="onClear"
-           ref="clear"><svg width="13px"
-               height="13px"
-               :style="clearStyle"
-               viewBox="0 0 13 13"
-               version="1.1"
-               xmlns="http://www.w3.org/2000/svg"
-               xmlns:xlink="http://www.w3.org/1999/xlink">
-            <g stroke="none"
-               stroke-width="1"
-               fill="none"
-               fill-rule="evenodd">
-              <g transform="translate(-347.000000, -16.000000)"
-                 :fill="clearStyle.color"
-                 fill-rule="nonzero">
-                <path d="M359.127301,19.2498723 C358.537222,18.2437191 357.756193,17.4627605 356.749987,16.8726113 C355.755019,16.2890502 354.673613,16 353.499991,16 C352.326369,16 351.241123,16.2824796 350.234952,16.8726113 C349.239967,17.4561724 348.462778,18.2437191 347.872682,19.2498723 C347.289173,20.2449454 347,21.326369 347,22.4999031 C347,23.6736134 347.282603,24.7587186 347.872682,25.7650303 C348.45619,26.7599449 349.239967,27.5436339 350.234952,28.1272126 C351.24114,28.7173618 352.326387,28.9999824 353.499991,28.9999824 C354.673596,28.9999824 355.755019,28.7107737 356.749987,28.1272126 C357.756175,27.5370634 358.543775,26.7599449 359.127301,25.7650303 C359.717397,24.7587186 360,23.6736134 360,22.4999031 C360,21.326369 359.710827,20.2449454 359.127301,19.2498723 Z M356.644682,24.862244 L355.847236,25.6446647 L353.500009,23.2823238 L351.1528,25.6446647 L350.355353,24.862244 L352.717623,22.4999031 L350.355353,20.1526586 L351.137756,19.3553177 L353.500009,21.7175 L355.847218,19.3553177 L356.644665,20.1526586 L354.282394,22.4999031 L356.644682,24.862244 Z"
-                      id="Shape-Copy"></path>
-              </g>
+           ref="clear"><svg width="14px" height="14px" :style="clearStyle" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g transform="translate(-346.000000, -238.000000)" :fill="clearStyle.color">
+            <g transform="translate(346.000000, 238.000000)">
+                <path d="M7,0 C3.13354657,0 0,3.13354657 0,7 C0,10.8664534 3.13354657,14 7,14 C10.8664534,14 14,10.8664534 14,7 C14,3.13354657 10.8664534,0 7,0 Z M9.97021324,4.68998284 L7.66019608,7 L9.97021324,9.31001716 C10.1500343,9.49390441 10.1472721,9.78900245 9.96331618,9.97021324 C9.78215686,10.1472721 9.49115931,10.1472721 9.31001716,9.97021324 L7,7.66019608 L4.68998284,9.97021324 C4.50609559,10.1500343 4.21099755,10.1472721 4.02978676,9.96331618 C3.85272794,9.78215686 3.85272794,9.49115931 4.02978676,9.31001716 L6.33980392,7 L4.02978676,4.68998284 C3.84996569,4.50609559 3.85272794,4.21099755 4.03668382,4.02978676 C4.21784314,3.85272794 4.50884069,3.85272794 4.68998284,4.02978676 L7,6.33980392 L9.31001716,4.02978676 C9.49390441,3.84996569 9.78900245,3.85272794 9.97021324,4.03668382 C10.1472721,4.21784314 10.1472721,4.50884069 9.97021324,4.68998284 Z" id="Fill-1"></path>
             </g>
-          </svg></a>
+        </g>
+    </g>
+</svg></a>
       </div>
       <div v-if="attrs.unit"
            :class="unitCls">{{attrs.unit}}</div>
@@ -357,7 +347,7 @@ export default {
       return this.attrs.placeholder || this.placeholder || (this.form && this.form.placeholder) || ''
     },
     clearStyle () {
-      let style = { color: '#999999' }
+      let style = { color: '#C8C7CC' }
       return this.inputClearStyle || (this.form && this.form.inputClearStyle) || style
     },
     contentCls () {
@@ -419,6 +409,9 @@ export default {
       let emailList = this.attrs.emailList || [],
         emailSuffix = this.value.split('@')[1],
         arr = []
+      if (!emailSuffix && this.value.length) {
+        return emailList
+      }
       for (var i = 0; i < emailList.length; i++) {
         let email = emailList[i].replace('@', '')
         if (email.indexOf(emailSuffix) > -1) {
@@ -738,6 +731,7 @@ export default {
     background-color: transparent;
     z-index: 2;
     min-height: 20px;
+    word-break: break-all;
     &[readonly],
     &[disabled] {
       color: #999;
@@ -758,6 +752,9 @@ export default {
   }
   &-text-center &-input {
     text-align: center;
+  }
+  &-show-clear &-input {
+    padding-right: 20px;
   }
   &-unit {
     font-size: 14px;

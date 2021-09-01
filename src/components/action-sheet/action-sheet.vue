@@ -161,6 +161,7 @@ export default {
       this.$emit('on-cancel', e)
     },
     handleMask (e) {
+      this.show = false
       this.$emit('on-mask', e)
     },
     enter () {

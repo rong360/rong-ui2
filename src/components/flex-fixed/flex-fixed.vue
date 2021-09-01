@@ -10,7 +10,7 @@
           @scroll.passive="onScroll">
       <slot></slot>
     </main>
-    <footer>
+    <footer v-show="showFooter">
       <slot name="footer"></slot>
     </footer>
   </div>
@@ -31,7 +31,9 @@ export default {
         startX: 0,
         startY: 0,
         direction: ''
-      }
+      },
+      showFooter: true,
+      docHeight: document.documentElement.clientHeight
     }
   },
   computed: {
@@ -46,6 +48,9 @@ export default {
   },
   directives: {
     preventscroll
+  },
+  mounted () {
+    this.hideFooterOnKeyboardShow()
   },
   methods: {
     onScroll (e) {
@@ -86,6 +91,23 @@ export default {
         direction = 'up'
       }
       return direction
+    },
+    hideFooterOnKeyboardShow () {
+      let self = this
+      function hideFooterOnScroll () {
+        let scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+        self.showFooter = scrollTop == 0
+      }
+      function hideFooterOnResize () {
+        let docHeight = document.documentElement.clientHeight
+        self.showFooter = docHeight == self.docHeight
+      }
+      document.addEventListener('scroll', hideFooterOnScroll, false)
+      window.addEventListener('resize', hideFooterOnResize, false)
+      this.$once('hook:beforeDestroy', function () {
+        document.removeEventListener('scroll', hideFooterOnScroll, false)
+        window.addEventListener('resize', hideFooterOnResize, false)
+      })
     }
   }
 }
