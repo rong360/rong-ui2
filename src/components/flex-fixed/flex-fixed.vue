@@ -22,6 +22,12 @@ const prefixCls = 'r--flexfixed'
 
 export default {
   name: 'FlexFixed',
+  props: {
+    hideFooterOnKeyboardShow: {
+      type: Boolean,
+      default: false
+    }
+  },
   data () {
     return {
       mainScrollTop: 0,
@@ -50,7 +56,7 @@ export default {
     preventscroll
   },
   mounted () {
-    this.hideFooterOnKeyboardShow()
+    this.hideFooterOnKeyboardShow && this.hideFooterOnKeyboardPopup()
   },
   methods: {
     onScroll (e) {
@@ -92,7 +98,7 @@ export default {
       }
       return direction
     },
-    hideFooterOnKeyboardShow () {
+    hideFooterOnKeyboardPopup () {
       let self = this
       function hideFooterOnScroll () {
         let scrollTop = document.documentElement.scrollTop || document.body.scrollTop

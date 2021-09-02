@@ -1,5 +1,6 @@
 <template>
-  <FlexFixed @on-scroll="onScroll"
+  <FlexFixed :hideFooterOnKeyboardShow="true"
+             @on-scroll="onScroll"
              @on-scroll-debounce="onScrollDebounce">
     <Titlebar theme="b"
               slot="header"
