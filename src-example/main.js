@@ -25,9 +25,9 @@ Vue.use(rongUI2)
 
 Vue.component('ViewSource', ViewSource)
 
-// 开启debug模式
+// 开启debug模式#3152F2
 Vue.config.debug = true;
-
+// Vue.prototype.checkCircleTwoToneColor = '#3152F2'
 Vue.prototype.$fetch = fetch;
 window._app = new Vue();
 

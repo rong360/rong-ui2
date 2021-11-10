@@ -3,20 +3,23 @@
     <Titlebar theme="b"
               @on-back="onBack">Checkbox</Titlebar>
     <div class="fs-14">一，单个复选框，绑定到布尔值：</div>
-    <Checkbox v-model="checked">北京</Checkbox>
+    <Checkbox v-model="checked" shape="circle">北京</Checkbox>
     <div class="fs-14">{{checked}}</div>
+
 
     <br><br>
     <div class="fs-14">二，多个复选框，绑定到同一个数组：</div>
     <Checkbox v-model="fruitList" value="apple">苹果</Checkbox>
     <Checkbox v-model="fruitList" value="pear">梨</Checkbox>
     <Checkbox v-model="fruitList" value="banana">香蕉</Checkbox>
+    <Checkbox v-model="fruitList" value="orange">橘子</Checkbox>
     <div class="fs-14">{{fruitList}}</div>
 
     <br>
     <Checkbox v-model="fruitList" value="apple" shape="circle">苹果</Checkbox>
-    <Checkbox v-model="fruitList" value="pear" shape="circle">梨</Checkbox>
-    <Checkbox v-model="fruitList" value="banana" shape="circle">香蕉</Checkbox>
+    <Checkbox v-model="fruitList" value="pear" shape="circle" iconStyle="font-size: 25px; color: red">梨</Checkbox>
+    <Checkbox v-model="fruitList" value="banana" shape="circle" checkCircleTwoToneColor='red'>香蕉</Checkbox>
+    <Checkbox v-model="fruitList" value="orange" shape="circle">橘子</Checkbox>
     <div class="fs-14">{{fruitList}}</div>
 
     <br>
@@ -49,7 +52,7 @@ export default {
   data () {
     return {
       checked: true,
-      fruitList: ['apple', 'pear'],
+      fruitList: ['apple', 'pear', 'banana'],
       loanLimitList: [],
       qualificationsList: [],
       sourceCode
@@ -77,5 +80,10 @@ export default {
 </script>
 
 <style lang="less">
-
+.checkbox-example {
+  .r--checkbox .r--icon {
+    color: #4080e8;
+    font-size: 16px;
+  }
+}
 </style>
