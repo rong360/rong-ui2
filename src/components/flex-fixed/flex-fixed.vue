@@ -112,7 +112,7 @@ export default {
       window.addEventListener('resize', hideFooterOnResize, false)
       this.$once('hook:beforeDestroy', function () {
         document.removeEventListener('scroll', hideFooterOnScroll, false)
-        window.addEventListener('resize', hideFooterOnResize, false)
+        window.removeEventListener('resize', hideFooterOnResize, false)
       })
     }
   }
