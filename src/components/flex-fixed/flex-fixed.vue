@@ -102,11 +102,11 @@ export default {
       let self = this
       function hideFooterOnScroll () {
         let scrollTop = document.documentElement.scrollTop || document.body.scrollTop
-        self.showFooter = scrollTop == 0
+        self.showFooter = scrollTop <= 0
       }
       function hideFooterOnResize () {
         let docHeight = document.documentElement.clientHeight
-        self.showFooter = docHeight == self.docHeight
+        self.showFooter = (docHeight / self.docHeight) > 0.8
       }
       document.addEventListener('scroll', hideFooterOnScroll, false)
       window.addEventListener('resize', hideFooterOnResize, false)
