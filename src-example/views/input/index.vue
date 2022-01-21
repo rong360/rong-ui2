@@ -4,8 +4,8 @@
               @on-back="onBack">Input</Titlebar>
 
     <div class="title">文本 type="text" -- {{user.value}}</div>
-    <Input :attrs="user"
-           v-model="user.value"></Input>
+    <Input :attrs="user" :showEdit="true"
+           v-model="user.value"><span slot="prepend">¥</span></Input>
 
     <div class="title">数字(整型) type="number" -- {{age.value}}</div>
     <Input :attrs="age"

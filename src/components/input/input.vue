@@ -11,13 +11,7 @@
            v-if="attrs.prepend"
            v-html="attrs.prepend"></div>
       <div :class="contentCls">
-        <div v-if="!showInput"
-             :class="inputCls"
-             :disabled="attrs.disabled"
-             :readonly="!!attrs.readonly"
-             @click="onClickInputMask">{{value || placeholderText}}</div>
-        <input v-if="showInput"
-               :class="inputCls"
+        <input :class="inputCls"
                :value="value"
                :type="inputType"
                :pattern="inputPattern"
@@ -39,20 +33,34 @@
                @keydown="onFieldKeydown"
                @keydown.delete="onFieldKeydownDelete"
                @keypress="onFieldKeypress" />
+        <div v-if="showEditIcon"
+             class="input-edit"
+             :class="inputCls"><span class="placeholder">{{value}}</span><span class="edit-icon"></span></div>
         <div v-if="validateState=='error' && (this.form?this.showMessage&&this.form.showMessage:this.showMessage) && isErrorAtPlaceholder"
              :class="errorCls2">{{validateMessage}}</div>
         <a v-show="showClear"
            :class="clearCls"
            @click.prevent.stop="onClear"
-           ref="clear"><svg width="14px" height="14px" :style="clearStyle" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g transform="translate(-346.000000, -238.000000)" :fill="clearStyle.color">
-            <g transform="translate(346.000000, 238.000000)">
-                <path d="M7,0 C3.13354657,0 0,3.13354657 0,7 C0,10.8664534 3.13354657,14 7,14 C10.8664534,14 14,10.8664534 14,7 C14,3.13354657 10.8664534,0 7,0 Z M9.97021324,4.68998284 L7.66019608,7 L9.97021324,9.31001716 C10.1500343,9.49390441 10.1472721,9.78900245 9.96331618,9.97021324 C9.78215686,10.1472721 9.49115931,10.1472721 9.31001716,9.97021324 L7,7.66019608 L4.68998284,9.97021324 C4.50609559,10.1500343 4.21099755,10.1472721 4.02978676,9.96331618 C3.85272794,9.78215686 3.85272794,9.49115931 4.02978676,9.31001716 L6.33980392,7 L4.02978676,4.68998284 C3.84996569,4.50609559 3.85272794,4.21099755 4.03668382,4.02978676 C4.21784314,3.85272794 4.50884069,3.85272794 4.68998284,4.02978676 L7,6.33980392 L9.31001716,4.02978676 C9.49390441,3.84996569 9.78900245,3.85272794 9.97021324,4.03668382 C10.1472721,4.21784314 10.1472721,4.50884069 9.97021324,4.68998284 Z" id="Fill-1"></path>
+           ref="clear"><svg width="14px"
+               height="14px"
+               :style="clearStyle"
+               viewBox="0 0 14 14"
+               version="1.1"
+               xmlns="http://www.w3.org/2000/svg"
+               xmlns:xlink="http://www.w3.org/1999/xlink">
+            <g stroke="none"
+               stroke-width="1"
+               fill="none"
+               fill-rule="evenodd">
+              <g transform="translate(-346.000000, -238.000000)"
+                 :fill="clearStyle.color">
+                <g transform="translate(346.000000, 238.000000)">
+                  <path d="M7,0 C3.13354657,0 0,3.13354657 0,7 C0,10.8664534 3.13354657,14 7,14 C10.8664534,14 14,10.8664534 14,7 C14,3.13354657 10.8664534,0 7,0 Z M9.97021324,4.68998284 L7.66019608,7 L9.97021324,9.31001716 C10.1500343,9.49390441 10.1472721,9.78900245 9.96331618,9.97021324 C9.78215686,10.1472721 9.49115931,10.1472721 9.31001716,9.97021324 L7,7.66019608 L4.68998284,9.97021324 C4.50609559,10.1500343 4.21099755,10.1472721 4.02978676,9.96331618 C3.85272794,9.78215686 3.85272794,9.49115931 4.02978676,9.31001716 L6.33980392,7 L4.02978676,4.68998284 C3.84996569,4.50609559 3.85272794,4.21099755 4.03668382,4.02978676 C4.21784314,3.85272794 4.50884069,3.85272794 4.68998284,4.02978676 L7,6.33980392 L9.31001716,4.02978676 C9.49390441,3.84996569 9.78900245,3.85272794 9.97021324,4.03668382 C10.1472721,4.21784314 10.1472721,4.50884069 9.97021324,4.68998284 Z"
+                        id="Fill-1"></path>
+                </g>
+              </g>
             </g>
-        </g>
-    </g>
-</svg></a>
+          </svg></a>
       </div>
       <div v-if="attrs.unit"
            :class="unitCls">{{attrs.unit}}</div>
@@ -254,7 +262,9 @@ export default {
     // v1.1.2
     required: Boolean,
     // 自定义class v1.1.3
-    className: String
+    className: String,
+    // 显示可编辑icon v1.2.1
+    showEdit: Boolean
   },
   data () {
     let ua = navigator.userAgent
@@ -268,8 +278,7 @@ export default {
       focused: false,
       isAndroid,
       isBackSpace: false, // 键盘后退键
-      showEmailPan: false,
-      showInput: false
+      showEmailPan: false
     }
   },
   watch: {
@@ -318,7 +327,8 @@ export default {
           [`${prefixCls}-error-at-placeholder`]: this.isErrorAtPlaceholder,
           [`${prefixCls}-required`]: this.isRequired,
           [`${prefixCls}-readonly`]: !!this.attrs.readonly,
-          [`${prefixCls}-placeholder`]: this.value == ''
+          [`${prefixCls}-placeholder`]: this.value == '',
+          [`${prefixCls}-show-edit`]: this.showEdit
         }
       ]
     },
@@ -426,6 +436,9 @@ export default {
         this.showEmailPan &&
         (this.filteredEmailList.length > 1 ||
           (this.filteredEmailList.length == 1 && this.filteredEmailList[0] != currEmailSuffix))
+    },
+    showEditIcon () {
+      return this.showEdit && !this.focused && this.value != ''
     }
   },
   mounted () {
@@ -480,7 +493,6 @@ export default {
     },
     onClickInputMask () {
       if (this.attrs.readonly) return
-      this.showInput = true
       this.$nextTick(() => {
         this.$refs.input.focus()
       })
@@ -516,7 +528,6 @@ export default {
         if (this.attrs.type == 'email') this.showEmailPan = false
         this.validate('blur')
         if (inputValue == '') { e.target.value = '' }
-        this.showInput = false
       }, 200)
     },
     onFieldChange (e) {
@@ -682,6 +693,19 @@ export default {
     line-height: 20px;
     color: #333;
   }
+  &-show-edit &-input {
+    font-size: 35px;
+    line-height: 40px;
+    font-weight: 600;
+  }
+  &-show-edit &-error-tip {
+    padding-top: 5px;
+    line-height: 17px;
+  }
+  &-show-edit &-inner {
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
   &-label-right &-label {
     text-align: right;
     padding-right: 10px;
@@ -732,12 +756,39 @@ export default {
     z-index: 2;
     min-height: 20px;
     word-break: break-all;
+    letter-spacing: 0;
+    font-family: "PingFangSC-Regular PingFang SC", arial, sans-serif;
+    z-index: 2;
     &[readonly],
     &[disabled] {
       color: #999;
     }
     &::placeholder {
       color: #c5c8ce;
+    }
+  }
+  .input-edit {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: auto !important;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    .placeholder {
+      letter-spacing: 0;
+      opacity: 0;
+      font-family: "PingFangSC-Regular PingFang SC", arial, sans-serif;
+    }
+    .edit-icon {
+      width: 15px;
+      height: 15px;
+      background-image: url(data:image/png;base64,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);
+      background-repeat: no-repeat;
+      background-size: contain;
+      margin-left: 7px;
+      position: relative;
+      top: -5px;
     }
   }
   &-placeholder &-input {
@@ -781,7 +832,7 @@ export default {
     height: 30x;
   }
   &-error &-inner {
-    border-color: #ed4014;
+    border-color: #fa5050;
   }
   &-error&-mode-default &-inner {
     margin-bottom: 20px;
@@ -791,10 +842,10 @@ export default {
     left: 0;
     top: 100%;
     width: 100%;
-    line-height: 1;
-    padding-top: 6px;
+    line-height: 17px;
+    padding-top: 4px;
     font-size: 12px;
-    color: #ed4014;
+    color: #fa5050;
     z-index: 1;
   }
   &-error-tip2 {
@@ -802,9 +853,9 @@ export default {
     left: 0;
     top: 50%;
     width: 100%;
-    line-height: 1;
+    line-height: 1px;
     font-size: 12px;
-    color: #ed4014;
+    color: #fa5050;
     z-index: 1;
     transform: translateY(-50%);
     box-sizing: border-box;
@@ -827,7 +878,7 @@ export default {
     font-size: 14px;
     color: #333;
     font {
-      color: #4084E8;
+      color: #4084e8;
     }
   }
 }
