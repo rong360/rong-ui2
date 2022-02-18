@@ -42,6 +42,11 @@ export default {
       return style
     }
   },
+  watch: {
+    value: function (newVal) {
+      this.onOff = newVal
+    }
+  },
   mounted () {
     this.maxLeft = this.$refs.switch.offsetWidth - this.$refs.circle.offsetWidth - 3
   },
