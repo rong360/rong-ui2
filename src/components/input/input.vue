@@ -2,24 +2,29 @@
   <div :class="wrapCls">
     <div :class="innerCls">
       <label :class="labelCls"
-             :style="labelStyle">{{attrs.title}}</label>
+             :style="labelStyle">
+        <slot name="label">{{conf.title}}</slot>
+      </label>
       <div :class="prependCls"
-           v-if="$slots.prepend">
-        <slot name="prepend"></slot>
+           v-if="$slots.prepend || conf.prepend">
+        <slot name="prepend">
+          <Render v-if="typeof conf.prepend == 'function'"
+                  :render="conf.prepend"></Render>
+          <div class="prepend"
+               v-else
+               v-html="conf.prepend"></div>
+        </slot>
       </div>
-      <div :class="prependCls"
-           v-if="attrs.prepend"
-           v-html="attrs.prepend"></div>
       <div :class="contentCls">
         <input :class="inputCls"
-               :value="value"
+               :value="currentValue"
                :type="inputType"
                :pattern="inputPattern"
-               :name="attrs.name"
-               :maxlength="attrs.maxlength"
-               :disabled="attrs.disabled"
-               :readonly="!!attrs.readonly"
-               :autofocus="attrs.autofocus"
+               :name="conf.name"
+               :maxlength="conf.maxlength"
+               :disabled="conf.disabled"
+               :readonly="!!conf.readonly"
+               :autofocus="conf.autofocus"
                :placeholder="placeholderText"
                autocomplete="off"
                spellcheck="false"
@@ -35,42 +40,47 @@
                @keypress="onFieldKeypress" />
         <div v-if="showEditIcon"
              class="input-edit"
-             :class="inputCls"><span class="placeholder">{{value}}</span><span class="edit-icon"></span></div>
+             :class="inputCls"><span class="placeholder">{{currentValue}}</span><span class="edit-icon"></span></div>
         <div v-if="validateState=='error' && (this.form?this.showMessage&&this.form.showMessage:this.showMessage) && isErrorAtPlaceholder"
              :class="errorCls2">{{validateMessage}}</div>
         <a v-show="showClear"
            :class="clearCls"
            @click.prevent.stop="onClear"
-           ref="clear"><svg width="14px"
-               height="14px"
-               :style="clearStyle"
-               viewBox="0 0 14 14"
-               version="1.1"
-               xmlns="http://www.w3.org/2000/svg"
-               xmlns:xlink="http://www.w3.org/1999/xlink">
-            <g stroke="none"
-               stroke-width="1"
-               fill="none"
-               fill-rule="evenodd">
-              <g transform="translate(-346.000000, -238.000000)"
-                 :fill="clearStyle.color">
-                <g transform="translate(346.000000, 238.000000)">
-                  <path d="M7,0 C3.13354657,0 0,3.13354657 0,7 C0,10.8664534 3.13354657,14 7,14 C10.8664534,14 14,10.8664534 14,7 C14,3.13354657 10.8664534,0 7,0 Z M9.97021324,4.68998284 L7.66019608,7 L9.97021324,9.31001716 C10.1500343,9.49390441 10.1472721,9.78900245 9.96331618,9.97021324 C9.78215686,10.1472721 9.49115931,10.1472721 9.31001716,9.97021324 L7,7.66019608 L4.68998284,9.97021324 C4.50609559,10.1500343 4.21099755,10.1472721 4.02978676,9.96331618 C3.85272794,9.78215686 3.85272794,9.49115931 4.02978676,9.31001716 L6.33980392,7 L4.02978676,4.68998284 C3.84996569,4.50609559 3.85272794,4.21099755 4.03668382,4.02978676 C4.21784314,3.85272794 4.50884069,3.85272794 4.68998284,4.02978676 L7,6.33980392 L9.31001716,4.02978676 C9.49390441,3.84996569 9.78900245,3.85272794 9.97021324,4.03668382 C10.1472721,4.21784314 10.1472721,4.50884069 9.97021324,4.68998284 Z"
-                        id="Fill-1"></path>
+           ref="clear">
+          <slot name="clear"><svg width="14px"
+                 height="14px"
+                 :style="clearStyle"
+                 viewBox="0 0 14 14"
+                 version="1.1"
+                 xmlns="http://www.w3.org/2000/svg"
+                 xmlns:xlink="http://www.w3.org/1999/xlink">
+              <g stroke="none"
+                 stroke-width="1"
+                 fill="none"
+                 fill-rule="evenodd">
+                <g transform="translate(-346.000000, -238.000000)"
+                   :fill="clearStyle.color">
+                  <g transform="translate(346.000000, 238.000000)">
+                    <path d="M7,0 C3.13354657,0 0,3.13354657 0,7 C0,10.8664534 3.13354657,14 7,14 C10.8664534,14 14,10.8664534 14,7 C14,3.13354657 10.8664534,0 7,0 Z M9.97021324,4.68998284 L7.66019608,7 L9.97021324,9.31001716 C10.1500343,9.49390441 10.1472721,9.78900245 9.96331618,9.97021324 C9.78215686,10.1472721 9.49115931,10.1472721 9.31001716,9.97021324 L7,7.66019608 L4.68998284,9.97021324 C4.50609559,10.1500343 4.21099755,10.1472721 4.02978676,9.96331618 C3.85272794,9.78215686 3.85272794,9.49115931 4.02978676,9.31001716 L6.33980392,7 L4.02978676,4.68998284 C3.84996569,4.50609559 3.85272794,4.21099755 4.03668382,4.02978676 C4.21784314,3.85272794 4.50884069,3.85272794 4.68998284,4.02978676 L7,6.33980392 L9.31001716,4.02978676 C9.49390441,3.84996569 9.78900245,3.85272794 9.97021324,4.03668382 C10.1472721,4.21784314 10.1472721,4.50884069 9.97021324,4.68998284 Z"
+                          id="Fill-1"></path>
+                  </g>
                 </g>
               </g>
-            </g>
-          </svg></a>
+            </svg></slot>
+        </a>
       </div>
-      <div v-if="attrs.unit"
-           :class="unitCls">{{attrs.unit}}</div>
+      <div v-if="conf.unit"
+           :class="unitCls">{{conf.unit}}</div>
       <div :class="appendCls"
-           v-if="$slots.append">
-        <slot name="append"></slot>
+           v-if="$slots.append || conf.append">
+        <slot name="append">
+          <Render v-if="typeof conf.append == 'function'"
+                  :render="conf.append"></Render>
+          <div class="append"
+               v-else
+               v-html="conf.append"></div>
+        </slot>
       </div>
-      <div :class="appendCls"
-           v-if="attrs.append"
-           v-html="attrs.append"></div>
       <div v-if="validateState=='error' && (this.form?this.showMessage&&this.form.showMessage:this.showMessage) && !isErrorAtPlaceholder && !this.showEmailPan"
            :class="errorCls">{{validateMessage}}</div>
     </div>
@@ -79,7 +89,7 @@
       <div v-for="emailSuffix in filteredEmailList"
            @click="setEmail"
            :class="emailPanelItem"
-           v-html="(value.split('@')[0] + '@' + emailSuffix).replace(value, function(text){ return `<font>${text}</font>` })"></div>
+           v-html="(currentValue.split('@')[0] + '@' + emailSuffix).replace(currentValue, function(text){ return `<font>${text}</font>` })"></div>
     </div>
   </div>
 </template>
@@ -87,28 +97,9 @@
 <script>
 import AsyncValidator from 'async-validator'
 import { oneOf } from '../../utils/assist.js'
+import Render from '../base/render'
 
 const prefixCls = 'r--input'
-
-function clearNonNumbers (str) {
-  // 先把非数字的都替换掉，除了数字和.
-  str = str.replace(/[^+-\d.]/g, "")
-  // 有多个-时只保留第一个
-  if (/^-/.test(str)) {
-    str = str.replace(/-/g, '')
-    str = '-' + str
-  }
-  // - 不能出现在非开头的位置
-  if (str.indexOf('-') > 0) {
-    str = str.replace(/-/g, '')
-  }
-  // 有多个.时截取第二个.之前的字符串
-  let splitPointArr = str.split('.')
-  if (splitPointArr.length >= 2) {
-    str = splitPointArr.slice(0, 2).join('.')
-  }
-  return str
-}
 
 function telephoneClearNonNumbers (str) {
   // 先把非数字的都替换掉，除了数字和.
@@ -215,6 +206,7 @@ function IDCardVerify (idcard) {
 export default {
   name: 'Input',
   props: {
+    // 兼容旧版attrs传参方式
     attrs: {
       type: Object,
       default () {
@@ -224,6 +216,35 @@ export default {
     value: {
       type: [String, Number],
       default: ''
+    },
+    // v1.2.2
+    title: String,
+    // v1.2.2
+    name: String,
+    // input类型 v1.2.2
+    type: String,
+    // v1.2.2
+    maxlength: [String, Number],
+    // v1.2.2
+    disabled: [String, Boolean],
+    // v1.2.2
+    readonly: [String, Number, Boolean],
+    // v1.2.2
+    autofocus: [String, Boolean],
+    // input前插槽 v1.2.2
+    prepend: [String, Object, Function],
+    // input后插槽 v1.2.2
+    append: [String, Object, Function],
+    // v1.2.2 兼容旧版本，新版本用append替换
+    unit: String,
+    // 邮箱后缀列表, 仅当type=email时有效 v1.2.2
+    emailList: Array,
+    // 小数点后保留位数 v1.2.2
+    fixed: [String, Number],
+    // 显示清空按钮 v1.2.2
+    clearable: {
+      type: Boolean,
+      default: true
     },
     rules: {
       type: Array
@@ -260,7 +281,10 @@ export default {
     // 错误信息显示在placeholder位置
     errorAtPlaceholder: Boolean,
     // v1.1.2
-    required: Boolean,
+    required: {
+      type: Boolean,
+      default: true
+    },
     // 自定义class v1.1.3
     className: String,
     // 显示可编辑icon v1.2.1
@@ -271,6 +295,7 @@ export default {
     let isAndroid = !!ua.match(/(Android)\s+([\d.]+)/)
     return {
       initialValue: '',
+      currentValue: this.value,
       prevValue: this.value || '',
       validateState: '',
       validateMessage: '',
@@ -282,33 +307,39 @@ export default {
     }
   },
   watch: {
-    "value": function (value) {
-      this.prevValue = value
+    "value": function (val) {
+      this.setCurrentValue(val)
     }
   },
   inject: {
     form: { default: null }
   },
+  components: {
+    Render
+  },
   computed: {
+    // 合并attrs参数到props，兼容旧版attrs传参方式
+    conf () {
+      let attrs = this.$props.attrs
+      let props = {}
+      for (var key in this.$props) {
+        if (key !== 'attrs') {
+          props[key] = key in attrs ? attrs[key] : this.$props[key]
+        }
+      }
+      return props
+    },
     isErrorAtPlaceholder () {
       return this.errorAtPlaceholder || this.form && this.form.errorAtPlaceholder || false
     },
     isRequired () {
-      let required
-      if (typeof this.attrs.required != 'undefined') {
-        required = this.attrs.required
-      } else if (this.required == true) {
-        required = true
-      } else {
-        required = this.fieldRules.some(item => item.required == true)
-      }
-      return required
+      return this.conf.required === false ? false : this.fieldRules.some(item => item.required == true)
     },
     wrapCls () {
-      let labelPosition = this.labelPosition || this.attrs.labelPosition || this.form && this.form.labelPosition || 'left'
-      let textPosition = this.textPosition || this.attrs.textPosition || this.form && this.form.textPosition || 'left'
+      let labelPosition = this.conf.labelPosition || this.form && this.form.labelPosition || 'left'
+      let textPosition = this.conf.textPosition || this.form && this.form.textPosition || 'left'
       let mode = this.mode || this.form && this.form.mode || 'default'
-      let className = this.className || this.attrs.className
+      let className = this.conf.className
 
       return [
         this.form && 'form-item',
@@ -317,17 +348,18 @@ export default {
         `${prefixCls}-text-${textPosition}`,
         `${prefixCls}-mode-${mode}`,
         className,
+        this.isRequired ? `${prefixCls}-required` : `${prefixCls}-not-required`,
         {
           [`${prefixCls}-focused`]: this.focused,
-          [`${prefixCls}-empty`]: this.value == '',
+          [`${prefixCls}-empty`]: this.currentValue == '',
           [`${prefixCls}-error`]: this.validateState == 'error' && !this.showEmailPan,
           [`${prefixCls}-show-clear`]: this.showClear,
-          [`${prefixCls}-hidden`]: this.attrs.type == 'hidden',
-          [`${prefixCls}-email`]: this.attrs.type == 'email',
+          [`${prefixCls}-hidden`]: this.conf.type == 'hidden',
+          [`${prefixCls}-email`]: this.conf.type == 'email',
           [`${prefixCls}-error-at-placeholder`]: this.isErrorAtPlaceholder,
-          [`${prefixCls}-required`]: this.isRequired,
-          [`${prefixCls}-readonly`]: !!this.attrs.readonly,
-          [`${prefixCls}-placeholder`]: this.value == '',
+          [`${prefixCls}-readonly`]: !!this.conf.readonly,
+          [`${prefixCls}-disabled`]: !!this.conf.disabled,
+          [`${prefixCls}-placeholder`]: this.currentValue == '',
           [`${prefixCls}-show-edit`]: this.showEdit
         }
       ]
@@ -340,7 +372,7 @@ export default {
     },
     labelStyle () {
       let style = {}
-      if (this.labelWidth || this.labelWidth == 0) {
+      if (this.conf.labelWidth || this.conf.labelWidth == 0) {
         style.width = this.labelWidth
       } else if (this.form && (this.form.labelWidth || this.form.labelWidth == 0)) {
         style.width = this.form.labelWidth
@@ -354,7 +386,7 @@ export default {
       return `${prefixCls}-append`
     },
     placeholderText () {
-      return this.attrs.placeholder || this.placeholder || (this.form && this.form.placeholder) || ''
+      return this.conf.placeholder || (this.form && this.form.placeholder) || ''
     },
     clearStyle () {
       let style = { color: '#C8C7CC' }
@@ -373,7 +405,7 @@ export default {
       return `${prefixCls}-unit`
     },
     showClear () {
-      return this.focused && this.value.length > 0
+      return this.conf.clearable && this.focused && this.currentValue.length > 0
     },
     errorCls () {
       return `${prefixCls}-error-tip`
@@ -382,8 +414,8 @@ export default {
       return `${prefixCls}-error-tip2`
     },
     fieldRules () {
-      let defaultRules = [{ required: true, message: `${this.attrs.title}不能为空` }]
-      if (this.attrs.type == 'IDCard') {
+      let defaultRules = [{ required: true, message: `${this.conf.title}不能为空` }]
+      if (this.conf.type == 'IDCard') {
         defaultRules.push({
           validator (rule, value, callback) {
             if (!IDCardVerify(value)) {
@@ -393,21 +425,21 @@ export default {
           },
           trigger: 'blur'
         })
-      } else if (this.attrs.type == 'email') {
+      } else if (this.conf.type == 'email') {
         defaultRules.push({ type: "email", message: "邮箱格式不正确", trigger: "blur" })
       }
-      let rules = this.attrs.rules || this.rules || defaultRules
+      let rules = this.conf.rules || defaultRules
       return [].concat(rules)
     },
     inputType () {
-      let type = this.attrs.type || 'text' // 'tel', 'number', 'text', 'IDCard'
-      if (this.attrs.type == 'IDCard' && !this.attrs.formatter) {
+      let type = this.conf.type || 'text' // 'tel', 'number', 'text', 'IDCard'
+      if (this.conf.type == 'IDCard' && !this.conf.formatter) {
         type = 'text'
       }
       return type
     },
     inputPattern () {
-      return this.attrs.type == 'number' ? 'number' : ''
+      return this.conf.type == 'number' ? 'number' : ''
     },
     emailPanel () {
       return `${prefixCls}-email-panel`
@@ -416,10 +448,10 @@ export default {
       return `${prefixCls}-email-panel--item`
     },
     filteredEmailList () {
-      let emailList = this.attrs.emailList || [],
-        emailSuffix = this.value.split('@')[1],
+      let emailList = this.conf.emailList || [],
+        emailSuffix = this.currentValue.split('@')[1],
         arr = []
-      if (!emailSuffix && this.value.length) {
+      if (!emailSuffix && this.currentValue.length) {
         return emailList
       }
       for (var i = 0; i < emailList.length; i++) {
@@ -431,19 +463,19 @@ export default {
       return arr
     },
     showEmailPanel () {
-      let currEmailSuffix = String(this.value).split("@")[1]
-      return this.attrs.type == 'email' &&
+      let currEmailSuffix = String(this.currentValue).split("@")[1]
+      return this.conf.type == 'email' &&
         this.showEmailPan &&
         (this.filteredEmailList.length > 1 ||
           (this.filteredEmailList.length == 1 && this.filteredEmailList[0] != currEmailSuffix))
     },
     showEditIcon () {
-      return this.showEdit && !this.focused && this.value != ''
+      return this.conf.showEdit && !this.focused && this.currentValue != ''
     }
   },
   mounted () {
     this.form && this.form.fields.push(this)
-    this.initialValue = this.value
+    this.initialValue = this.currentValue
   },
   methods: {
     getFilterRules (trigger) {
@@ -462,19 +494,19 @@ export default {
       this.validateDisabled = false
 
       let hasMaskCode = this.initialValue.indexOf('*') > -1 // 掩码
-      if (this.attrs.readonly || hasMaskCode && this.initialValue == this.value) {
+      if (this.conf.readonly || hasMaskCode && this.initialValue == this.currentValue) {
         this.validateState = 'success'
         this.validateMessage = ''
         callback(this.validateMessage)
         return
       }
 
-      let prop = this.attrs.name || this.attrs.var_name || this.attrs.title || 'prop'
+      let prop = this.conf.name || this.conf.title || 'prop'
       let descriptor = {}
       descriptor[prop] = rules
       const validator = new AsyncValidator(descriptor)
       let model = {}
-      model[prop] = this.value
+      model[prop] = this.currentValue
       validator.validate(model).then(() => {
         this.validateState = 'success'
         this.validateMessage = ''
@@ -489,45 +521,33 @@ export default {
       this.validateState = ''
       this.validateMessage = ''
       this.validateDisabled = true
-      this.$emit('input', this.initialValue)
-    },
-    onClickInputMask () {
-      if (this.attrs.readonly) return
-      this.$nextTick(() => {
-        this.$refs.input.focus()
-      })
+      this.setCurrentValue(this.initialValue)
     },
     onFieldBlur (e) {
       let inputValue = e.target.value
-      this.$emit('on-blur', e)
-      if (this.attrs.readonly) return
-
-      if (this.attrs.type == 'number') {
-        if (this.attrs.fixed > 1 && inputValue != '') {
+      if (this.conf.readonly || this.conf.disabled) return
+      if (this.conf.type == 'number') {
+        if (this.conf.fixed > 1 && inputValue != '') {
           // 保留n位小数，如：2，会在2后面补上00.即2.00
           let dotPos = inputValue.indexOf('.')
           if (dotPos < 0) {
             inputValue += '.'
             dotPos = inputValue.length - 1
           }
-          while (inputValue.length <= dotPos + this.attrs.fixed) {
+          while (inputValue.length <= dotPos + this.conf.fixed) {
             inputValue += '0'
           }
-        } else {
-          // 不能以'.'结尾
-          if (/\.$/.test(inputValue)) {
-            inputValue = inputValue.replace('.', '')
-          }
+          e.target.value = inputValue
         }
+        // 不能以'.'结尾
+        if (/\.$/.test(inputValue)) e.target.value = inputValue.replace('.', '')
       }
-      this.$emit('input', inputValue)
-      e.target.value = inputValue
-
+      this.setCurrentValue(e.target.value)
+      this.$emit('on-blur', e)
       this.blurTimer = setTimeout(() => {
         this.focused = false
-        if (this.attrs.type == 'email') this.showEmailPan = false
+        if (this.conf.type == 'email') this.showEmailPan = false
         this.validate('blur')
-        if (inputValue == '') { e.target.value = '' }
       }, 200)
     },
     onFieldChange (e) {
@@ -542,45 +562,39 @@ export default {
       let inputValue = e.target.value
       this.validateState = ''
       this.validateMessage = ''
-      // 修复input 属性为 number，maxlength不起作用
-      if (this.attrs.type == 'number' && this.attrs.maxlength && inputValue.length > this.attrs.maxlength) {
-        inputValue = inputValue.slice(0, this.attrs.maxlength)
-      }
-      if (this.attrs.type == 'number') {
-        inputValue = clearNonNumbers(inputValue)
-
+      if (this.conf.type == 'number') {
+        // 修复input 属性为 number，maxlength不起作用
+        if (this.conf.maxlength && inputValue.length > this.conf.maxlength) {
+          inputValue = inputValue.slice(0, this.conf.maxlength)
+        }
         // 限制小数位数
         let dotPos = inputValue.indexOf('.')
-        if (this.attrs.fixed > 0 && dotPos > -1) {
-          inputValue = inputValue.substring(0, dotPos + this.attrs.fixed + 1)
-        } else if (this.attrs.fixed <= 0 && dotPos > -1) {
+        if (this.conf.fixed > 0 && dotPos > -1) {
+          inputValue = inputValue.substring(0, dotPos + this.conf.fixed + 1)
+        } else if (this.conf.fixed <= 0 && dotPos > -1) {
           inputValue = inputValue.substring(0, dotPos)
         }
         // 解决ios输入非数字时value清空问题
-        if (inputValue == '' && this.prevValue != inputValue && !this.isBackSpace) {
+        if (inputValue == '' && this.prevValue != '' && !this.isBackSpace) {
           inputValue = this.prevValue
         }
-      } else if (this.attrs.type == 'tel') {
-        inputValue = telephoneClearNonNumbers(inputValue)
-      } else if (this.attrs.type == 'IDCard') {
-        inputValue = IDCardClearNonNumbers(inputValue)
-      }
-      if (e.target.value == '' || e.target.value != inputValue) {
         e.target.value = inputValue
+      } else if (this.conf.type == 'tel') {
+        e.target.value = telephoneClearNonNumbers(inputValue)
+      } else if (this.conf.type == 'IDCard') {
+        e.target.value = IDCardClearNonNumbers(inputValue)
       }
-      this.$emit('input', inputValue)
-      this.prevValue = inputValue
+      this.setCurrentValue(e.target.value)
       this.$emit('on-input', e)
     },
     onFieldFocus (e) {
-      if (this.attrs.readonly) return
+      if (this.conf.readonly) return
       this.focused = true
-      if (this.attrs.type == 'email') this.showEmailPan = true
+      if (this.conf.type == 'email') this.showEmailPan = true
       this.$emit('on-focus', e)
       // e.target.scrollIntoView()
     },
     onFieldKeyup (e) {
-      if (this.attrs.type == 'number' && !this.isAndroid && this.value == '' && this.prevValue == '' && e.keyCode != 189) e.target.value = ''
       this.$emit('on-keyup', e)
     },
     onFieldKeydown (e) {
@@ -597,24 +611,29 @@ export default {
     },
     onClear (e) {
       if (this.blurTimer) clearTimeout(this.blurTimer)
-      this.$emit('input', '')
-      this.$emit('on-clear', e)
-      this.prevValue = ''
+      this.setCurrentValue('')
       this.focus()
+      this.$emit('on-clear', e)
     },
     setEmail (e) {
-      this.$emit('input', e.target.innerText)
+      this.setCurrentValue(e.target.innerText)
     },
     // 手动聚焦输入框
     focus () {
       this.$refs.input.focus()
     },
+    setCurrentValue (value) {
+      if (value === this.currentValue) return
+      this.currentValue = value
+      this.prevValue = value
+      this.$emit('input', value)
+    },
     /* 获取表单数据 */
     getValue () {
-      let name = this.attrs.name || this.attrs.var_name
+      let name = this.conf.name || this.conf.title
       return {
         name: name,
-        value: this.value
+        value: this.currentValue
       }
     }
   },
