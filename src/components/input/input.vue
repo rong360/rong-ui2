@@ -333,7 +333,7 @@ export default {
       return this.errorAtPlaceholder || this.form && this.form.errorAtPlaceholder || false
     },
     isRequired () {
-      return this.conf.required === false ? false : this.fieldRules.some(item => item.required == true)
+      return this.conf.required && this.fieldRules.length > 0
     },
     wrapCls () {
       let labelPosition = this.conf.labelPosition || this.form && this.form.labelPosition || 'left'
@@ -507,7 +507,7 @@ export default {
       const validator = new AsyncValidator(descriptor)
       let model = {}
       model[prop] = this.currentValue
-      validator.validate(model).then(() => {
+      validator.validate(model, { first: true, suppressWarning: true, component: this }).then(() => {
         this.validateState = 'success'
         this.validateMessage = ''
         callback(this.validateMessage)
