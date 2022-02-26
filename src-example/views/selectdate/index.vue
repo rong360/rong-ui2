@@ -4,19 +4,20 @@
               @on-back="onBack">SelectDate</Titlebar>
 
     <p class="fs-14 mt-20">1，默认</p>
-    <SelectDate :attrs="config"
+    <SelectDate :title="config.title"
+                :name="config.name"
                 v-model="config.value"></SelectDate>
 
     <p class="fs-14 mt-20">2，只显示年份</p>
-    <SelectDate :attrs="config1"
+    <SelectDate v-bind="config1"
                 v-model="config1.value"></SelectDate>
 
     <p class="fs-14 mt-20">3，显示年、月</p>
-    <SelectDate :attrs="config2"
+    <SelectDate v-bind="config2"
                 v-model="config2.value"></SelectDate>
 
     <p class="fs-14 mt-20">4，添加css效果</p>
-    <SelectDate :attrs="config3"
+    <SelectDate v-bind="config3"
                 v-model="config3.value"></SelectDate>
 
     <ViewSource :code="sourceCode" />

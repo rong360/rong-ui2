@@ -3,8 +3,20 @@
     <div :class="innerCls">
       <label :class="labelCls"
              :style="labelStyle"
-             @click="showPicker">{{attrs.title}}</label>
-      <slot name="prepend"></slot>
+             v-if="$slots.label || conf.title"
+             @click="showPicker">
+        <slot name="label">{{conf.title}}</slot>
+      </label>
+      <div :class="prependCls"
+           v-if="$slots.prepend || conf.prepend">
+        <slot name="prepend">
+          <Render v-if="typeof conf.prepend == 'function'"
+                  :render="conf.prepend"></Render>
+          <div class="prepend"
+               v-else
+               v-html="conf.prepend"></div>
+        </slot>
+      </div>
       <div :class="contentCls">
         <DatePicker :attrs="attrs"
                     :pickerTitle="pickerTitle"
@@ -45,7 +57,16 @@
       </div>
       <div v-if="attrs.unit"
            :class="unitCls">{{attrs.unit}}</div>
-      <slot name="append"></slot>
+      <div :class="appendCls"
+           v-if="$slots.append || conf.append">
+        <slot name="append">
+          <Render v-if="typeof conf.append == 'function'"
+                  :render="conf.append"></Render>
+          <div class="append"
+               v-else
+               v-html="conf.append"></div>
+        </slot>
+      </div>
     </div>
     <div v-if="validateState=='error' && (this.form?this.showMessage&&this.form.showMessage:this.showMessage)"
          :class="errorCls">{{validateMessage}}</div>
@@ -56,10 +77,12 @@
 import AsyncValidator from 'async-validator'
 import { oneOf } from '../../utils/assist.js'
 import DatePicker from '../date-picker/date-picker'
+import Render from '../base/render'
 const prefixCls = 'r--selectdate'
 
 export default {
   name: 'SelectDate',
+  // 兼容旧版attrs传参方式
   props: {
     attrs: {
       type: Object,
@@ -68,6 +91,18 @@ export default {
       }
     },
     value: [String, Number],
+    // v1.2.2
+    title: String,
+    // v1.2.2
+    name: String,
+    // v1.2.2
+    disabled: [String, Boolean],
+    // input前插槽 v1.2.2
+    prepend: [String, Object, Function],
+    // input后插槽 v1.2.2
+    append: [String, Object, Function],
+    // v1.2.2 兼容旧版本，新版本用append替换
+    unit: String,
     rules: {
       type: Array
     },
@@ -105,11 +140,17 @@ export default {
       type: String
     },
     // v1.1.2
-    required: Boolean
+    required: {
+      type: Boolean,
+      default: true
+    },
+    // 自定义class v1.2.2
+    className: String
   },
   data () {
     return {
-      initialValue: '',
+      initialValue: this.value,
+      currentValue: this.value,
       validateState: '',
       validateMessage: '',
       validateDisabled: false
@@ -118,22 +159,38 @@ export default {
   inject: {
     form: { default: null }
   },
+  watch: {
+    "value": function (val) {
+      this.validateState = ''
+      this.validateMessage = ''
+      this.validateDisabled = true
+      this.setCurrentValue(val)
+    }
+  },
+  components: {
+    DatePicker,
+    Render
+  },
   computed: {
-    isRequired () {
-      let required
-      if (typeof this.attrs.required != 'undefined') {
-        required = this.attrs.required
-      } else if (this.required == true) {
-        required = true
-      } else {
-        required = this.fieldRules.some(item => item.required == true)
+    // 合并attrs参数到props，兼容旧版attrs传参方式
+    conf () {
+      let attrs = this.$props.attrs
+      let props = {}
+      for (var key in this.$props) {
+        if (key !== 'attrs') {
+          props[key] = key in attrs ? attrs[key] : this.$props[key]
+        }
       }
-      return required
+      return props
+    },
+    isRequired () {
+      return this.conf.required && this.fieldRules.length > 0
     },
     wrapCls () {
-      let labelPosition = this.attrs.labelPosition || this.labelPosition || this.form && this.form.labelPosition || 'right'
-      let textPosition = this.attrs.textPosition || this.textPosition || this.form && this.form.textPosition || 'left'
-      let mode = this.attrs.mode || this.mode || this.form && this.form.mode || 'default'
+      let labelPosition = this.conf.labelPosition || this.form && this.form.labelPosition || 'right'
+      let textPosition = this.conf.textPosition || this.form && this.form.textPosition || 'left'
+      let mode = this.conf.mode || this.form && this.form.mode || 'default'
+      let className = this.conf.className
 
       return [
         this.form && 'form-item',
@@ -141,13 +198,14 @@ export default {
         `${prefixCls}-label-${labelPosition}`,
         `${prefixCls}-text-${textPosition}`,
         `${prefixCls}-mode-${mode}`,
+        className,
+        this.isRequired ? `${prefixCls}-required` : `${prefixCls}-not-required`,
         {
           [`${prefixCls}-focused`]: this.focused,
-          [`${prefixCls}-empty`]: this.value == '',
+          [`${prefixCls}-empty`]: this.currentValue == '',
           [`${prefixCls}-error`]: this.validateState == 'error',
-          [`${prefixCls}-readonly`]: !!this.attrs.readonly,
-          [`${prefixCls}-placeholder`]: this.value == '',
-          [`${prefixCls}-required`]: this.isRequired
+          [`${prefixCls}-disabled`]: !!this.conf.disabled,
+          [`${prefixCls}-placeholder`]: this.currentValue == ''
         }
       ]
     },
@@ -159,16 +217,22 @@ export default {
     },
     labelStyle () {
       let style = {}
-      if (this.labelWidth || this.labelWidth == 0) {
+      if (this.conf.labelWidth || this.conf.labelWidth == 0) {
         style.width = this.labelWidth
       } else if (this.form && (this.form.labelWidth || this.form.labelWidth == 0)) {
         style.width = this.form.labelWidth
       }
       return style
     },
+    prependCls () {
+      return `${prefixCls}-prepend`
+    },
+    appendCls () {
+      return `${prefixCls}-append`
+    },
     arrowStyle () {
       let style = { color: '#666', width: '0.32rem' }
-      return this.selectArrowStyle || (this.form && this.form.selectArrowStyle) || style
+      return this.conf.selectArrowStyle || (this.form && this.form.selectArrowStyle) || style
     },
     contentCls () {
       return `${prefixCls}-content`
@@ -186,24 +250,20 @@ export default {
       return `${prefixCls}-error-tip`
     },
     fieldRules () {
-      let defaultRules = [{ required: true, message: `${this.attrs.title}不能为空` }]
-      let rules = this.attrs.rules || this.rules || defaultRules
+      let defaultRules = [{ required: true, message: `${this.conf.title}不能为空` }]
+      let rules = this.conf.rules || defaultRules
       return [].concat(rules)
     }
   },
-  components: {
-    DatePicker
-  },
   mounted () {
     this.form && this.form.fields.push(this)
-    this.initialValue = this.value
   },
   methods: {
     showPicker () {
       this.$refs.datePicker.showPicker()
     },
     onConfirm (date) {
-      this.$emit('input', date.value)
+      this.setCurrentValue(date.value)
       this.$emit("on-confirm", date);
       this.validateState = ''
       this.validateMessage = ''
@@ -227,20 +287,20 @@ export default {
       this.validateState = 'validating'
       this.validateDisabled = false
 
-      if (this.attrs.readonly) {
+      if (this.conf.disabled) {
         this.validateState = 'success'
         this.validateMessage = ''
         callback(this.validateMessage)
         return
       }
 
-      let prop = this.attrs.name || this.attrs.var_name || this.attrs.title || 'prop'
+      let prop = this.conf.name || this.conf.title || 'prop'
       let descriptor = {}
       descriptor[prop] = rules
       const validator = new AsyncValidator(descriptor)
       let model = {}
-      model[prop] = this.value
-      validator.validate(model).then(() => {
+      model[prop] = this.currentValue
+      validator.validate(model, { first: true, suppressWarning: true, component: this }).then(() => {
         this.validateState = 'success'
         this.validateMessage = ''
         callback(this.validateMessage)
@@ -254,14 +314,19 @@ export default {
       this.validateState = ''
       this.validateMessage = ''
       this.validateDisabled = true
-      this.$emit('input', this.initialValue)
+      this.setCurrentValue(this.initialValue)
+    },
+    setCurrentValue (value) {
+      if (value === this.currentValue) return
+      this.currentValue = value
+      this.$emit('input', value)
     },
     /* 获取表单数据 */
     getValue () {
-      let name = this.attrs.name || this.attrs.var_name
+      let name = this.conf.name || this.conf.title
       return {
         name: name,
-        value: this.value
+        value: this.currentValue
       }
     }
   },

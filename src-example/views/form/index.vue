@@ -13,28 +13,31 @@
           placeholder="请输入"
           select-placeholder="请选择"
           ref="form">
-      <Input :attrs="user"
+      <Input :title="user.title"
+             :name="user.name"
              v-model="user.value"></Input>
-      <Input :attrs="age"
+      <Input v-bind="age"
              v-model="age.value"></Input>
-      <Input :attrs="amount"
+      <Input v-bind="amount"
              v-model="amount.value"></Input>
-      <Input :attrs="phone"
+      <Input v-bind="phone"
              v-model="phone.value"></Input>
-      <Input :attrs="email"
+      <Input v-bind="email"
              v-model="email.value"></Input>
-      <Input :attrs="IDCard"
+      <Input v-bind="IDCard"
              v-model="IDCard.value"></Input>
-      <Select :attrs="loanTerm"
+      <Select :title="loanTerm.title"
+              :name="loanTerm.name"
+              :data="loanTerm.data"
               v-model="loanTerm.value"></Select>
-      <Select2 :attrs="contacts"
+      <Select2 v-bind="contacts"
                v-model="contacts.value"></Select2>
-      <Select2 :attrs="contacts2"
+      <Select2 v-bind="contacts2"
                v-model="contacts2.value"></Select2>
-      <Select3 :attrs="shebao"
+      <Select3 v-bind="shebao"
                v-model="shebao.value"
                ref="select1"></Select3>
-      <SelectDate :attrs="birthday"
+      <SelectDate v-bind="birthday"
                   v-model="birthday.value"></SelectDate>
       <div class="btn-wrap">
         <div :class="['btn', isCompleted ? '' : 'disabled']"
@@ -52,7 +55,7 @@
       </div>
     </Form>
     <div class="result">
-      <p v-for="field in fields"><span>{{field.$options.propsData.attrs.title}}：</span>{{field.$options.propsData.attrs.value}}</p>
+      <p v-for="field in fields">{{field.conf ? `${field.conf.title}: ${field.conf.value}` : ''}}</p>
     </div>
     <ViewSource :code="sourceCode" />
   </div>
@@ -63,8 +66,6 @@ import sourceCode from './code.txt'
 
 export default {
   data () {
-    let self = this
-
     return {
       user: {
         "type": "text",
@@ -211,18 +212,13 @@ export default {
             unit: "个月",
             placeholder: "请输入您期望的贷款期限",
             rules: [{
-              required: true,
-              message: '贷款期限不能为空'
-            },
-            {
-              validator (rule, value, callback) {
-                let component = self.fields.find(component => component.$options.propsData.attrs.name == 'm_term')
-                if (value > 12) {
-                  component.$emit('input', 12)
+              validator (rule, value, callback, source, options) {
+                let { component } = options
+                if (value === '') {
+                  return new Error(component.title + '不能为空')
+                } else if (value > 12) {
+                  component.setCurrentValue(12)
                   return new Error('贷款期限最长12个月，以为您变更为12个月')
-                } else if (value < 3) {
-                  component.$emit('input', 3)
-                  return new Error('贷款期限最短3个月，以为您变更为3个月')
                 }
                 callback()
               },
@@ -236,7 +232,6 @@ export default {
         }, {
           validator (rule, value, callback) {
             if (value == 1) {
-              // this.$toast('目前暂不支持1个月的贷款，请选择贷款期限');
               return new Error('目前暂不支持1个月的贷款，请选择贷款期限')
             }
             callback()

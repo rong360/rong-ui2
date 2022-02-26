@@ -9,21 +9,23 @@
           placeholder=""
           mode="to-top"
           ref="form">
-      <Input :attrs="user"
+      <Input :title="user.title"
+             :name="user.name"
              v-model="user.value"></Input>
-      <Input :attrs="age"
+      <Input v-bind="age"
              v-model="age.value"></Input>
-      <Input :attrs="amount"
+      <Input v-bind="amount"
              v-model="amount.value"></Input>
-      <Input :attrs="phone"
+      <Input v-bind="phone"
              v-model="phone.value"></Input>
-      <Input :attrs="email"
+      <Input v-bind="email"
              v-model="email.value"></Input>
-      <Input :attrs="IDCard"
+      <Input v-bind="IDCard"
              v-model="IDCard.value"></Input>
-      <Select :attrs="loanTerm"
+      <Select v-bind="loanTerm"
               v-model="loanTerm.value"></Select>
-      <SelectDate :attrs="birthday"
+      <SelectDate :title="birthday.title"
+                  :name="birthday.name"
                   v-model="birthday.value"></SelectDate>
 
       <div class="btn-wrap">
@@ -42,7 +44,7 @@
       </div>
     </Form>
     <div class="result">
-      <p v-for="field in fields"><span>{{field.$options.propsData.attrs.title}}：</span>{{field.$options.propsData.attrs.value}}</p>
+      <p v-for="field in fields">{{field.conf ? `${field.conf.title}: ${field.conf.value}` : ''}}</p>
     </div>
     <ViewSource :code="sourceCode" />
   </div>
@@ -53,8 +55,6 @@ import sourceCode from './code_css.txt'
 
 export default {
   data () {
-    let self = this
-
     return {
       user: {
         "type": "text",
@@ -118,6 +118,19 @@ export default {
         "value": "test@qq.com",
         "readonly": 0,
         "placeholder": "",
+        "emailList": [
+          "qq.com",
+          "sina.com",
+          "sohu.com",
+          "163.com",
+          "foxmail.com",
+          "gmail.com",
+          "rong360.com",
+          "edu.cn",
+          "outlook.com",
+          "vip.qq.com",
+          "126.com"
+        ],
         "rules": [{
           "required": true,
           "message": "邮箱不能为空",
@@ -164,14 +177,13 @@ export default {
             unit: "个月",
             placeholder: "请输入您期望的贷款期限",
             rules: [{
-              validator (rule, value, callback) {
-                let component = self.fields.find(component => component.$options.propsData.attrs.name == 'm_term')
-                if (value > 12) {
-                  component.$emit('input', 12)
+              validator (rule, value, callback, source, options) {
+                let { component } = options
+                if (value === '') {
+                  return new Error(component.title + '不能为空')
+                } else if (value > 12) {
+                  component.setCurrentValue(12)
                   return new Error('贷款期限最长12个月，以为您变更为12个月')
-                } else if (value < 3) {
-                  component.$emit('input', 3)
-                  return new Error('贷款期限最短3个月，以为您变更为3个月')
                 }
                 callback()
               },

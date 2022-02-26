@@ -2,7 +2,8 @@
   <div :class="wrapCls">
     <div :class="innerCls">
       <label :class="labelCls"
-             :style="labelStyle">
+             :style="labelStyle"
+             v-if="$slots.label || conf.title">
         <slot name="label">{{conf.title}}</slot>
       </label>
       <div :class="prependCls"

@@ -7,10 +7,12 @@
       请选择以下信息：
       <Form ref="form"
             text-position="right">
-        <Select3 :attrs="config"
+        <Select3 :title="config.title"
+                 :name="config.name"
+                 :data="config.data"
                  v-model="config.value"
                  ref="select1"></Select3>
-        <Select3 :attrs="config2"
+        <Select3 v-bind="config2"
                  v-model="config2.value"
                  ref="select2"></Select3>
         <div class="btn-wrap">
@@ -42,7 +44,7 @@ export default {
         "id": "635",
         "category_id": "1",
         "title": "本地公积金",
-        "var_name": "user_social_security",
+        "name": "user_social_security",
         "type": "2",
         "verify_type": "0",
         "data": [{
@@ -67,7 +69,7 @@ export default {
         "id": "636",
         "category_id": "1",
         "title": "本地社保",
-        "var_name": "shebao",
+        "name": "shebao",
         "type": "2",
         "verify_type": "0",
         "data": [{

@@ -6,6 +6,7 @@
     <div class="title">文本 type="text" -- {{user.value}}</div>
     <Input :showEdit="false"
            :title="user.title"
+           :rules="user.rules"
            maxlength="6"
            v-model="user.value"></Input>
 
@@ -79,7 +80,6 @@ export default {
         "var_name": "bureau_user_name",
         "type": "text",
         "verify_type": "text",
-        "data": "",
         "material_type": "100",
         "info_property": "1",
         "level": 1,

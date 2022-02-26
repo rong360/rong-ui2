@@ -5,16 +5,19 @@
     <div class="tips">下拉列表数据小于6条时固定展示，超过6条出滚动条</div>
     <div class="list">
       请选择以下信息：
-      <Form ref="form" text-position="right">
-        <Select2 :attrs="config"
+      <Form ref="form"
+            text-position="right">
+        <Select2 :title="config.title"
+                 :name="config.name"
+                 :data="config.data"
                  v-model="config.value"
                  ref="select1"></Select2>
-        <Select2 :attrs="config2"
+        <Select2 v-bind="config2"
                  v-model="config2.value"
                  cancel-btn-text="cancel"
                  confirm-btn-text="confirm"
                  ref="select2"></Select2>
-        <Select2 :attrs="config3"
+        <Select2 v-bind="config3"
                  v-model="config3.value"
                  ref="select3"></Select2>
         <button @click="doChangeData">点击改变人群类别data</button>
@@ -286,12 +289,15 @@ export default {
             unit: "个月",
             placeholder: "请输入您期望的贷款期限",
             rules: [{
-              validator (rule, value, callback) {
-                if (value > 12) {
-                  return new Error('贷款期限最长12个月，以为您变更为12个月')
-                } else if (value < 3) {
+              validator (rule, value, callback, source, options) {
+                let { component } = options
+                if (value === '') {
+                  return new Error(component.title + '不能为空')
+                } else if (value > 12) {
+                  component.setCurrentValue(12)
                   return new Error('贷款期限最长12个月，以为您变更为12个月')
                 }
+                callback()
                 callback()
               },
               trigger: 'blur'
@@ -302,9 +308,8 @@ export default {
           required: true,
           message: '贷款期限不能为空'
         }, {
-          validator (rule, value, callback) {
+          validator (rule, value, callback, source, options) {
             if (value == 1) {
-              this.$toast('目前暂不支持1个月的贷款，请选择贷款期限');
               return new Error('目前暂不支持1个月的贷款，请选择贷款期限')
             }
             callback()

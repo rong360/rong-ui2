@@ -3,8 +3,20 @@
     <div :class="innerCls">
       <label :class="labelCls"
              :style="labelStyle"
-             @click="showPicker">{{attrs.title}}</label>
-      <slot name="prepend"></slot>
+             v-if="$slots.label || conf.title"
+             @click="showPicker">
+        <slot name="label">{{conf.title}}</slot>
+      </label>
+      <div :class="prependCls"
+           v-if="$slots.prepend || conf.prepend">
+        <slot name="prepend">
+          <Render v-if="typeof conf.prepend == 'function'"
+                  :render="conf.prepend"></Render>
+          <div class="prepend"
+               v-else
+               v-html="conf.prepend"></div>
+        </slot>
+      </div>
       <div :class="contentCls"
            @click="showPicker">
         <div :class="selectCls">{{selectedOption.text || placeholderText}}</div>
@@ -42,9 +54,18 @@
       </div>
       <div v-if="attrs.unit"
            :class="unitCls">{{attrs.unit}}</div>
-      <slot name="append"></slot>
+      <div :class="appendCls"
+           v-if="$slots.append || conf.append">
+        <slot name="append">
+          <Render v-if="typeof conf.append == 'function'"
+                  :render="conf.append"></Render>
+          <div class="append"
+               v-else
+               v-html="conf.append"></div>
+        </slot>
+      </div>
       <action-sheet v-model="showActionSheet"
-                    :title="attrs.pickerTitle"
+                    :title="conf.pickerTitle"
                     :showCancelBtn="false"
                     :showCloseBtn="true"
                     :class="pickerCls"
@@ -53,7 +74,7 @@
                     @on-mask="clickMask">
         <div :class="pickerListCls"
              ref="list">
-          <div v-for="(item, index) in attrs.data"
+          <div v-for="(item, index) in conf.data"
                :class="[pickerItemCls, {active: index == selectedIndex}]"
                @click="confirmPicker(item, index, $event)">{{item.text}}</div>
         </div>
@@ -63,7 +84,7 @@
          v-if="children && children.length">
       <template v-for="(child,index) in children">
         <component :is="child.componentType"
-                   :attrs="child"
+                   v-bind="child"
                    v-model="child.value"
                    :ref="child.name"
                    :key="child.name"></component>
@@ -78,11 +99,13 @@
 import AsyncValidator from 'async-validator'
 import { oneOf } from '../../utils/assist.js'
 import ActionSheet from '../action-sheet/action-sheet'
+import Render from '../base/render'
 const prefixCls = 'r--select2'
 
 export default {
   name: 'Select2',
   props: {
+    // 兼容旧版attrs传参方式
     attrs: {
       type: Object,
       default () {
@@ -92,6 +115,23 @@ export default {
     value: {
       type: [String, Number],
       default: ''
+    },
+    // v1.2.2
+    title: String,
+    // v1.2.2
+    name: String,
+    // v1.2.2
+    disabled: [String, Boolean],
+    // input前插槽 v1.2.2
+    prepend: [String, Object, Function],
+    // input后插槽 v1.2.2
+    append: [String, Object, Function],
+    // v1.2.2 兼容旧版本，新版本用append替换
+    unit: String,
+    // 列表数据 v1.2.2
+    data: {
+      type: Array,
+      default: () => []
     },
     rules: {
       type: Array
@@ -130,13 +170,17 @@ export default {
     // 错误信息显示在placeholder位置
     errorAtPlaceholder: Boolean,
     // v1.1.2
-    required: Boolean,
+    required: {
+      type: Boolean,
+      default: true
+    },
     // 自定义class v1.1.3
     className: String
   },
   data () {
     return {
-      initialValue: '',
+      initialValue: this.value,
+      currentValue: this.value,
       validateState: '',
       validateMessage: '',
       selectedIndex: -1,
@@ -151,28 +195,35 @@ export default {
     "attrs.data": function () {
       this.validateState = ''
       this.validateMessage = ''
+    },
+    "value": function (val) {
+      this.validateState = ''
+      this.validateMessage = ''
     }
   },
   computed: {
+    // 合并attrs参数到props，兼容旧版attrs传参方式
+    conf () {
+      let attrs = this.$props.attrs
+      let props = {}
+      for (var key in this.$props) {
+        if (key !== 'attrs') {
+          props[key] = key in attrs ? attrs[key] : this.$props[key]
+        }
+      }
+      return props
+    },
     isErrorAtPlaceholder () {
       return this.errorAtPlaceholder || this.form && this.form.errorAtPlaceholder || false
     },
     isRequired () {
-      let required
-      if (typeof this.attrs.required != 'undefined') {
-        required = this.attrs.required
-      } else if (this.required == true) {
-        required = true
-      } else {
-        required = this.fieldRules.some(item => item.required == true)
-      }
-      return required
+      return this.conf.required && this.fieldRules.length > 0
     },
     wrapCls () {
-      let labelPosition = this.labelPosition || this.attrs.labelPosition || this.form && this.form.labelPosition || 'right'
-      let textPosition = this.textPosition || this.attrs.textPosition || this.form && this.form.textPosition || 'left'
-      let mode = this.mode || this.form && this.form.mode || 'default'
-      let className = this.className || this.attrs.className
+      let labelPosition = this.conf.labelPosition || this.form && this.form.labelPosition || 'right'
+      let textPosition = this.conf.textPosition || this.form && this.form.textPosition || 'left'
+      let mode = this.conf.mode || this.form && this.form.mode || 'default'
+      let className = this.conf.className
 
       return [
         this.form && 'form-item',
@@ -181,14 +232,14 @@ export default {
         `${prefixCls}-text-${textPosition}`,
         `${prefixCls}-mode-${mode}`,
         className,
+        this.isRequired ? `${prefixCls}-required` : `${prefixCls}-not-required`,
         {
           [`${prefixCls}-focused`]: this.focused,
-          [`${prefixCls}-empty`]: this.value == '',
+          [`${prefixCls}-empty`]: this.currentValue == '',
           [`${prefixCls}-error`]: this.validateState == 'error',
-          [`${prefixCls}-readonly`]: !!this.attrs.readonly,
-          [`${prefixCls}-placeholder`]: this.value == '',
-          [`${prefixCls}-error-at-placeholder`]: this.isErrorAtPlaceholder,
-          [`${prefixCls}-required`]: this.isRequired
+          [`${prefixCls}-disabled`]: !!this.conf.disabled,
+          [`${prefixCls}-placeholder`]: this.currentValue == '',
+          [`${prefixCls}-error-at-placeholder`]: this.isErrorAtPlaceholder
         }
       ]
     },
@@ -203,19 +254,25 @@ export default {
     },
     labelStyle () {
       let style = {}
-      if (this.labelWidth || this.labelWidth == 0) {
+      if (this.conf.labelWidth || this.conf.labelWidth == 0) {
         style.width = this.labelWidth
       } else if (this.form && (this.form.labelWidth || this.form.labelWidth == 0)) {
         style.width = this.form.labelWidth
       }
       return style
     },
+    prependCls () {
+      return `${prefixCls}-prepend`
+    },
+    appendCls () {
+      return `${prefixCls}-append`
+    },
     selectedOption () {
-      let data = this.attrs.data || []
+      let data = this.conf.data || []
       let selectedOption = {}
       this.selectedIndex = -1
       for (var i = 0; i < data.length; i++) {
-        if (data[i].value == this.value) {
+        if (data[i].value == this.currentValue) {
           selectedOption = data[i]
           this.selectedIndex = i
           break
@@ -224,11 +281,11 @@ export default {
       return selectedOption
     },
     placeholderText () {
-      return this.attrs.placeholder || this.placeholder || (this.form && this.form.selectPlaceholder) || ''
+      return this.conf.placeholder || (this.form && this.form.selectPlaceholder) || ''
     },
     arrowStyle () {
       let style = { color: '#666', width: '0.32rem' }
-      return this.selectArrowStyle || (this.form && this.form.selectArrowStyle) || style
+      return this.conf.selectArrowStyle || (this.form && this.form.selectArrowStyle) || style
     },
     contentCls () {
       return `${prefixCls}-content`
@@ -252,7 +309,7 @@ export default {
       return [
         `${prefixCls}-picker--list`,
         {
-          'scroll-area': this.attrs.data.length > 6
+          'scroll-area': this.conf.data.length > 6
         }
       ]
     },
@@ -266,8 +323,8 @@ export default {
       return `${prefixCls}-error-tip2`
     },
     fieldRules () {
-      let defaultRules = [{ required: true, message: `${this.attrs.title}不能为空` }]
-      let rules = this.attrs.rules || this.rules || defaultRules
+      let defaultRules = [{ required: true, message: `${this.conf.title}不能为空` }]
+      let rules = this.conf.rules || defaultRules
       return [].concat(rules)
     },
     children () {
@@ -276,12 +333,11 @@ export default {
   },
   mounted () {
     this.form && this.form.fields.push(this)
-    this.initialValue = this.value
   },
-  components: { ActionSheet },
+  components: { ActionSheet, Render },
   methods: {
     showPicker () {
-      if (this.attrs.readonly || this.attrs.disabled) return
+      if (this.conf.disabled) return
 
       this.showActionSheet = true
 
@@ -295,9 +351,9 @@ export default {
       })
     },
     confirmPicker (item, index, e) {
-      let selectedOption = this.attrs.data[index]
+      let selectedOption = this.conf.data[index]
       this.selectedIndex = index;
-      this.$emit('input', selectedOption.value)
+      this.setCurrentValue(selectedOption.value)
       this.$emit("on-confirm", selectedOption, e);
       this.showActionSheet = false
       this.validateState = ''
@@ -327,20 +383,20 @@ export default {
 
       this.validateState = 'validating'
 
-      if (this.attrs.readonly) {
+      if (this.conf.disabled) {
         this.validateState = 'success'
         this.validateMessage = ''
         callback(this.validateMessage)
         return
       }
 
-      let prop = this.attrs.name || this.attrs.var_name || this.attrs.title || 'prop'
+      let prop = this.conf.name || this.conf.title || 'prop'
       let descriptor = {}
       descriptor[prop] = rules
       const validator = new AsyncValidator(descriptor)
       let model = {}
-      model[prop] = this.value
-      validator.validate(model).then(() => {
+      model[prop] = this.currentValue
+      validator.validate(model, { first: true, suppressWarning: true, component: this }).then(() => {
         this.validateState = 'success'
         this.validateMessage = ''
         callback(this.validateMessage)
@@ -353,14 +409,19 @@ export default {
     resetField () {
       this.validateState = ''
       this.validateMessage = ''
-      this.$emit('input', this.initialValue)
+      this.setCurrentValue(this.initialValue)
+    },
+    setCurrentValue (value) {
+      if (value === this.currentValue) return
+      this.currentValue = value
+      this.$emit('input', value)
     },
     /* 获取表单数据 */
     getValue () {
-      let name = this.attrs.name || this.attrs.var_name
+      let name = this.conf.name || this.conf.title
       return {
         name: name,
-        value: this.value
+        value: this.currentValue
       }
     }
   },

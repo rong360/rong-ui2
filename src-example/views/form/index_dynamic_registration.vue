@@ -10,8 +10,8 @@
           ref="form">
       <components v-for="item in viewData.firstLevel"
                   v-model="item.value"
+                  v-bind="item"
                   :is="item.componentType"
-                  :attrs="item"
                   :key="item.id"
                   ref="cpList" />
       <div class="btn-wrap">
@@ -30,7 +30,7 @@
       </div>
     </Form>
     <div class="result">
-      <p v-for="item in viewData.basic"><span>{{item.title}}：</span>{{item.value}}</p>
+      <p v-for="field in fields">{{field.conf ? `${field.conf.title}: ${field.conf.value}` : ''}}</p>
     </div>
     <ViewSource :code="sourceCode" />
   </div>

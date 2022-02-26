@@ -3,6 +3,7 @@
     <div :class="innerCls">
       <label :class="labelCls"
              :style="labelStyle"
+             v-if="$slots.label || conf.title"
              @click="showPicker">
         <slot name="label">{{conf.title}}</slot>
       </label>
@@ -83,11 +84,13 @@
 import AsyncValidator from 'async-validator'
 import Picker from 'better-picker'
 import { oneOf } from '../../utils/assist.js'
+import Render from '../base/render'
 const prefixCls = 'r--select'
 
 export default {
   name: 'Select',
   props: {
+    // 兼容旧版attrs传参方式
     attrs: {
       type: Object,
       default () {
@@ -111,7 +114,10 @@ export default {
     // v1.2.2 兼容旧版本，新版本用append替换
     unit: String,
     // 列表数据 v1.2.2
-    data: Array,
+    data: {
+      type: Array,
+      default: () => []
+    },
     rules: {
       type: Array
     },
@@ -183,6 +189,9 @@ export default {
       this.removePicker()
       this.setCurrentValue(val)
     }
+  },
+  components: {
+    Render
   },
   computed: {
     // 合并attrs参数到props，兼容旧版attrs传参方式
@@ -307,7 +316,7 @@ export default {
         pickerTitle = this.conf.pickerTitle || '',
         cancelBtnText = this.conf.cancelBtnText || (this.form && this.form.selectCancelBtnText),
         confirmBtnText = this.conf.confirmBtnText || (this.form && this.form.selectConfirmBtnText)
-      if (this.conf.readonly || this.conf.disabled) return
+      if (this.conf.disabled) return
       if (!this.picker) {
         this.picker = new Picker({
           data: [pickerData],
@@ -352,7 +361,7 @@ export default {
       this.validateState = 'validating'
       this.validateDisabled = false
 
-      if (this.conf.readonly) {
+      if (this.conf.disabled) {
         this.validateState = 'success'
         this.validateMessage = ''
         callback(this.validateMessage)
@@ -364,7 +373,7 @@ export default {
       descriptor[prop] = rules
       const validator = new AsyncValidator(descriptor)
       let model = {}
-      model[prop] = this.value
+      model[prop] = this.currentValue
       validator.validate(model, { first: true, suppressWarning: true, component: this }).then(() => {
         this.validateState = 'success'
         this.validateMessage = ''

@@ -5,7 +5,9 @@
     <div class="list">
       请选择以下信息：
       <Form ref="form">
-        <Select v-bind="config"
+        <Select :title="config.title"
+                :name="config.name"
+                :data="config.data"
                 v-model="config.value"
                 ref="select1"></Select>
         <Select v-bind="config2"
@@ -304,7 +306,7 @@ export default {
   },
   mounted () {
     setTimeout(() => {
-      this.config0.value = "doctor"
+      // this.config0.value = "doctor"
     }, 2000);
   },
   methods: {
