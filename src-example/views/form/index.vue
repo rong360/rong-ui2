@@ -29,6 +29,7 @@
       <Select :title="loanTerm.title"
               :name="loanTerm.name"
               :data="loanTerm.data"
+              :rules="loanTerm.rules"
               v-model="loanTerm.value"></Select>
       <Select2 v-bind="contacts"
                v-model="contacts.value"></Select2>
@@ -230,7 +231,7 @@ export default {
           required: true,
           message: '贷款期限不能为空'
         }, {
-          validator (rule, value, callback) {
+          validator (rule, value, callback, source, options) {
             if (value == 1) {
               return new Error('目前暂不支持1个月的贷款，请选择贷款期限')
             }

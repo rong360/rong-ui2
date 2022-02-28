@@ -52,8 +52,8 @@
           </slot>
         </div>
       </div>
-      <div v-if="attrs.unit"
-           :class="unitCls">{{attrs.unit}}</div>
+      <div v-if="conf.unit"
+           :class="unitCls">{{conf.unit}}</div>
       <div :class="appendCls"
            v-if="$slots.append || conf.append">
         <slot name="append">

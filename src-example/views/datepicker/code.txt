@@ -6,7 +6,21 @@
     <div class="list">
       <div class="item">
         <div class="label">爸爸生日：</div>
-        <DatePicker :attrs='config'
+        <DatePicker :value="config.value"
+                    :valueFormat="config.valueFormat"
+                    :textFormat="config.textFormat"
+                    :startYear="config.startYear"
+                    :endYear="config.endYear"
+                    :offsetYear="config.offsetYear"
+                    :yearsLength="config.yearsLength"
+                    :disabled="config.disabled"
+                    :language="config.language"
+                    :pickerFormatter="config.pickerFormatter"
+                    :pickerTitle="config.pickerTitle"
+                    :pickerCancelBtnText="config.pickerCancelBtnText"
+                    :pickerConfirmBtnText="config.pickerConfirmBtnText"
+                    :columnsOrder="config.columnsOrder"
+                    :placeholder="config.placeholder"
                     @onconfirm="birthDate"></DatePicker>
       </div>
     </div>
@@ -14,7 +28,7 @@
     <div class="list">
       <div class="item">
         <div class="label">妈妈出生年份：</div>
-        <DatePicker :attrs='config1'
+        <DatePicker v-bind='config1'
                     @onconfirm="birthDate"></DatePicker>
       </div>
     </div>
@@ -22,7 +36,7 @@
     <div class="list">
       <div class="item">
         <div class="label">哥哥出生日期：</div>
-        <DatePicker :attrs='config2'
+        <DatePicker v-bind='config2'
                     @onconfirm="birthDate"></DatePicker>
       </div>
     </div>
@@ -38,7 +52,7 @@ export default {
     return {
       config: {
         value: '2022/10/22',
-        placeholder: '请选择',
+        placeholder: '请选择爸爸生日',
         valueFormat: 'yyyy/mm/dd',
         // textFormat: 'yyyy年mm月dd日',
         textFormat (val) {
@@ -46,18 +60,18 @@ export default {
         },
         startYear: '',
         endYear: '',
-        offsetYear: '',
-        yearsLength: '',
+        offsetYear: '-1',
+        yearsLength: '10',
         disabled: false,
-        language: 'en',
+        language: 'zh',  // 中文 'zh'、 英文 'en'、 印尼 'id'
         pickerFormatter: function (type, val) {
-          // if (type == 'year') {
-          //   return val + '年'
-          // } else if (type == 'month') {
-          //   return val + '月'
-          // } else if (type == 'day') {
-          //   return val + '日'
-          // }
+          if (type == 'year') {
+            return val + '年'
+          } else if (type == 'month') {
+            return val + '月'
+          } else if (type == 'day') {
+            return val + '日'
+          }
         },
         pickerTitle: 'hello',
         pickerCancelBtnText: 'cancel',

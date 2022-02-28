@@ -6,6 +6,19 @@
     <p class="fs-14 mt-20">1，默认</p>
     <SelectDate :title="config.title"
                 :name="config.name"
+                :placeholder="config.placeholder"
+                :valueFormat="config.valueFormat"
+                :textFormat="config.textFormat"
+                :startYear="config.startYear"
+                :endYear="config.endYear"
+                :yearsLength="config.yearsLength"
+                :offsetYear="config.offsetYear"
+                :disabled="config.disabled"
+                :pickerTitle="config.pickerTitle"
+                :pickerCancelBtnText="config.pickerCancelBtnText"
+                :pickerConfirmBtnText="config.pickerConfirmBtnText"
+                :textPosition="config.textPosition"
+                :rules="config.rules"
                 v-model="config.value"></SelectDate>
 
     <p class="fs-14 mt-20">2，只显示年份</p>
@@ -19,7 +32,9 @@
     <p class="fs-14 mt-20">4，添加css效果</p>
     <SelectDate v-bind="config3"
                 v-model="config3.value"></SelectDate>
-
+    <div class="result">
+      <p v-for="field in fields">{{field.conf ? `${field.conf.title}: ${field.conf.value}` : ''}}</p>
+    </div>
     <ViewSource :code="sourceCode" />
   </div>
 </template>
@@ -38,8 +53,8 @@ export default {
         textFormat: 'yyyy年mm月dd日',
         startYear: '',
         endYear: '',
-        yearsLength: '4',
-        offsetYear: '',
+        yearsLength: '10',
+        offsetYear: '-1',
         disabled: false,
         pickerTitle: 'hello',
         pickerCancelBtnText: 'cancel',
@@ -51,8 +66,8 @@ export default {
               console.log(value)
               var d = new Date(value)
               var y = d.getFullYear()
-              if (y >= 2021) {
-                return new Error('father is too yong')
+              if (y >= 2024) {
+                return new Error('father is too old')
               }
               cb()
             },
@@ -63,6 +78,7 @@ export default {
       },
       config1: {
         title: '妈妈出生年份',
+        value: '',
         valueFormat: 'yyyy',
         textFormat: 'yyyy年',
         textPosition: 'right',
@@ -71,6 +87,8 @@ export default {
       config2: {
         title: '哥哥出生日期',
         value: '1988/10',
+        startYear: '1970',
+        endYear: '2030',
         valueFormat: 'yyyy/mm',
         textFormat: 'yyyy年mm月',
         columnsOrder: ['year', 'month']
@@ -80,8 +98,12 @@ export default {
         value: '',
         mode: 'to-top'
       },
-      sourceCode
+      sourceCode,
+      fields: []
     }
+  },
+  mounted () {
+    this.fields = this.$children.filter(component => component.$options.name === 'SelectDate')
   },
   methods: {
     onBack () {
@@ -91,5 +113,12 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
+.result {
+  font-size: 14px;
+  color: #333333;
+  padding: 10px;
+  background-color: lightgray;
+  margin-top: 50px;
+}
 </style>

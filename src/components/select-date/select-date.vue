@@ -18,10 +18,7 @@
         </slot>
       </div>
       <div :class="contentCls">
-        <DatePicker :attrs="attrs"
-                    :pickerTitle="pickerTitle"
-                    :pickerCancelBtnText="pickerCancelBtnText"
-                    :pickerConfirmBtnText="pickerConfirmBtnText"
+        <DatePicker v-bind="conf"
                     @onconfirm="onConfirm"
                     :class="selectCls"
                     ref="datePicker"></DatePicker>
@@ -55,8 +52,8 @@
           </slot>
         </div>
       </div>
-      <div v-if="attrs.unit"
-           :class="unitCls">{{attrs.unit}}</div>
+      <div v-if="conf.unit"
+           :class="unitCls">{{conf.unit}}</div>
       <div :class="appendCls"
            v-if="$slots.append || conf.append">
         <slot name="append">
@@ -103,6 +100,65 @@ export default {
     append: [String, Object, Function],
     // v1.2.2 兼容旧版本，新版本用append替换
     unit: String,
+    // v1.2.2
+    startYear: {
+      type: [Number, String],
+      default: '',
+      validator: function (value) {
+        return !isNaN(value)
+      }
+    },
+    // v1.2.2
+    endYear: {
+      type: [Number, String],
+      default: '',
+      validator: function (value) {
+        return !isNaN(value)
+      }
+    },
+    // v1.2.2
+    offsetYear: {
+      type: [Number, String],
+      default: 0,
+      validator: function (value) {
+        return !isNaN(value)
+      }
+    },
+    // v1.2.2
+    yearsLength: {
+      type: [Number, String],
+      default: 10,
+      validator: function (value) {
+        return !isNaN(value)
+      }
+    },
+    // v1.2.2
+    columnsOrder: {
+      type: Array,
+      default () {
+        return ['year', 'month', 'day']
+      }
+    },
+    // v1.2.2
+    language: {
+      type: String,
+      default: 'zh' // 中文 'zh'、 英文 'en'、 印尼 'id'
+    },
+    // v1.2.2
+    placeholder: {
+      type: String,
+      default: '请选择'
+    },
+    // v1.2.2
+    textFormat: {
+      type: [String, Function],
+      default: 'yyyy/mm/dd'
+    },
+    // v1.2.2
+    valueFormat: {
+      type: [String, Function],
+      default: 'yyyy/mm/dd'
+    },
     rules: {
       type: Array
     },
@@ -120,9 +176,6 @@ export default {
       validator (value) {
         return oneOf(value, ['left', 'center', 'right'])
       }
-    },
-    placeholder: {
-      type: String
     },
     selectArrowStyle: {
       type: Object

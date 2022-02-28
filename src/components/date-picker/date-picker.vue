@@ -13,6 +13,7 @@ const prefixCls = 'r--datepicker'
 export default {
   name: "DatePicker",
   props: {
+    // 兼容旧版attrs传参方式
     attrs: {
       type: Object,
       default: function () {
@@ -23,15 +24,33 @@ export default {
       type: String,
       default: ''
     },
-    startYear: Number,
-    endYear: Number,
+    startYear: {
+      type: [Number, String],
+      default: '',
+      validator: function (value) {
+        return !isNaN(value)
+      }
+    },
+    endYear: {
+      type: [Number, String],
+      default: '',
+      validator: function (value) {
+        return !isNaN(value)
+      }
+    },
     offsetYear: {
-      type: Number,
-      default: 0
+      type: [Number, String],
+      default: 0,
+      validator: function (value) {
+        return !isNaN(value)
+      }
     },
     yearsLength: {
-      type: Number,
-      default: 10
+      type: [Number, String],
+      default: 10,
+      validator: function (value) {
+        return !isNaN(value)
+      }
     },
     columnsOrder: {
       type: Array,
@@ -43,10 +62,19 @@ export default {
       type: String,
       default: 'zh' // 中文 'zh'、 英文 'en'、 印尼 'id'
     },
-    placeholder: String,
+    placeholder: {
+      type: String,
+      default: '请选择'
+    },
     disabled: Boolean,
-    textFormat: [String, Function],
-    valueFormat: [String, Function],
+    textFormat: {
+      type: [String, Function],
+      default: 'yyyy/mm/dd'
+    },
+    valueFormat: {
+      type: [String, Function],
+      default: 'yyyy/mm/dd'
+    },
     pickerFormatter: Function,
     pickerTitle: String,
     pickerCancelBtnText: String,
@@ -57,7 +85,7 @@ export default {
   },
   data () {
     return {
-      currentValue: '',
+      currentValue: this.value,
       placeholderText: '',
       pickerData: [],
       pickerSelectedIndex: [],
@@ -70,26 +98,19 @@ export default {
     form: { default: null }
   },
   computed: {
+    // 合并attrs参数到props，兼容旧版attrs传参方式
     conf () {
-      let defaultConfig = {
-        value: this.attrs.value || '',
-        valueFormat: this.attrs.valueFormat || this.valueFormat || 'yyyy/mm/dd',
-        textFormat: this.attrs.textFormat || this.textFormat || 'yyyy/mm/dd',
-        placeholder: this.attrs.placeholder || this.placeholder || '请选择',
-        startYear: parseInt(this.attrs.startYear || this.startYear),
-        endYear: parseInt(this.attrs.endYear || this.endYear),
-        offsetYear: parseInt(this.attrs.offsetYear || this.offsetYear),
-        yearsLength: parseInt(this.attrs.yearsLength || this.yearsLength),
-        columnsOrder: this.attrs.columnsOrder || this.columnsOrder,
-        language: this.attrs.language || this.language,
-        pickerFormatter: this.attrs.pickerFormatter || this.pickerFormatter,
-        title: this.attrs.pickerTitle || this.pickerTitle,
-        disabled: this.attrs.disabled || this.disabled
-      };
-      return defaultConfig;
+      let attrs = this.$props.attrs
+      let props = {}
+      for (var key in this.$props) {
+        if (key !== 'attrs') {
+          props[key] = key in attrs ? attrs[key] : this.$props[key]
+        }
+      }
+      return props
     },
     wrapCls () {
-      let mode = this.attrs.mode || this.mode || this.form && this.form.mode || 'default'
+      let mode = this.conf.mode || this.form && this.form.mode || 'default'
       return [
         `${prefixCls}`,
         `${prefixCls}-mode-${mode}`,
@@ -104,6 +125,9 @@ export default {
   },
   watch: {
     'attrs.value': function () {
+      this.initPickerData()
+    },
+    "value": function (val) {
       this.initPickerData()
     }
   },
@@ -146,12 +170,12 @@ export default {
       let self = this,
         pickerData = this.pickerData;
 
-      if (this.attrs.disabled || this.disabled) return
+      if (this.conf.disabled) return
       if (!this.picker) {
-        let pickerTitle = this.attrs.pickerTitle || this.pickerTitle
-        let pickerCancelBtnText = this.attrs.pickerCancelBtnText || this.pickerCancelBtnText || (this.form && this.form.datePickerCancelBtnText)
-        let pickerConfirmBtnText = this.attrs.pickerConfirmBtnText || this.pickerConfirmBtnText || (this.form && this.form.datePickerConfirmBtnText)
-        let mode = this.attrs.pickerMode || this.pickerMode || this.form && this.form.mode || 'default'
+        let pickerTitle = this.conf.pickerTitle
+        let pickerCancelBtnText = this.conf.pickerCancelBtnText || (this.form && this.form.datePickerCancelBtnText)
+        let pickerConfirmBtnText = this.conf.pickerConfirmBtnText || (this.form && this.form.datePickerConfirmBtnText)
+        let mode = this.conf.pickerMode || this.form && this.form.mode || 'default'
         this.picker = new Picker({
           data: pickerData,
           selectedIndex: self.pickerSelectedIndex,
@@ -184,10 +208,9 @@ export default {
     },
     generateYearData () {
       let { startYear, endYear, offsetYear, yearsLength, pickerFormatter } = this.conf
-      startYear = startYear || new Date().getFullYear() + offsetYear
-      endYear = endYear || (startYear + yearsLength)
-
-      return new Array(endYear - startYear).fill('').map((item, index) => {
+      startYear = startYear * 1 || new Date().getFullYear() + offsetYear * 1
+      endYear = endYear || (startYear + yearsLength * 1)
+      return new Array((endYear - startYear) === 0 ? 1 : endYear - startYear).fill('').map((item, index) => {
         let year = startYear + index
         return { text: `${pickerFormatter && pickerFormatter('year', year) || year}`, value: `${year}` }
       })
