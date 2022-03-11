@@ -114,7 +114,15 @@ let basicInfo = {
       "value": "10000.00",
       "fixed": 2,
       "readonly": 0,
-      "maxlength": 8
+      "maxlength": 8,
+      "onInput": (e, component) => {
+        let value = e.target.value
+        if (value > 10000) {
+          component.setCurrentValue(10000)
+          component.validateState = 'error'
+          component.validateMessage = '最大申请金额为10000元，已为你自动变更为10000元'
+        }
+      }
     }, {
       "rely_policy_id": 0,
       "id": "84821212",
@@ -311,7 +319,15 @@ let basicInfo = {
       "level": 2,
       "desc": "",
       "value": "7000",
-      "readonly": 0
+      "readonly": 0,
+      "onInput": (e, component) => {
+        let value = e.target.value
+        if (value > 60000) {
+          component.setCurrentValue(60000)
+          component.validateState = 'error'
+          component.validateMessage = '月工资最多为60000元，已为你自动变更为60000元'
+        }
+      }
     }, {
       "rely_policy_id": "26489",
       "id": "5256",
@@ -566,6 +582,16 @@ export default {
     doSubmit () {
       this.$refs.form.validate((valid, validateMessage) => {
         if (valid) {
+          this.$dialog({
+            propsData: {
+              message: this.$refs.form.getValue().map(field => `<p class="ta-l fs-14"><span class="fw-b">${field.title}:</span>${field.value}</p>`).join('')
+            },
+            methods: {
+              onConfirm () {
+                this.remove()
+              }
+            }
+          })
           console.log('getValue', this.$refs.form.getValue())
           console.log('getSerializeValue', this.$refs.form.getSerializeValue())
           console.log('getObjectValue', this.$refs.form.getObjectValue())
@@ -586,6 +612,16 @@ export default {
     doSubmit2 () {
       this.$refs.form.validateOneByOne((valid, validateMessage) => {
         if (valid) {
+          this.$dialog({
+            propsData: {
+              message: this.$refs.form.getValue().map(field => `<p class="ta-l fs-14"><span class="fw-b">${field.title}:</span>${field.value}</p>`).join('')
+            },
+            methods: {
+              onConfirm () {
+                this.remove()
+              }
+            }
+          })
           console.log('getValue', this.$refs.form.getValue())
           console.log('getSerializeValue', this.$refs.form.getSerializeValue())
           console.log('getObjectValue', this.$refs.form.getObjectValue())

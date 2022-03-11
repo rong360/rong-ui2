@@ -407,7 +407,8 @@ export default {
       let name = this.conf.name || this.conf.title
       return {
         name: name,
-        value: this.currentValue
+        value: this.currentValue,
+        title: this.conf.title
       }
     }
   },

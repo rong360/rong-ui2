@@ -247,6 +247,10 @@ export default {
       type: Boolean,
       default: true
     },
+    // input事件  v1.2.2
+    onInput: Function,
+    // blur事件  v1.2.2
+    onBlur: Function,
     rules: {
       type: Array
     },
@@ -297,7 +301,6 @@ export default {
     return {
       initialValue: '',
       currentValue: this.value,
-      prevValue: this.value || '',
       validateState: '',
       validateMessage: '',
       validateDisabled: false,
@@ -482,118 +485,64 @@ export default {
     getFilterRules (trigger) {
       return this.fieldRules.filter(rule => !rule.trigger || rule.trigger.indexOf(trigger) != -1)
     },
-    validate (trigger, callback = function () { }) {
-      let rules = this.getFilterRules(trigger)
-
-      if (!this.isRequired) {
-        this.validateState = ''
-        callback()
-        return true
-      }
-
-      this.validateState = 'validating'
-      this.validateDisabled = false
-
-      let hasMaskCode = this.initialValue.indexOf('*') > -1 // 掩码
-      if (this.conf.readonly || hasMaskCode && this.initialValue == this.currentValue) {
-        this.validateState = 'success'
-        this.validateMessage = ''
-        callback(this.validateMessage)
-        return
-      }
-
-      let prop = this.conf.name || this.conf.title || 'prop'
-      let descriptor = {}
-      descriptor[prop] = rules
-      const validator = new AsyncValidator(descriptor)
-      let model = {}
-      model[prop] = this.currentValue
-      validator.validate(model, { first: true, suppressWarning: true, component: this }).then(() => {
-        this.validateState = 'success'
-        this.validateMessage = ''
-        callback(this.validateMessage)
-      }).catch(({ errors, fields }) => {
-        this.validateState = 'error'
-        this.validateMessage = errors[0].message || ''
-        callback(this.validateMessage)
-      });
-    },
-    resetField () {
-      this.validateState = ''
-      this.validateMessage = ''
-      this.validateDisabled = true
-      this.setCurrentValue(this.initialValue)
-    },
-    onFieldBlur (e) {
-      let inputValue = e.target.value
-      if (this.conf.readonly || this.conf.disabled) return
-      if (this.conf.type == 'number') {
-        if (this.conf.fixed > 1 && inputValue != '') {
-          // 保留n位小数，如：2，会在2后面补上00.即2.00
-          let dotPos = inputValue.indexOf('.')
-          if (dotPos < 0) {
-            inputValue += '.'
-            dotPos = inputValue.length - 1
-          }
-          while (inputValue.length <= dotPos + this.conf.fixed) {
-            inputValue += '0'
-          }
-          e.target.value = inputValue
-        }
-        // 不能以'.'结尾
-        if (/\.$/.test(inputValue)) e.target.value = inputValue.replace('.', '')
-      }
-      this.setCurrentValue(e.target.value)
-      this.$emit('on-blur', e)
-      this.blurTimer = setTimeout(() => {
-        this.focused = false
-        if (this.conf.type == 'email') this.showEmailPan = false
-        this.validate('blur')
-      }, 200)
-    },
-    onFieldChange (e) {
-      if (this.validateDisabled) {
-        this.validateDisabled = false
-        return
-      }
-      this.validate('change')
-      this.$emit('on-change', e)
-    },
-    onFieldInput (e) {
-      let inputValue = e.target.value
-      this.validateState = ''
-      this.validateMessage = ''
-      if (this.conf.type == 'number') {
-        // 修复input 属性为 number，maxlength不起作用
-        if (this.conf.maxlength && inputValue.length > this.conf.maxlength) {
-          inputValue = inputValue.slice(0, this.conf.maxlength)
-        }
-        // 限制小数位数
-        let dotPos = inputValue.indexOf('.')
-        if (this.conf.fixed > 0 && dotPos > -1) {
-          inputValue = inputValue.substring(0, dotPos + this.conf.fixed + 1)
-        } else if (this.conf.fixed <= 0 && dotPos > -1) {
-          inputValue = inputValue.substring(0, dotPos)
-        }
-        // 解决ios输入非数字时value清空问题
-        if (inputValue == '' && this.prevValue != '' && !this.isBackSpace) {
-          inputValue = this.prevValue
-        }
-        e.target.value = inputValue
-      } else if (this.conf.type == 'tel') {
-        e.target.value = telephoneClearNonNumbers(inputValue)
-      } else if (this.conf.type == 'IDCard') {
-        e.target.value = IDCardClearNonNumbers(inputValue)
-      }
-      this.setCurrentValue(e.target.value)
-      this.$emit('on-input', e)
-    },
     onFieldFocus (e) {
       if (this.conf.readonly) return
       this.focused = true
       if (this.conf.type == 'email') this.showEmailPan = true
+      if (!('prevValue' in e.target)) e.target.prevValue = e.target.value
       this.$emit('on-focus', e)
       // e.target.scrollIntoView()
+    },
+    onFieldInput (e) {
+      let iptValue = e.target.value
+      this.validateState = ''
+      this.validateMessage = ''
+      if (this.conf.type == 'number') {
+        let iptPrevValue = e.target.prevValue
+        // 修复input 属性为 number，maxlength不起作用
+        if (this.conf.maxlength && iptValue.length > this.conf.maxlength) {
+          e.target.value = iptValue.slice(0, this.conf.maxlength)
+        }
+        // 限制小数位数
+        let dotPos = iptValue.indexOf('.')
+        if (dotPos > -1) {
+          e.target.value = this.conf.fixed > 0 ? iptValue.substring(0, dotPos + this.conf.fixed + 1) : iptValue.substring(0, dotPos)
+        }
+        // 解决ios输入非数字时value清空问题
+        if (iptValue == '' && iptPrevValue != '' && !this.isBackSpace) {
+          e.target.value = iptPrevValue
+        } else if (iptValue == '' && iptPrevValue == '') { // 第一个code为非数字
+          e.target.value = ''
+        }
+        e.target.prevValue = e.target.value
+      } else if (this.conf.type == 'tel') {
+        e.target.value = telephoneClearNonNumbers(iptValue)
+      } else if (this.conf.type == 'IDCard') {
+        e.target.value = IDCardClearNonNumbers(iptValue)
+      }
+      this.setCurrentValue(e.target.value, {from: 'input'})
+      this.$emit('on-input', e, this)
+      this.onInput && this.onInput(e, this)
+    },
+    onFieldChange (e) {
+      this.$emit('on-change', e)
+    },
+    onFieldBlur (e) {
+      if (this.conf.readonly || this.conf.disabled) return
+
+      this.blurTimer = setTimeout(() => {
+        this.focused = false
+
+        this.setCurrentValue(e.target.value)
+
+        if (this.conf.type == 'email') this.showEmailPan = false
+
+        if (!this.validateDisabled) this.validate('blur')
+        this.validateDisabled = false
+
+        this.$emit('on-blur', e)
+        this.onBlur && this.onBlur(e, this)
+      }, 200)
     },
     onFieldKeyup (e) {
       this.$emit('on-keyup', e)
@@ -616,6 +565,47 @@ export default {
       this.focus()
       this.$emit('on-clear', e)
     },
+    validate (trigger, callback = function () { }) {
+      let rules = this.getFilterRules(trigger)
+
+      if (!this.isRequired) {
+        this.validateState = ''
+        callback()
+        return true
+      }
+
+      this.validateState = 'validating'
+      this.validateDisabled = false
+
+      let hasMaskCode = this.initialValue.indexOf('*') > -1 // 掩码
+      if (this.conf.readonly || hasMaskCode && this.initialValue == this.currentValue) {
+        this.validateState = 'success'
+        this.validateMessage = ''
+        callback(this.validateMessage)
+        return
+      }
+      let prop = this.conf.name || this.conf.title || 'prop'
+      let descriptor = {}
+      descriptor[prop] = rules
+      const validator = new AsyncValidator(descriptor)
+      let model = {}
+      model[prop] = this.currentValue
+      validator.validate(model, { first: true, suppressWarning: true, component: this }).then(() => {
+        this.validateState = 'success'
+        this.validateMessage = ''
+        callback(this.validateMessage)
+      }).catch(({ errors, fields }) => {
+        this.validateState = 'error'
+        this.validateMessage = errors[0].message || ''
+        callback(this.validateMessage)
+      });
+    },
+    resetField () {
+      this.validateState = ''
+      this.validateMessage = ''
+      this.validateDisabled = true
+      this.setCurrentValue(this.initialValue)
+    },
     setEmail (e) {
       this.setCurrentValue(e.target.innerText)
     },
@@ -623,18 +613,20 @@ export default {
     focus () {
       this.$refs.input.focus()
     },
-    setCurrentValue (value) {
+    setCurrentValue (value, options = {}) {
+      const { validateDisabled } = options
       if (value === this.currentValue) return
+      if (validateDisabled) this.validateDisabled = true
       this.currentValue = value
-      this.prevValue = value
-      this.$emit('input', value)
+      this.$emit('input', value, this)
     },
     /* 获取表单数据 */
     getValue () {
       let name = this.conf.name || this.conf.title
       return {
         name: name,
-        value: this.currentValue
+        value: this.currentValue,
+        title: this.conf.title
       }
     }
   },

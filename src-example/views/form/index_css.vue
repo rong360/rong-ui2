@@ -11,11 +11,14 @@
           ref="form">
       <Input :title="user.title"
              :name="user.name"
+             :maxlength="user.maxlength"
+             :rules="user.rules"
              v-model="user.value"></Input>
       <Input v-bind="age"
              v-model="age.value"></Input>
       <Input v-bind="amount"
-             v-model="amount.value"></Input>
+             v-model="amount.value"
+             @on-input="handleInputAmount"></Input>
       <Input v-bind="phone"
              v-model="phone.value"></Input>
       <Input v-bind="email"
@@ -176,14 +179,22 @@ export default {
             value: "",
             unit: "个月",
             placeholder: "请输入您期望的贷款期限",
+            onInput: (e, component) => {
+              let value = e.target.value
+              if (value > 12) {
+                component.setCurrentValue(12)
+                component.validateState = 'error'
+                component.validateMessage = '贷款期限最长12个月，以为您变更为12个月'
+              }
+            },
             rules: [{
               validator (rule, value, callback, source, options) {
                 let { component } = options
                 if (value === '') {
                   return new Error(component.title + '不能为空')
                 } else if (value > 12) {
-                  component.setCurrentValue(12)
-                  return new Error('贷款期限最长12个月，以为您变更为12个月')
+                  // component.setCurrentValue(12, {validateDisabled: true})
+                  // return new Error('贷款期限最长12个月，以为您变更为12个月')
                 }
                 callback()
               },
@@ -230,9 +241,27 @@ export default {
     this.fields = this.$refs.form.fields
   },
   methods: {
+    handleInputAmount (e, component) {
+      let value = e.target.value
+      if (value > 10000) {
+        component.setCurrentValue(10000)
+        component.validateState = 'error'
+        component.validateMessage = '最大申请金额为10000元，已为你自动变更为10000元'
+      }
+    },
     doSubmit () {
       this.$refs.form.validate((valid, validateMessage) => {
         if (valid) {
+          this.$dialog({
+            propsData: {
+              message: this.$refs.form.getValue().map(field => `<p class="ta-l fs-14"><span class="fw-b">${field.title}:</span>${field.value}</p>`).join('')
+            },
+            methods: {
+              onConfirm () {
+                this.remove()
+              }
+            }
+          })
           console.log('getValue', this.$refs.form.getValue())
           console.log('getSerializeValue', this.$refs.form.getSerializeValue())
           console.log('getObjectValue', this.$refs.form.getObjectValue())
@@ -253,6 +282,16 @@ export default {
     doSubmit2 () {
       this.$refs.form.validateOneByOne((valid, validateMessage) => {
         if (valid) {
+          this.$dialog({
+            propsData: {
+              message: this.$refs.form.getValue().map(field => `<p class="ta-l fs-14"><span class="fw-b">${field.title}:</span>${field.value}</p>`).join('')
+            },
+            methods: {
+              onConfirm () {
+                this.remove()
+              }
+            }
+          })
           console.log('getValue', this.$refs.form.getValue())
           console.log('getSerializeValue', this.$refs.form.getSerializeValue())
           console.log('getObjectValue', this.$refs.form.getObjectValue())

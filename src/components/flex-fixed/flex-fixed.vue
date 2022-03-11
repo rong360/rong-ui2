@@ -13,6 +13,7 @@
     <footer v-show="showFooter">
       <slot name="footer"></slot>
     </footer>
+    <slot name="extra"></slot>
   </div>
 </template>
 

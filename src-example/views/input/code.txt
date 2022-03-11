@@ -4,9 +4,11 @@
               @on-back="onBack">Input</Titlebar>
 
     <div class="title">文本 type="text" -- {{user.value}}</div>
-    <Input :showEdit="false"
-           :title="user.title"
+    <Input :title="user.title"
+           :name="user.name"
+           :type="user.type"
            :rules="user.rules"
+           :showEdit="false"
            maxlength="6"
            v-model="user.value"></Input>
 
@@ -15,8 +17,7 @@
            v-model="age.value"></Input>
 
     <div class="title">数字(浮点) type="number" -- {{amount.value}}</div>
-    <Input v-bind="amount"
-           v-model="amount.value"></Input>
+    <Input v-bind="amount" v-model="amount.value" @on-input="handleInputAmount"></Input>
 
     <div class="title">电话 type="tel" -- {{phone.value}}</div>
     <Input v-bind="phone"
@@ -123,7 +124,7 @@ export default {
         "info_property": "1",
         "level": 1,
         "desc": "",
-        "value": "10000.00",
+        "value": "1000",
         "fixed": 2,
         "readonly": 0,
         "maxlength": 8,
@@ -239,6 +240,14 @@ export default {
   methods: {
     onBack () {
       this.$router.push('/')
+    },
+    handleInputAmount (e, component) {
+      let value = e.target.value
+      if (value > 10000) {
+        component.setCurrentValue(10000)
+        component.validateState = 'error'
+        component.validateMessage = '最大申请金额为10000元，已为你自动变更为10000元'
+      }
     }
   }
 }
