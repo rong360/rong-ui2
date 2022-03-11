@@ -11,10 +11,8 @@
            @click="showDialog3">配置title</div>
       <div class="item"
            @click="showDialog4">配置右上角关闭按钮</div>
-      <div class="item"
-           @click="showDialog5">配置内容</div>
            <div class="item"
-           @click="showDialog5_2">自定义message</div>
+           @click="showDialog5">自定义内容(Render函数)</div>
       <div class="item"
            @click="showDialog6">配置btn</div>
       <div class="item"
@@ -82,11 +80,6 @@ export default {
           // 内容(普通文本或简单html)
           message: '泰戈尔',
           contentStyleObj: { fontSize: '30px' },
-          // 内容(rContent组件数据)
-          rContentData: {
-            message: "飞鸟集",
-            list: ['只有经历过地狱般的磨砺', '才能练就创造天堂的力量', '只有流过血的手指', '才能弹出世间的绝响']
-          },
           // 取消按钮
           cancelBtnText: "取消",
           showCancelBtn: true,
@@ -103,10 +96,6 @@ export default {
           animate: true,
           // 显示位置
           position: { x: 'center', y: 'center' }
-        },
-        // rContent为内容区域组件，通过rContentData接收外部数据
-        components: {
-          rContent: resolve => resolve(require("./repaymentTip.vue"))
         },
         methods: {
           // 取消按钮
@@ -181,49 +170,15 @@ export default {
         }
       });
     },
-    // 配置内容
-    showDialog5 () {
-      let self = this
-      this.$dialog({
-        propsData: {
-          // 内容(普通文本或简单html)
-          message: '飞鸟集节选',
-          contentStyleObj: { fontSize: '24px', color: "#4080e8" },
-          // 内容(rContent组件数据)
-          rContentData: {
-            message: "飞鸟集",
-            list: ['只有经历过地狱般的磨砺', '才能练就创造天堂的力量', '只有流过血的手指', '才能弹出世间的绝响']
-          }
-        },
-        // rContent为内容区域组件，通过rContentData接收外部数据
-        components: {
-          rContent: resolve => resolve(require("./repaymentTip.vue"))
-        },
-        methods: {
-          // 取消按钮
-          onCancel: function () {
-            this.remove();
-          },
-          // 确认按钮
-          onConfirm: function () {
-            self.$toast('这是点击确认按钮的自定义回调');
-            this.remove();
-          }
-        }
-      });
-    },
     // 自定义内容
-    showDialog5_2 () {
+    showDialog5 () {
       let self = this
       let RepaymentTip = resolve => resolve(require("./repaymentTip.vue"))
       this.$dialog({
         propsData: {
+          className: 'custom-tip',
           // 内容(文本或自定义组件)
-          message: (h) => h(RepaymentTip, {
-            props: {
-              name: 'zyx'
-            }
-          })
+          message: (h) => h(RepaymentTip, {props: { name: 'zyx' }})
         },
         methods: {
           // 取消按钮
@@ -301,7 +256,7 @@ export default {
     },
     // dialog拓展 - select
     showDialog10 () {
-      this.$dialog.select({ menus: [{ title: '操作1' }, { title: '操作2' }], cancelBtnText: '取消', onCancel: function () { this.remove() }, onSelect: function (obj) { console.log(obj); this.remove() } })
+      this.$dialog.select({ menus: [{ title: '操作1' }, { title: '操作2' }], cancelBtnText: '取消', onCancel: function () { this.remove() }, onSelect: function (obj) { console.log(obj); this.remove() }, onMask: function () { this.remove() } })
     },
     showDialog11 () {
       this.showDlg11 = this.true
