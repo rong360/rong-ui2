@@ -8,6 +8,7 @@ import DatePicker from './components/date-picker/'
 import Switch from './components/switch/'
 import Checkbox from './components/checkbox/'
 import Radio from './components/radio/'
+import Upload from './components/upload/'
 import Titlebar from './components/titlebar/'
 import Swiper from './components/swiper/'
 import Button from './components/button/'
@@ -33,6 +34,7 @@ const components = {
   Swiper,
   Checkbox,
   Radio,
+  Upload,
   Button,
   Range,
   FlexFixed,

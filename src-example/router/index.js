@@ -20,6 +20,7 @@ import DatePicker from '../views/datepicker'
 import Switch from '../views/switch'
 import Checkbox from '../views/checkbox'
 import Radio from '../views/radio'
+import Upload from '../views/upload'
 import Dialog from '../views/dialog'
 import Toast from '../views/toast'
 import Loading from '../views/loading'
@@ -96,6 +97,10 @@ export default new VueRouter({
     {
       path: '/radio',
       component: Radio
+    },
+    {
+      path: '/upload',
+      component: Upload
     },
     {
       path: '/form',

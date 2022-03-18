@@ -67,6 +67,9 @@
       <li>
         <router-link to="/switch">Switch</router-link>
       </li>
+      <li>
+        <router-link to="/upload">Upload</router-link>
+      </li>
     </ul>
   </div>
 </template>
