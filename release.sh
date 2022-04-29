@@ -1,14 +1,22 @@
 #! /bin/bash
 #
-npm run pack
 
 rm -rf release
-
 mkdir release
 
-cp -r ./dist/ release/dist/
 
-cp -r ./src/ release/src/
+npm run pack:lib
+gulp buildESMScripts
+gulp buildStyles
+
+cp -r ./dist-lib/ release/lib/
+cp -r ./dist-es/ release/es/
+cp -r ./dist-styles/ release/lib/
+cp -r ./dist-styles/ release/es/
+
+rm -rf dist-lib
+rm -rf dist-es
+rm -rf dist-styles
 
 version=$(grep "version" package.json | head -n 1 | awk -F'"' '{print $4}')
 
@@ -29,7 +37,8 @@ s=`cat <<EOF
         "type": "git",
         "url": "git+https://github.com/rong360/rong-ui2.git"
     },
-    "main": "dist/js/rong-ui.js",
+    "main": "lib/rong-ui2.js",
+    "module": "es/index.js",
     "dependencies": {
         "async-validator": "^3.3.0",
         "better-picker": "^1.1.3"
@@ -67,5 +76,6 @@ cd release
 #npm publish
 
 
-
-
+npm link
+cd ../
+npm link rong-ui2

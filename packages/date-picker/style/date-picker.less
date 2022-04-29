@@ -1,0 +1,15 @@
+@datepickerCls: ~'@{comps-prefix}-datepicker';
+
+.@{datepickerCls} {
+  &-mode-to-top&-empty {
+    color: transparent;
+  }
+  &-empty {
+    color: #c8c7cc;
+  }
+  min-height: 20px;
+}
+.picker[mode='default'] .confirm,
+.picker[mode='default'] .wheel-item[style~='rotateX(0deg);'] {
+  color: #4080e8 !important;
+}

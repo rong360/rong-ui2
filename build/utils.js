@@ -1,7 +1,7 @@
 'use strict'
 const path = require('path')
 const config = require('../config')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const MiniCssExtractPlugin = require("mini-css-extract-plugin"); // js中的css文件提取出来，生成单独的文件
 const packageConfig = require('../package.json')
 
 exports.assetsPath = function (_path) {
@@ -18,15 +18,31 @@ exports.cssLoaders = function (options) {
   const cssLoader = {
     loader: 'css-loader',
     options: {
-      sourceMap: options.sourceMap,
-      minimize: process.env.NODE_ENV === 'production'
+      sourceMap: options.sourceMap
     }
   }
 
   const postcssLoader = {
     loader: 'postcss-loader',
     options: {
-      sourceMap: options.sourceMap
+      sourceMap: options.sourceMap,
+      postcssOptions: loaderContext => {
+        if (/\/packages\/|demo.less$/.test(loaderContext.resourcePath)) {
+          return {
+            ident: 'postcss',
+            plugins: [
+              require('postcss-plugin-px2rem')({
+                // base on 320px standard.
+                rootValue: 18.75,
+                // to leave 1px alone.
+                minPixelValue: 1.01
+              })
+            ]
+          }
+        } else {
+          return {}
+        }
+      }
     }
   }
 
@@ -43,24 +59,12 @@ exports.cssLoaders = function (options) {
       })
     }
 
-    if (loader == 'less') {
-      loaders.push({
-        loader: 'style-resources-loader',
-        options: {
-          patterns: path.resolve(__dirname, '../src/styles/index.less')
-        }
-      })
-    }
-
     // Extract CSS when that option is specified
     // (which is the case during production build)
     if (options.extract) {
-      return ExtractTextPlugin.extract({
-        use: loaders,
-        fallback: 'vue-style-loader'
-      })
+      return [{loader: MiniCssExtractPlugin.loader}].concat(loaders)
     } else {
-      return ['vue-style-loader'].concat(loaders)
+      return [{loader: 'vue-style-loader'}].concat(loaders)
     }
   }
 
@@ -68,7 +72,13 @@ exports.cssLoaders = function (options) {
   return {
     css: generateLoaders(),
     postcss: generateLoaders(),
-    less: generateLoaders('less'),
+    less: generateLoaders('less').concat(/*{
+      loader: 'style-resources-loader',
+      options: {
+        patterns: [path.resolve(__dirname, '../src/_styles/index.less')],
+        injector: 'append'
+      }
+    }*/),
     sass: generateLoaders('sass', { indentedSyntax: true }),
     scss: generateLoaders('sass'),
     stylus: generateLoaders('stylus'),
@@ -83,6 +93,7 @@ exports.styleLoaders = function (options) {
 
   for (const extension in loaders) {
     const loader = loaders[extension]
+
     output.push({
       test: new RegExp('\\.' + extension + '$'),
       use: loader

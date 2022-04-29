@@ -8,14 +8,36 @@ const rm = require('rimraf')
 const path = require('path')
 const chalk = require('chalk')
 const webpack = require('webpack')
-const webpackConfig = require('./webpack.pack.conf')
-
+const config = require('../config')
 const spinner = ora('building for production...')
+const isDebug = process.argv.some(arg => arg.indexOf('debug') > -1)
 spinner.start()
 
-rm(path.join(path.resolve(__dirname, '../dist')), err => {
+let pack = {
+  assetsRoot: null,
+  webpackConfig: null,
+  method: null
+}
+
+if (process.argv.some(arg => arg.indexOf('lib') > -1)) {
+  Object.assign(pack, {
+    assetsRoot: config.pack.lib.assetsRoot,
+    webpackConfig: require('./webpack.lib.pack.conf'),
+    method: 'lib'
+  })
+}
+
+if (process.argv.some(arg => arg.indexOf('es') > -1)) {
+  Object.assign(pack, {
+    assetsRoot: config.pack.lib.assetsRoot,
+    webpackConfig: require('./webpack.es.pack.conf'),
+    method: 'es'
+  })
+}
+
+rm(path.join(pack.assetsRoot), err => {
   if (err) throw err
-  webpack(webpackConfig, (err, stats) => {
+  webpack(pack.webpackConfig, (err, stats) => {
     spinner.stop()
     if (err) throw err
     process.stdout.write(stats.toString({
@@ -27,11 +49,11 @@ rm(path.join(path.resolve(__dirname, '../dist')), err => {
     }) + '\n\n')
 
     if (stats.hasErrors()) {
-      console.log(chalk.red('  Build failed with errors.\n'))
+      console.log(chalk.red(`  Build ${pack.method} failed with errors.\n`))
       process.exit(1)
     }
 
-    console.log(chalk.cyan('  Build complete.\n'))
+    console.log(chalk.cyan(`  Build ${pack.method} complete.\n`))
     console.log(chalk.yellow(
       '  Tip: built files are meant to be served over an HTTP server.\n' +
       '  Opening index.html over file:// won\'t work.\n'

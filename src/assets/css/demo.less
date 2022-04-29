@@ -1,0 +1,42 @@
+@import "./common.less";
+
+@demoPrefix: r-demo;
+
+.@{demoPrefix} {
+  background-color: #fff;
+  &-nav__item {
+    position: relative;
+    display: flex;
+    margin: 0 0 12px;
+    padding-left: 20px;
+    color: #323233;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 40px;
+    background: #f7f8fa;
+    border-radius: 99px;
+    transition: background-color 0.3s;
+    &:hover {
+      background-color: #eef0f4;
+      cursor: pointer;
+    }
+    svg {
+      position: absolute;
+      top: 50%;
+      right: 16px;
+      width: 16px;
+      height: 16px;
+      margin-top: -8px;
+    }
+  }
+}
+
+[data-name~="Guide"] {
+  display: none;
+}
+
+#app {
+  height: 100%;
+  position: relative;
+  background-color: #fff;
+}

@@ -1,0 +1,52 @@
+@uploadCls: ~'@{comps-prefix}-uploader';
+.@{uploadCls} {
+  &::after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+  &-pic-item,
+  &-select {
+    float: left;
+    width: 80px;
+    height: 80px;
+  }
+  &-pic-item {
+    position: relative;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 8px;
+    }
+    .remove {
+      position: absolute;
+      right: 0px;
+      top: 0px;
+      transform: translate(50%, -50%);
+      .remove-icon {
+        font-size: 15px;
+        background-color: red;
+        border-radius: 50%;
+        color: #fff;
+      }
+    }
+  }
+  &-select {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background-color: #fff;
+    input {
+      display: none;
+    }
+    .select-icon {
+      font-size: 30px;
+      background-color: #fff;
+      color: #666;
+    }
+  }
+}

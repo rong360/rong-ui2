@@ -1,0 +1,47 @@
+@swiperCls: ~'@{comps-prefix}-swiper';
+.@{swiperCls} {
+  position: relative;
+  &-wraper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+  &-direction-left &-inner {
+    width: 90000px;
+  }
+  &-direction-left .list,
+  &-direction-left .list-copy {
+    float: left;
+  }
+  &-direction-left &item {
+    float: left;
+    width: 375px;
+    box-sizing: border-box;
+  }
+  &-direction-left &-inner::after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+  &-direction-top &-inner {
+    height: 100px;
+  }
+  &-pagination {
+    position: absolute;
+    bottom: 5px;
+    width: 100%;
+    text-align: center;
+  }
+  &-pagination span {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.6);
+    margin: 0 2px;
+    transition: all 0.2s linear;
+    &.active {
+      background-color: #fa2c19;
+    }
+  }
+}

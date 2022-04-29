@@ -2,7 +2,7 @@
 const utils = require('./utils')
 const webpack = require('webpack')
 const config = require('../config')
-const merge = require('webpack-merge')
+const { merge } = require('webpack-merge')
 const path = require('path')
 const baseWebpackConfig = require('./webpack.base.conf')
 // const CopyWebpackPlugin = require('copy-webpack-plugin')
@@ -11,11 +11,13 @@ const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
 const fs = require('fs')
 const isDebug = process.argv.some(arg => arg.indexOf('debug') > -1)
+const isRelease = process.argv.some(arg => arg.indexOf('release') > -1)
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
 
 const devWebpackConfig = merge(baseWebpackConfig, {
+  mode: 'development',
   module: {
     rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true })
   },
@@ -24,53 +26,65 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 
   // these devServer options should be customized in /config/index.js
   devServer: {
-    clientLogLevel: 'warning',
+    // clientLogLevel: 'warning', // v4 移动到了client下面 改名logging 'warn'
+    client: {
+      logging: 'warn',
+      overlay: config.dev.errorOverlay
+        ? { warnings: false, errors: true }
+        : false,
+      progress: true
+    },
+    static: false,
+    devMiddleware: {
+      publicPath: config.dev.assetsPublicPath
+    },
     historyApiFallback: {
       rewrites: [
         { from: /.*/, to: path.posix.join(config.dev.assetsPublicPath, 'index.html') }
       ]
     },
     hot: true,
-    contentBase: false, // since we use CopyWebpackPlugin.
+    // contentBase: false,   // v4移动到了static下面
     compress: true,
     host: HOST || config.dev.host,
     port: PORT || config.dev.port,
     open: config.dev.autoOpenBrowser,
-    overlay: config.dev.errorOverlay
-      ? { warnings: false, errors: true }
-      : false,
-    publicPath: config.dev.assetsPublicPath,
-    proxy: config.dev.proxyTable,
-    quiet: true, // necessary for FriendlyErrorsPlugin
-    watchOptions: {
-      poll: config.dev.poll
-    },
-    before (router) {
-      router.post('*', (req, res) => {
-        let taojinPath = req.path
-        fs.readFile(path.resolve(__dirname, `../mockdata/${taojinPath}.json`), (err, data) => {
-          if (err) {
-            console.log(err);
-          } else {
-            res.json(JSON.parse(data));
-          }
-        });
-      });
-    }
+    // overlay: config.dev.errorOverlay
+    //   ? { warnings: false, errors: true }   // v4 移动到了client下面
+    //   : false,
+    // publicPath: config.dev.assetsPublicPath, // v4 移动到了devMiddleware下面
+    proxy: process.env.PROXY === 'true' ? config.dev.proxyTable : {},
+    // quiet: true, // v4移除了该选项
+    // watchOptions: {
+    //   poll: config.dev.poll,   // v4移动到了static下面的watch
+    // },
+    // disableHostCheck: true // v4移除了该选项
+    allowedHosts: "all"
+  },
+  target: 'web',
+  optimization: {
+    moduleIds: 'named' // webpack5 采用此方式代替 NamedModulesPlugin
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env': require('../config/dev.env')
-    }),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin(), // HMR shows correct file names in console on update.
-    new webpack.NoEmitOnErrorsPlugin(),
-    // https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: path.resolve(__dirname, '../src-example/index.html'),
-      inject: true,
-      vConsole: isDebug ? config.dev.vConsole : ''
+      chunks: ['app'],
+      template: path.resolve(__dirname, '../src/doc.html'),
+      inject: 'body',
+      scriptLoading: 'blocking',
+      minify: {
+        removeComments: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'demo.html',
+      chunks: ['demo'],
+      template: path.resolve(__dirname, '../src/demo.html'),
+      inject: 'body',
+      scriptLoading: 'blocking',
+      minify: {
+        removeComments: true
+      }
     })
   ]
 })
@@ -89,7 +103,10 @@ module.exports = new Promise((resolve, reject) => {
       // Add FriendlyErrorsPlugin
       devWebpackConfig.plugins.push(new FriendlyErrorsPlugin({
         compilationSuccessInfo: {
-          messages: [`Your application is running here: http://${devWebpackConfig.devServer.host}:${port}`]
+          messages: [
+            `you are testing -> ${isRelease ? 'release 包' : 'src 源文件'}`,
+            `Your application is running here: http://${devWebpackConfig.devServer.host}:${port}`
+          ]
         },
         onErrors: config.dev.notifyOnErrors
           ? utils.createNotifierCallback()

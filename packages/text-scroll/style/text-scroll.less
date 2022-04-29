@@ -1,0 +1,20 @@
+@textscrollCls: ~'@{comps-prefix}-textscroll';
+
+.@{textscrollCls} {
+  display: flex;
+  width: 100%;
+  height: 33px;
+  align-items: center;
+  font-size: 12px;
+  background-color: #fffcdd;
+  color: #ffa810;
+  &-scrollbar {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+  }
+  &-item {
+    padding-right: 50px;
+    flex-shrink: 0;
+  }
+}

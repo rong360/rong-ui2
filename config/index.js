@@ -25,7 +25,7 @@ module.exports = {
      */
 
     // https://webpack.js.org/configuration/devtool/#development
-    devtool: 'cheap-module-eval-source-map',
+    devtool: 'eval-cheap-module-source-map',
 
     // If you have problems debugging vue-files in devtools,
     // set this to false - it *may* help
@@ -81,5 +81,17 @@ module.exports = {
           console.log('Hello world');
         </script>
     `
+  },
+
+  pack: {
+    lib: {
+      assetsRoot: path.resolve(__dirname, '../dist-lib')
+    },
+    es: {
+      assetsRoot: path.resolve(__dirname, '../dist-es')
+    },
+    styles: {
+      assetsRoot: path.resolve(__dirname, '../dist-styles')
+    }
   }
 }

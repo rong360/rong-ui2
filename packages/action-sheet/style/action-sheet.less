@@ -1,0 +1,86 @@
+@actionsheetCls: ~'@{comps-prefix}-actionsheet';
+.@{actionsheetCls} {
+  &--mask {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 998;
+    background-color: rgba(14, 14, 14, 0.8);
+    transition: opacity 0.3s;
+  }
+  &--content {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+    background-color: #fff;
+    color: #333;
+    overflow: hidden;
+    text-align: left;
+    transition: transform 0.3s;
+  }
+  &--gap {
+    height: 8px;
+    background-color: #f7f8fa;
+  }
+  &--list {
+    max-height: 325px;
+    overflow-y: scroll;
+  }
+  &--item,
+  &--cancel {
+    line-height: 50px;
+    font-size: 16px;
+    text-align: center;
+  }
+  &--item.disabled {
+    color: #c8c9cc;
+  }
+  &--radius &--content {
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+  }
+  &--header {
+    font-size: 16px;
+    line-height: 50px;
+    text-align: center;
+  }
+  &--close {
+    position: absolute;
+    right: 15px;
+    top: 13px;
+    width: 14px;
+    height: 14px;
+    overflow: hidden;
+    z-index: 2;
+    &:before,
+    &:after {
+      display: block;
+      content: "";
+      width: 200%;
+      height: 1px;
+      overflow: hidden;
+      background-color: #999;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+    }
+    &:before {
+      transform: translateX(-50%) rotate(45deg);
+    }
+    &:after {
+      transform: translateX(-50%) rotate(-45deg);
+    }
+  }
+  &--slideInUp-enter,
+  &--slideInUp-leave-active {
+    transform: translateY(100%);
+  }
+  &--fade-enter,
+  &--fade-leave-active {
+    opacity: 0;
+  }
+}

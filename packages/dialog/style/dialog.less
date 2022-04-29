@@ -1,0 +1,68 @@
+@dialogCls: ~'@{comps-prefix}-dialog';
+
+.@{dialogCls} {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: @mask-bg;
+  z-index: 990;
+  &-inner {
+    position: fixed;
+    width: 270px;
+    font-size: 15px;
+    line-height: 1;
+    background-color: #fff;
+    color: @text-color;
+    box-sizing: border-box;
+    z-index: 991;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  &-title {
+    text-align: center;
+    line-height: 48px;
+  }
+  &-title::after {
+    display: block;
+    content: "";
+    height: 1px;
+    overflow: hidden;
+    background-color: #d8d9dc;
+  }
+  &-close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    line-height: 1;
+    padding: 15px;
+  }
+  &-content {
+    padding: 15px;
+    text-align: center;
+    line-height: 24px;
+  }
+  &-btn {
+    display: flex;
+    line-height: 45px;
+    border-top: 1px solid #e5e5e5;
+  }
+  &-cancel-btn,
+  &-confirm-btn {
+    flex: 1;
+    text-align: center;
+    box-sizing: border-box;
+  }
+  &-cancel-btn-show&-confirm-btn-show &-cancel-btn {
+    border-right: 1px solid #e5e5e5;
+  }
+  &-fade-enter-active,
+  &-fade-leave-active {
+    transition: opacity 0.3s;
+  }
+  &-fade-enter,
+  &-fade-leave-to {
+    opacity: 0;
+  }
+}

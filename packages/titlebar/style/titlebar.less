@@ -1,0 +1,56 @@
+@titlebarCls: ~'@{comps-prefix}-titlebar';
+
+.@{titlebarCls} {
+  height: 45px;
+  line-height: 45px;
+  text-align: center;
+  position: relative;
+  box-sizing: border-box;
+  .l-operate,
+  .r-operate {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    font-size: 15px;
+  }
+  .l-operate {
+    left: 0;
+  }
+  .r-operate {
+    right: 0;
+  }
+  .c-operate {
+    font-size: 17px;
+  }
+  .back {
+    box-sizing: border-box;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 15px;
+  }
+  &-theme-a {
+    color: #333;
+  }
+  &-theme-b {
+    color: #fff;
+    background-image: linear-gradient(90deg, #39b9ff 0%, #4080e8 100%);
+  }
+  &-theme-c {
+    color: #fff;
+    background-image: linear-gradient(-90deg, #4d78f6 2%, #919fff 100%);
+  }
+  &-theme-d {
+    color: #fff;
+    background-image: linear-gradient(-269deg, #15ddc5 1%, #01a6d0 99%);
+  }
+  &-theme-e {
+    color: #fff;
+    background-image: linear-gradient(-90deg, #f86b4a 0%, #fec351 100%);
+  }
+  &-theme-f {
+    color: #fff;
+    background-image: linear-gradient(-90deg, #ff3061 0%, #fe8166 100%);
+  }
+}

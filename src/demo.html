@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>rong-ui2 test page</title>
+    <meta
+      name="viewport"
+      content="user-scalable=no,width=device-width,initial-scale=1"
+    />
+    <!-- <link href="https://cdn.bootcdn.net/ajax/libs/github-markdown-css/5.1.0/github-markdown-light.css" rel="stylesheet"> -->
+    <script>
+      (function () {
+        var rem,
+          dpr,
+          time,
+          doc = window.document,
+          docEl = doc.documentElement,
+          viewport = doc.querySelector('meta[name="viewport"]'),
+          zoomScale,
+          zoomScaleNum;
+        if (viewport) {
+          zoomScale = viewport
+            .getAttribute("content")
+            .match(/initial\-scale=(["']?)([\d\.]+)\1?/);
+          if (zoomScale) {
+            zoomScaleNum = parseFloat(zoomScale[2]);
+            dpr = parseInt(1 / zoomScaleNum);
+          }
+        }
+        if (!dpr && !zoomScaleNum) {
+          var os =
+              (window.navigator.appVersion.match(/android/gi),
+              window.navigator.appVersion.match(/iphone/gi)),
+            dpr = window.devicePixelRatio;
+          dpr = os ? (dpr >= 3 ? 3 : dpr >= 2 ? 2 : 1) : 1;
+          zoomScaleNum = 1 / dpr;
+        }
+        window.addEventListener(
+          "resize",
+          function () {
+            clearTimeout(time);
+            time = setTimeout(changeRem, 300);
+          },
+          false
+        );
+        function changeRem () {
+          var docWidth = docEl.getBoundingClientRect().width;
+          if (docWidth / dpr > 540) {
+            docWidth = 540 * dpr;
+          }
+          rem = (docWidth / 320) * 16;
+          docEl.style.fontSize = rem + "px";
+        }
+        changeRem();
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="text/javascript">
+      var CONST = {
+        cache: {} // 缓存数据命名空间
+      };
+    </script>
+    <%= htmlWebpackPlugin.options.vConsole %>
+  </body>
+</html>

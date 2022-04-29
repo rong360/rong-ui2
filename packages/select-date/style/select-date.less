@@ -1,0 +1,127 @@
+@selectdateCls: ~'@{comps-prefix}-selectdate';
+
+.@{selectdateCls} {
+  position: relative;
+  &-inner {
+    border-bottom: 1px solid #f2f2f4;
+    display: flex;
+    box-sizing: border-box;
+    align-items: center;
+    padding-right: 15px;
+    position: relative;
+  }
+  &-mode-default &-inner {
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+  &-mode-to-top &-inner {
+    height: 46px;
+  }
+  &-mode-to-top {
+    margin-top: 20px;
+  }
+  &-mode-to-top&&-focused &-inner,
+  &-mode-to-top&:not(&-empty) &-inner {
+    padding-top: 20px;
+  }
+  &-mode-to-top&&-focused &-label,
+  &-mode-to-top&:not(&-empty) &-label {
+    position: absolute;
+    top: 5px;
+    font-size: 12px;
+    color: #bdbdbd;
+  }
+  &-mode-to-top &-label {
+    font-size: 16px;
+    color: #bdbdbd;
+  }
+  &-mode-to-top &-select {
+    font-size: 16px;
+    line-height: 21px;
+    color: #181c48;
+  }
+  &-mode-default &-label {
+    font-size: 14px;
+    color: @text-color;
+    line-height: 20px;
+  }
+  &-mode-default&-text-left &-label {
+    margin-right: 23px;
+  }
+  &-mode-default &-select {
+    font-size: 14px;
+    line-height: 20px;
+  }
+  &-label-right &-label {
+    text-align: right;
+  }
+  &-label-top {
+    padding-top: 14px;
+  }
+  &-label-top &-label {
+    position: absolute;
+    top: 0;
+    z-index: 1;
+  }
+  &-label {
+    line-height: 1;
+    box-sizing: border-box;
+    margin-right: 10px;
+    transition: all @transition-duration ease-out;
+  }
+  &-content {
+    box-sizing: border-box;
+    line-height: 1;
+    display: flex;
+    flex: 1;
+    align-items: center;
+    position: relative;
+  }
+  &-select {
+    line-height: 1;
+    font-size: 14px;
+    color: @text-color;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 0 10px 0 0px;
+  }
+  &-placeholder &-select {
+    color: #c8c7cc;
+    font-weight: normal;
+  }
+  &-readonly &-select {
+    color: @disabled-color;
+  }
+  &-text-right &-select {
+    justify-content: flex-end;
+  }
+  &-text-center &-select {
+    justify-content: center;
+  }
+  &-arrow-right {
+    line-height: 1;
+  }
+  &-unit {
+    font-size: 12px;
+    line-height: 1;
+    padding-left: 5px;
+  }
+  &-error &-inner {
+    border-color: @border-color-red;
+  }
+  &-error&-mode-default &-inner {
+    margin-bottom: 20px;
+  }
+  &-error-tip {
+    position: absolute;
+    left: 0;
+    top: 100%;
+    width: 100%;
+    line-height: 1;
+    padding-top: 6px;
+    font-size: 12px;
+    color: @text-color-red;
+    z-index: 1;
+  }
+}

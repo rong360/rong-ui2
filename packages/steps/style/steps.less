@@ -1,0 +1,21 @@
+.@{stepsCls} {
+  display: flex;
+  >:first-child{
+    .tail-front {
+      display: none;
+    }
+  }
+  >:last-child{
+    .tail-back {
+      display: none;
+    }
+  }
+  .@{stepCls} {
+    &.active {
+      .tail-front,
+      .tail-back {
+        background-color: #F43838;
+      }
+    }
+  }
+}

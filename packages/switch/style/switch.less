@@ -1,0 +1,54 @@
+@switchCls: ~'@{comps-prefix}-switch';
+
+.@{switchCls} {
+  display: inline-block;
+  height: 22px;
+  border-radius: 22px;
+  border: 1px solid #ccc;
+  background-color: #ccc;
+  box-sizing: border-box;
+  position: relative;
+  user-select: none;
+  transition: all @transition-duration ease-in-out;
+  -webkit-tap-highlight-color:transparent;
+  & .circle {
+    width: 18px;
+    height: 18px;
+    border-radius: 18px;
+    vertical-align: middle;
+    background-color: #fff;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    transition: left @transition-duration ease-in-out, width @transition-duration ease-in-out;
+  }
+  &-inner {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 7px;
+  }
+  &-inner .open,
+  &-inner .close {
+    color: #fff;
+    font-size: 12px;
+    min-width: 15px;
+    box-sizing: border-box;
+  }
+  &-inner .open {
+    opacity: 0;
+  }
+  &-inner .close {
+    text-align: right;
+  }
+  &&-checked {
+    border-color: @primary-color;
+    background-color: @primary-color;
+  }
+  &&-checked .open {
+    opacity: 1;
+  }
+  &&-checked .close {
+    opacity: 0;
+  }
+}
