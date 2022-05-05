@@ -53,7 +53,13 @@ export default {
   },
   computed: {
     pageUrl () {
-      return `${location.origin}/demo.html#/${this.page}`
+      let _pathname = ''
+      if (location.pathname.indexOf('index.html') > -1) {
+        _pathname = location.pathname.replace('index.html', 'demo.html')
+      } else {
+        _pathname = location.pathname + 'demo.html'
+      }
+      return `${location.origin + _pathname}#/${this.page}`
     }
   }
 }
