@@ -8,6 +8,7 @@ const baseWebpackConfig = require('./webpack.base.conf')
 const productionSourceMap = false
 const glob = require('glob')
 const packageJson = require('../package.json')
+const TerserPlugin = require("terser-webpack-plugin");
 
 let banner =
   '/*!\n' +
@@ -32,7 +33,6 @@ let entry = {
  */
 console.log('--- search components ---');
 
-const camelize = (str) => str.replace(/-(\w)/g, (_, c) => c.toUpperCase());
 const files = glob.sync('./packages/[!_]*/index.js');
 
 files.forEach(f => {
@@ -42,7 +42,7 @@ files.forEach(f => {
     entry[name] = {
       import: f,
       library: {
-        name: camelize(`-r-${componentFolder[1]}`), // RFlexFixed
+        name: `R${componentFolder[1].replace(/(\w)(.+)/g, (_, c1, c2) => c1.toUpperCase() + c2.toLowerCase().replace('-', ''))}`, // RFlexfixed
         type: 'umd',
         umdNamedDefine: true,
         export: 'default'
@@ -66,6 +66,14 @@ const webpackConfig = merge(baseWebpackConfig, {
   output: {
     path: config.pack.lib.assetsRoot,
     filename: '[name]'
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        extractComments: false // 不将注释提取到单独的文件中
+      })
+    ]
   },
   plugins: [
     new webpack.BannerPlugin({ banner: banner, raw: true, entryOnly: true })

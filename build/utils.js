@@ -22,25 +22,46 @@ exports.cssLoaders = function (options) {
     }
   }
 
+  // const postcssLoader = {
+  //   loader: 'postcss-loader',
+  //   options: {
+  //     sourceMap: options.sourceMap,
+  //     postcssOptions: loaderContext => {
+  //       if (/\/packages\/|demo.less$/.test(loaderContext.resourcePath)) {
+  //         return {
+  //           ident: 'postcss',
+  //           plugins: [
+  //             require('postcss-plugin-px2rem')({
+  //               // base on 320px standard.
+  //               rootValue: 18.75,
+  //               // to leave 1px alone.
+  //               minPixelValue: 1.01
+  //             })
+  //           ]
+  //         }
+  //       } else {
+  //         return {}
+  //       }
+  //     }
+  //   }
+  // }
+
   const postcssLoader = {
     loader: 'postcss-loader',
     options: {
       sourceMap: options.sourceMap,
       postcssOptions: loaderContext => {
-        if (/\/packages\/|demo.less$/.test(loaderContext.resourcePath)) {
-          return {
-            ident: 'postcss',
-            plugins: [
-              require('postcss-plugin-px2rem')({
-                // base on 320px standard.
-                rootValue: 18.75,
-                // to leave 1px alone.
-                minPixelValue: 1.01
-              })
-            ]
-          }
-        } else {
-          return {}
+        return {
+          ident: 'postcss',
+          plugins: [
+            require('postcss-plugin-px2rem')({
+              // base on 320px standard.
+              rootValue: 18.75,
+              // to leave 1px alone.
+              minPixelValue: 1.01,
+              selectorBlackList: ['.r-doc', '.markdown-body']
+            })
+          ]
         }
       }
     }
