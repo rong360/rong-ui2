@@ -77,6 +77,7 @@ module.exports = {
           {
             loader: 'html-loader',
             options: {
+              minimize: false,
               preprocessor: (content, loaderContext) => {
                 let demoPath = loaderContext.resourcePath.replace('README.md', '__demo__/index.vue')
 
