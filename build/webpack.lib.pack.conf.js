@@ -18,7 +18,7 @@ let banner =
   ' */';
 
 let entry = {
-  [`${packageJson.name}.js`]: {
+  'index.js': {
     import: './packages/index.js',
     library: {
       name: "RongUi2",

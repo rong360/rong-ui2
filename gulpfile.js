@@ -84,7 +84,7 @@ function less2css (done) {
     .pipe(autoprefixer()) // 根据browserslistrc增加前缀
     .pipe(cssnano({ zindex: false, reduceIdents: false })) // 压缩
     .pipe(gulp.dest(paths.dest.styles))
-    .pipe(concat(`${packageJson.name}.css`)) // 合并文件为all.css
+    .pipe(concat(`style.css`)) // 合并文件为all.css
     .pipe(gulp.dest(paths.dest.styles)) // 输出all.css文件
   done()
 }

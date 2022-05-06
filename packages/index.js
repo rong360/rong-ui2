@@ -21,47 +21,63 @@ import Toast from './toast/'
 import Dialog from './dialog/'
 import ActionSheet from './action-sheet/'
 
-const components = {
-  Form,
-  Input,
-  Select,
-  SelectDate,
-  Select2,
-  Select3,
-  DatePicker,
-  Switch,
-  Titlebar,
-  Swiper,
-  Checkbox,
-  Radio,
-  Uploader,
-  Button,
-  Range,
-  FlexFixed,
-  TextScroll,
-  Steps,
-  Loading,
-  Toast,
-  Dialog,
-  ActionSheet
-};
+function install (Vue) {
+  const components = [
+    Form,
+    Input,
+    Select,
+    SelectDate,
+    Select2,
+    Select3,
+    DatePicker,
+    Switch,
+    Titlebar,
+    Swiper,
+    Checkbox,
+    Radio,
+    Uploader,
+    Button,
+    Range,
+    FlexFixed,
+    TextScroll,
+    Steps,
+    Loading,
+    Toast,
+    Dialog,
+    ActionSheet
+  ];
+  components.forEach(item => {
+    if (item.install) {
+      Vue.use(item)
+    } else if (item.name) {
+      Vue.component(item.name, item)
+    }
+  })
+}
 
-const install = function (Vue, opts = {}) {
-  if (install.installed) return;
-  Object.keys(components).forEach(key => {
-    Vue.use(components[key])
-  });
-};
+export { default as Form } from './form/'
+export { default as Input } from './input/'
+export { default as Select } from './select/'
+export { default as SelectDate } from './select-date/'
+export { default as Select2 } from './select2/'
+export { default as Select3 } from './select3/'
+export { default as DatePicker } from './date-picker/'
+export { default as Switch } from './switch/'
+export { default as Checkbox } from './checkbox/'
+export { default as Radio } from './radio/'
+export { default as Uploader } from './uploader/'
+export { default as Titlebar } from './titlebar/'
+export { default as Swiper } from './swiper/'
+export { default as Button } from './button/'
+export { default as Range } from './range/'
+export { default as FlexFixed } from './flex-fixed/'
+export { default as TextScroll } from './text-scroll/'
+export { default as Steps } from './steps/'
+export { default as Loading } from './loading/'
+export { default as Toast } from './toast/'
+export { default as Dialog } from './dialog/'
+export { default as ActionSheet } from './action-sheet/'
 
-// auto install
-// if (typeof window !== 'undefined' && window.Vue) {
-//   install(window.Vue);
-// }
-
-const API = {
-  install,
-  ...components
-};
-
-export default API
-// module.exports.default = module.exports = API; // eslint-disable-line no-undef
+export default {
+  install
+}
