@@ -12,7 +12,7 @@ npm install rong-ui2 --save
 
 ### NPM 使用示例
 
-#### 按需引用
+#### 按需引用（推荐）
 
 ```js
 npm install babel-plugin-import --save-dev
@@ -27,7 +27,6 @@ npm install babel-plugin-import --save-dev
 }
 
 
-然后这样按需引入组件，就可以减小体积了：
 import {Titlebar, Button} from 'rong-ui2';
 Vue.use(Titlebar)
 Vue.use(Button)
@@ -47,23 +46,16 @@ Vue.use(Button)
 
   注意：项目需要安装less文件：
   npm install less less-loader --save-dev （低版本可以用less@^2.7.2 less-loader@^4.0.3）
-
-  webpack.base.conf.js
-  {
-    test: /\.js$/,
-    loader: 'babel-loader',
-    include: [resolve('node_modules/rong-ui/components')],
-    exclude: [resolve('node_modules/rong-ui/components/rong-ui.js')]
-  }
   </pre>
 </details>
 
 
-#### 导入全部组件
+#### 导入全部组件（不推荐）
+rong-ui2 支持一次性导入所有组件，引入所有组件会**增加代码包体积**，因此不推荐这种做法
 
 ```js
 import RongUi2 from 'rong-ui2';
-import 'rong-ui2/lib/rong-ui2.css' // 配置babel-plugin-import插件时，无需再单独加载这个样式
+import 'rong-ui2/lib/style.css'
 Vue.use(RongUi2)
 ```
 <details>
@@ -74,6 +66,17 @@ Vue.use(RongUi2)
   Vue.use(RongUi2)
   </pre>
 </details>
+
+#### 手动按需引入组件（不推荐）
+在不使用任何构建插件的情况下，可以手动引入需要使用的组件和样式。
+
+```js
+// 引入组件脚本
+import Button from 'rong-ui2/es/button/index';
+// 引入组件样式
+// 若组件没有样式文件，则无须引入
+import 'rong-ui2/es/button/style/index';
+```
 </div>
 
 
@@ -83,15 +86,23 @@ Vue.use(RongUi2)
 ### CDN 安装使用示例
 
 ```js
-rong-ui2/lib/ 文件夹下含有所有组件的单独打包，可单独引用某个组件，如：
-lib/button/index.js
-lib/button/style/index.css
+引入全部组件
+https://cdn.jsdelivr.net/npm/rong-ui2/lib/index.js
+https://cdn.jsdelivr.net/npm/rong-ui2/lib/style.css
 
 ...
 
-引入全部组件
-lib/rong-ui2.js
-lib/rong-ui2.css
+rong-ui2/lib/ 文件夹下含有所有组件的单独打包，可单独引用某个组件，如：
+https://cdn.jsdelivr.net/npm/rong-ui2/lib/button/index.js
+https://cdn.jsdelivr.net/npm/rong-ui2/lib/button/style/index.css
+
+https://cdn.jsdelivr.net/npm/rong-ui2/lib/titlebar/index.js
+https://cdn.jsdelivr.net/npm/rong-ui2/lib/titlebar/style/index.css
+
+https://cdn.jsdelivr.net/npm/rong-ui2/lib/flex-fixed/index.js
+https://cdn.jsdelivr.net/npm/rong-ui2/lib/flex-fixed/style/index.css
+...
+
 ```
 
 <details>

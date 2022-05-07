@@ -24,8 +24,14 @@ Loading.config = function ({ loading, style }) {
   }
 }
 
-Loading.install = function (Vue) {
+const install = function (Vue) {
   Vue.prototype.$loading = loadingCst;
+}
+
+Loading.install = install
+
+if (typeof window !== 'undefined' && window.Vue) {
+  install(window.Vue);
 }
 
 export default Loading

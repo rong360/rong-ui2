@@ -103,4 +103,12 @@ Vue.prototype.$dialog.tip = tip
 Vue.prototype.$dialog.confirm = confirm
 Vue.prototype.$dialog.select = select
 
+if (typeof window !== 'undefined' && window.Vue) {
+  window.Vue.prototype.$dialog = dlgCst;
+  // dialog拓展
+  window.Vue.prototype.$dialog.tip = tip
+  window.Vue.prototype.$dialog.confirm = confirm
+  window.Vue.prototype.$dialog.select = select
+}
+
 export default Dialog;

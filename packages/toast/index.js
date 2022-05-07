@@ -19,7 +19,7 @@ let toastCst = function (options) {
   return instance;
 }
 
-Toast.install = function (Vue) {
+const install = function (Vue) {
   Vue.prototype.$toast = toastCst;
   Vue.prototype.$toast.long = (content) => {
     return toastCst({
@@ -45,6 +45,12 @@ Toast.install = function (Vue) {
       }
     })
   }
+}
+
+Toast.install = install
+
+if (typeof window !== 'undefined' && window.Vue) {
+  install(window.Vue);
 }
 
 export default Toast

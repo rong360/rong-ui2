@@ -1,13 +1,12 @@
 import Vue from 'vue'
 import router from './router/demo'
 import App from './demo.vue'
-import RongUi2 from '../packages'
+import * as RongUi2 from '../packages'
 import NavItem from './components/NavItem.vue'
 import './assets/css/demo.less'
 
-Vue.use(RongUi2)
+Vue.use(RongUi2.default)
 Vue.component('NavItem', NavItem)
-
 for (let key in RongUi2) {
   let component = RongUi2[key]
   if (component.__file) {

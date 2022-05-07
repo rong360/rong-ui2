@@ -83,9 +83,9 @@ exports.cssLoaders = function (options) {
     // Extract CSS when that option is specified
     // (which is the case during production build)
     if (options.extract) {
-      return [{loader: MiniCssExtractPlugin.loader}].concat(loaders)
+      return [{ loader: MiniCssExtractPlugin.loader }].concat(loaders)
     } else {
-      return [{loader: 'vue-style-loader'}].concat(loaders)
+      return [{ loader: 'vue-style-loader' }].concat(loaders)
     }
   }
 
@@ -93,13 +93,13 @@ exports.cssLoaders = function (options) {
   return {
     css: generateLoaders(),
     postcss: generateLoaders(),
-    less: generateLoaders('less').concat(/*{
+    less: generateLoaders('less').concat(/* {
       loader: 'style-resources-loader',
       options: {
         patterns: [path.resolve(__dirname, '../src/_styles/index.less')],
         injector: 'append'
       }
-    }*/),
+    } */),
     sass: generateLoaders('sass', { indentedSyntax: true }),
     scss: generateLoaders('sass'),
     stylus: generateLoaders('stylus'),
