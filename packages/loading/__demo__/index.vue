@@ -1,7 +1,7 @@
 <template>
   <div class="loading-example">
-    <Titlebar theme="b"
-              @on-back="onBack">Loading</Titlebar>
+    <r-titlebar theme="b"
+              @on-back="onBack">Loading</r-titlebar>
     <div class="p-20">
       <nav-item class="item"
            @on-click="showLoading0">默认</nav-item>

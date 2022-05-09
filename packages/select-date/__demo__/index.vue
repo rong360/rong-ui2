@@ -1,7 +1,7 @@
 <template>
   <div class="selectdate-example">
-    <Titlebar theme="b"
-              @on-back="onBack">SelectDate</Titlebar>
+    <r-titlebar theme="b"
+              @on-back="onBack">SelectDate</r-titlebar>
 
     <p class="fs-14 mt-20">1，默认</p>
     <r-selectdate :title="config.title"
@@ -22,16 +22,16 @@
                 v-model="config.value"></r-selectdate>
 
     <p class="fs-14 mt-20">2，只显示年份</p>
-    <SelectDate v-bind="config1"
-                v-model="config1.value"></SelectDate>
+    <r-selectdate v-bind="config1"
+                v-model="config1.value"></r-selectdate>
 
     <p class="fs-14 mt-20">3，显示年、月</p>
-    <SelectDate v-bind="config2"
-                v-model="config2.value"></SelectDate>
+    <r-selectdate v-bind="config2"
+                v-model="config2.value"></r-selectdate>
 
     <p class="fs-14 mt-20">4，添加css效果</p>
-    <SelectDate v-bind="config3"
-                v-model="config3.value"></SelectDate>
+    <r-selectdate v-bind="config3"
+                v-model="config3.value"></r-selectdate>
     <div class="result">
       <p v-for="(field, index) in fields"
          :key="index">{{field.conf ? `${field.conf.title}: ${field.conf.value}` : ''}}</p>

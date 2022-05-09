@@ -29,14 +29,14 @@ Vue.use(Checkbox)
 
 ```html
 单个复选框，绑定到布尔值：
-<Checkbox v-model="checked">北京</Checkbox>
+<r-checkbox v-model="checked">北京</r-checkbox>
 ```
 
 ```html
 多个复选框，绑定到同一个数组：
-<Checkbox v-model="fruitList" value="apple">苹果</Checkbox>
-<Checkbox v-model="fruitList" value="pear">梨</Checkbox>
-<Checkbox v-model="fruitList" value="banana">香蕉</Checkbox>
+<r-checkbox v-model="fruitList" value="apple">苹果</r-checkbox>
+<r-checkbox v-model="fruitList" value="pear">梨</r-checkbox>
+<r-checkbox v-model="fruitList" value="banana">香蕉</r-checkbox>
 ```
 </div>
 

@@ -1,25 +1,25 @@
 <template>
   <div class="titlebar-example pb-20">
-    <Titlebar theme="b"
-              @on-back="onBack">Titlebar</Titlebar>
+    <r-titlebar theme="b"
+              @on-back="onBack">Titlebar</r-titlebar>
 
     <div class="title">default</div>
     <r-titlebar>标题</r-titlebar>
 
     <div class="title">theme=b</div>
-    <Titlebar theme="b">标题</Titlebar>
+    <r-titlebar theme="b">标题</r-titlebar>
 
     <div class="title">theme=c</div>
-    <Titlebar theme="c">标题</Titlebar>
+    <r-titlebar theme="c">标题</r-titlebar>
 
     <div class="title">theme=d</div>
-    <Titlebar theme="d">标题</Titlebar>
+    <r-titlebar theme="d">标题</r-titlebar>
 
     <div class="title">theme=e</div>
-    <Titlebar theme="e">标题</Titlebar>
+    <r-titlebar theme="e">标题</r-titlebar>
 
     <div class="title">theme=f</div>
-    <Titlebar theme="f">标题</Titlebar>
+    <r-titlebar theme="f">标题</r-titlebar>
   </div>
 </template>
 

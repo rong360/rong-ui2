@@ -74,7 +74,6 @@ Vue.use(RongUi2)
 // 引入组件脚本
 import Button from 'rong-ui2/es/button/index';
 // 引入组件样式
-// 若组件没有样式文件，则无须引入
 import 'rong-ui2/es/button/style/index';
 ```
 </div>
@@ -141,3 +140,24 @@ template中格式如下：
 </div>
 
 
+
+<div class="r-doc-card">
+
+### 移动端px转rem
+npm install postcss-plugin-px2rem --save-dev
+
+```js
+// .postcssrc.js添加如下配置：
+module.exports = {
+  "plugins": {
+    "postcss-plugin-px2rem": {
+      // base on 320px standard.
+      rootValue: 18.75,
+      // to leave 1px alone.
+      minPixelValue: 1.01
+    }
+  }
+}
+```
+
+</div>

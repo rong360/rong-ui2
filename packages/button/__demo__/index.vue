@@ -1,33 +1,33 @@
 <template>
   <div class="button-example">
-    <Titlebar theme="b"
-              @on-back="onBack">Button</Titlebar>
+    <r-button theme="b"
+              @on-back="onBack">Button</r-button>
 
     <div class="title">default</div>
     <r-button>提交</r-button>
 
     <div class="title">空心默认圆角按钮（:fill="false" :radius="true"）</div>
-    <Button :fill="false"
-            :radius="true">提交</Button>
+    <r-button :fill="false"
+            :radius="true">提交</r-button>
 
     <div class="title">示警按钮（type="warning"）</div>
-    <Button type="warning">提交</Button>
+    <r-button type="warning">提交</r-button>
 
     <div class="title">空心示警按钮(type="warning" :fill="false" :radius="true")</div>
-    <Button type="warning"
+    <r-button type="warning"
             :fill="false"
-            :radius="true">提交</Button>
+            :radius="true">提交</r-button>
 
     <div class="title">不可用按钮（type="disabled"）</div>
-    <Button type="disabled">提交</Button>
+    <r-button type="disabled">提交</r-button>
 
     <div class="title">不可用按钮（type="disabled" :fill="false" :radius="true"）</div>
-    <Button type="disabled"
+    <r-button type="disabled"
             :fill="false"
-            :radius="true">提交</Button>
+            :radius="true">提交</r-button>
 
     <div class="title">自定义（type="dark-yellow", 样式表里定义.r--button-dark-yellow相关样式 ）</div>
-    <Button type="dark-yellow">提交2</Button>
+    <r-button type="dark-yellow">提交2</r-button>
 
   </div>
 </template>

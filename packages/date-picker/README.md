@@ -28,6 +28,7 @@ Vue.use(DatePicker)
 <div class="r-doc-card">
 
 ```html
+<r-datepicker :value="config1.value" :placeholder="config1.placeholder" @onconfirm="birthDate"></r-datepicker>
 <r-datepicker v-bind='config1' @onconfirm="birthDate"></r-datepicker>
 ```
 

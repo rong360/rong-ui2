@@ -1,40 +1,40 @@
 <template>
   <div class="steps-example">
-    <Titlebar theme="b"
-              @on-back="onBack">Steps</Titlebar>
+    <r-titlebar theme="b"
+              @on-back="onBack">Steps</r-titlebar>
 
     <div class="fs-14 pt-30">1，默认</div>
     <div class="box">
-      <Steps :current="current">
-        <Step>基本信息<br>utama</Step>
-        <Step>个人信息<br>darurat</Step>
-        <Step>联系人<br>wajah</Step>
-        <Step>活体识别<br>wajah</Step>
-      </Steps>
+      <r-steps :current="current">
+        <r-step>基本信息<br>utama</r-step>
+        <r-step>个人信息<br>darurat</r-step>
+        <r-step>联系人<br>wajah</r-step>
+        <r-step>活体识别<br>wajah</r-step>
+      </r-steps>
     </div>
 
     <div class="fs-14 pt-30">2，自定义icon和间隔线样式</div>
     <div class="box">
-      <Steps :current="current"
+      <r-steps :current="current"
              :progressLine="{backgroundColor:'#F43838'}"
              :notProgressLine="{backgroundColor:'#f5f5f5'}">
-        <Step>
+        <r-step>
           <div class="icon"
                slot="icon"></div>基本信息<br>utama
-        </Step>
-        <Step>
+        </r-step>
+        <r-step>
           <div class="icon gray"
                slot="icon"></div>个人信息<br>darurat
-        </Step>
-        <Step>
+        </r-step>
+        <r-step>
           <div class="icon gray"
                slot="icon"></div>联系人<br>wajah
-        </Step>
-        <Step>
+        </r-step>
+        <r-step>
           <div class="icon gray"
                slot="icon"></div>活体识别<br>wajah
-        </Step>
-      </Steps>
+        </r-step>
+      </r-steps>
     </div>
   </div>
 </template>

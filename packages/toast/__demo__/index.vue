@@ -1,7 +1,7 @@
 <template>
   <div class="toast-example">
-    <Titlebar theme="b"
-              @on-back="onBack">Toast</Titlebar>
+    <r-titlebar theme="b"
+              @on-back="onBack">Toast</r-titlebar>
     <div class="p-20">
       <nav-item class="item"
            @on-click="defaultOnClick">默认 default</nav-item>

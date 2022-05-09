@@ -1,7 +1,7 @@
 <template>
   <div class="r-demo dialog">
-    <Titlebar theme="b"
-              @on-back="onBack">Dialog</Titlebar>
+    <r-titlebar theme="b"
+              @on-back="onBack">Dialog</r-titlebar>
     <div class="p-20">
       <nav-item class="item"
                 @on-click="showDialog1">常规</nav-item>
@@ -25,11 +25,11 @@
                 @on-click="showDialog10">this.$dialog.select</nav-item>
       <nav-item class="item"
                 @on-click="showDialog11">模板方式插入Dialog
-        <Dialog v-model="showDlg11"
+        <r-dialog v-model="showDlg11"
                 @on-cancel="onCancelDialog11"
                 @on-mask="onMaskDialog11">
           <nav-item style="text-align: center; padding: 50px 0">hello</nav-item>
-        </Dialog>
+        </r-dialog>
       </nav-item>
     </div>
   </div>

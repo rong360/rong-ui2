@@ -28,7 +28,7 @@ Vue.use(TextScroll)
 <div class="r-doc-card">
 
 ```html
-<TextScroll :list="list"></TextScroll>
+<r-textscroll :list="list"></r-textscroll>
 ```
 
 ```js

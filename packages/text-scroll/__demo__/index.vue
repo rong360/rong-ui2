@@ -1,15 +1,15 @@
 <template>
   <div class="textscroll-example">
-    <Titlebar theme="b"
-              @on-back="onBack">TextScroll</Titlebar>
+    <r-titlebar theme="b"
+              @on-back="onBack">TextScroll</r-titlebar>
     <div class="fs-14">1, 默认</div>
-    <TextScroll :list="list"></TextScroll>
+    <r-textscroll :list="list"></r-textscroll>
     <br>
     <r-textscroll :list="list"></r-textscroll>
 
     <br><br>
     <div class="fs-14">2, 插槽</div>
-    <TextScroll :list="list"><span slot="prepend" style="padding: 0 10px"> Tips:</span></TextScroll>
+    <r-textscroll :list="list"><span slot="prepend" style="padding: 0 10px"> Tips:</span></r-textscroll>
   </div>
 </template>
 

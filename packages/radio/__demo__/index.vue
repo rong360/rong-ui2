@@ -1,7 +1,7 @@
 <template>
   <div class="checkbox-example">
-    <Titlebar theme="b"
-              @on-back="onBack">Radio</Titlebar>
+    <r-titlebar theme="b"
+              @on-back="onBack">Radio</r-titlebar>
     <div class="p-15">
       <div class="fs-14">一，单个Radio，绑定到布尔值：</div>
       <r-radio v-model="single">Radio</r-radio>
@@ -11,10 +11,10 @@
       <div class="fs-14">二，多个Radio，绑定到同一个字符串：</div>
       <r-radio v-model="picked"
              value="apple">苹果</r-radio>
-      <Radio v-model="picked"
-             value="pear">梨</Radio>
-      <Radio v-model="picked"
-             value="banana">香蕉</Radio>
+      <r-radio v-model="picked"
+             value="pear">梨</r-radio>
+      <r-radio v-model="picked"
+             value="banana">香蕉</r-radio>
       <div class="fs-14">{{picked}}</div>
     </div>
   </div>

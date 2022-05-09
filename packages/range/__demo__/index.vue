@@ -1,23 +1,23 @@
 <template>
   <div class="wrap">
-    <Titlebar theme="b"
-              @on-back="onBack">Range</Titlebar>
+    <r-titlebar theme="b"
+              @on-back="onBack">Range</r-titlebar>
     <div class="exp">
       <div class="tip">效果一</div>
       {{config0.amount}}
-      <Range v-model="config0.amount"
+      <r-range v-model="config0.amount"
              :min="config0.min"
              :max="config0.max"
              :step="config0.step">
         <span slot="start">{{config0.min}}</span>
         <span slot="end">{{config0.max}}</span>
-      </Range>
+      </r-range>
 
       <br><br>
 
       <div class="tip">效果二</div>
       <div class="range-title">{{config1.amount}}</div>
-      <Range v-model="config1.amount"
+      <r-range v-model="config1.amount"
              :min="config1.min"
              :max="config1.max"
              :step="config1.step">
@@ -27,7 +27,7 @@
         <span slot="end"
               class="increase"
               @click="increase">+</span>
-      </Range>
+      </r-range>
       <div class="range-footer">
         <span class="min">{{config1.min}}</span>
         <span class="max">{{config1.max}}</span>

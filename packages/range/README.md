@@ -12,10 +12,10 @@
 <div class="r-doc-card">
 
 ```html
-<Range v-model="config0.amount" :min="config0.min" :max="config0.max" :step="config0.step">
+<r-range v-model="config0.amount" :min="config0.min" :max="config0.max" :step="config0.step">
   <span slot="start">{{config0.min}}</span>
   <span slot="end">{{config0.max}}</span>
-</Range>
+</r-range>
 ```
 
 ```js

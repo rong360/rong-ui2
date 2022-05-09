@@ -1,37 +1,37 @@
 <template>
   <div class="select-example">
-    <Titlebar theme="b"
-              @on-back="onBack">Select</Titlebar>
+    <r-titlebar theme="b"
+              @on-back="onBack">Select</r-titlebar>
     <div class="list">
       请选择以下信息：
-      <Form ref="form">
+      <r-form ref="form">
         <r-select :title="config.title"
                 :name="config.name"
                 :data="config.data"
                 v-model="config.value"
                 ref="select1"></r-select>
-        <Select v-bind="config2"
+        <r-select v-bind="config2"
                 v-model="config2.value"
                 cancel-btn-text="cancel"
                 confirm-btn-text="confirm"
-                ref="select2"></Select>
-        <Select v-bind="config3"
+                ref="select2"></r-select>
+        <r-select v-bind="config3"
                 v-model="config3.value"
-                ref="select3"></Select>
-        <button @click="doChangeData">点击改变人群类别data</button>
+                ref="select3"></r-select>
+        <button class="fs-14" @click="doChangeData">点击改变人群类别data</button>
         <div class="btn-wrap">
-          <Button @on-click="getValue1">获取人群类别数据</Button>
-          <Button @on-click="getValue2">获取贷款期限数据</Button>
-          <Button @on-click="getValue3">获取教育程度数据</Button>
+          <r-button @on-click="getValue1">获取人群类别数据</r-button>
+          <r-button @on-click="getValue2">获取贷款期限数据</r-button>
+          <r-button @on-click="getValue3">获取教育程度数据</r-button>
         </div>
 
         <div class="btn-wrap">
-          <Button @on-click="getValue4">借助Form组件获取所有数据</Button>
+          <r-button @on-click="getValue4">借助Form组件获取所有数据</r-button>
         </div>
         <div class="btn-wrap">
-          <Button @on-click="resetFields">重置</Button>
+          <r-button @on-click="resetFields">重置</r-button>
         </div>
-      </Form>
+      </r-form>
     </div>
   </div>
 
@@ -132,7 +132,8 @@ export default {
                 title: "手机号码",
                 name: "mobile",
                 value: '',
-                placeholder: "请输入您的手机号码"
+                placeholder: "请输入您的手机号码",
+                maxlength: 11
               }
             ]
           },
@@ -358,6 +359,16 @@ export default {
     getValue4 () {
       this.$refs.form.validate((valid, validateMessage) => {
         if (valid) {
+          this.$dialog({
+            propsData: {
+              message: this.$refs.form.getValue().map(field => `<p class="ta-l fs-14"><span class="fw-b">${field.title}:</span>${field.value}</p>`).join('')
+            },
+            methods: {
+              onConfirm () {
+                this.remove()
+              }
+            }
+          })
           console.log('getValue', this.$refs.form.getValue())
           console.log('getSerializeValue', this.$refs.form.getSerializeValue())
           console.log('getObjectValue', this.$refs.form.getObjectValue())

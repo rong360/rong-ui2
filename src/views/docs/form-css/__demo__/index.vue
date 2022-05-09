@@ -1,35 +1,35 @@
 <template>
   <div class="form-example-css">
-    <Titlebar theme="b"
-              @on-back="onBack">FormCss效果</Titlebar>
-    <Form :select-arrow-style="{color: '#C8C7CC'}"
+    <r-titlebar theme="b"
+              @on-back="onBack">FormCss效果</r-titlebar>
+    <r-form :select-arrow-style="{color: '#C8C7CC'}"
           :input-clear-style="{color: '#C8C7CC'}"
           @on-iscompleted="setIsCompleted"
           text-position="left"
           placeholder=""
           mode="to-top"
           ref="form">
-      <Input :title="user.title"
+      <r-input :title="user.title"
              :name="user.name"
              :maxlength="user.maxlength"
              :rules="user.rules"
-             v-model="user.value"></Input>
-      <Input v-bind="age"
-             v-model="age.value"></Input>
-      <Input v-bind="amount"
+             v-model="user.value"></r-input>
+      <r-input v-bind="age"
+             v-model="age.value"></r-input>
+      <r-input v-bind="amount"
              v-model="amount.value"
-             @on-input="handleInputAmount"></Input>
-      <Input v-bind="phone"
-             v-model="phone.value"></Input>
-      <Input v-bind="email"
-             v-model="email.value"></Input>
-      <Input v-bind="IDCard"
-             v-model="IDCard.value"></Input>
-      <Select v-bind="loanTerm"
-              v-model="loanTerm.value"></Select>
-      <SelectDate :title="birthday.title"
+             @on-input="handleInputAmount"></r-input>
+      <r-input v-bind="phone"
+             v-model="phone.value"></r-input>
+      <r-input v-bind="email"
+             v-model="email.value"></r-input>
+      <r-input v-bind="IDCard"
+             v-model="IDCard.value"></r-input>
+      <r-select v-bind="loanTerm"
+              v-model="loanTerm.value"></r-select>
+      <r-selectdate :title="birthday.title"
                   :name="birthday.name"
-                  v-model="birthday.value"></SelectDate>
+                  v-model="birthday.value"></r-selectdate>
 
       <div class="btn-wrap">
         <div :class="['btn', isCompleted ? '' : 'disabled']"
@@ -45,7 +45,7 @@
         <div class="btn"
              @click="doReset">重设</div>
       </div>
-    </Form>
+    </r-form>
     <div class="result">
       <p v-for="(field, index) in fields" :key="index">{{field.conf ? `${field.conf.title}: ${field.conf.value}` : ''}}</p>
     </div>

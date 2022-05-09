@@ -4,7 +4,7 @@
              class="flexfixed-page"
              @on-scroll="onScroll"
              @on-scroll-debounce="onScrollDebounce">
-    <Titlebar :theme="theme"
+    <r-titlebar :theme="theme"
               slot="header"
               @on-back="onBack">
       FlexFixed
@@ -19,14 +19,14 @@
         <p>maxScrollTop：{{scrollInfo2.maxScrollTop}}</p>
         <p>direction：{{scrollInfo2.direction}}</p>
       </div>
-    </Titlebar>
+    </r-titlebar>
     <div>
       <p>心存美好，则无可恼之事；心存善良，则无可恨之人；心若简单，世间纷扰皆成空</p>
       <p v-for="(item, index) in list" :key="index">{{item}}</p>
       <p><input type="text"></p>
       <p>如果有缘、错过了还会重来，如果无缘、相遇了也会离开；聚有聚的理由、离有离的借口；人生没有如果、只有后果和结果！</p>
     </div>
-    <Button slot="footer">提交</Button>
+    <r-button slot="footer">提交</r-button>
   </r-flexfixed>
 </template>
 

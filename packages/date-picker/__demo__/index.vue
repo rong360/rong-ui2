@@ -1,7 +1,7 @@
 <template>
   <div class="datepicker-example">
-    <Titlebar theme="b"
-              @on-back="onBack">DatePicker</Titlebar>
+    <r-titlebar theme="b"
+              @on-back="onBack">DatePicker</r-titlebar>
     <div class="fs-14">请选择以下信息：</div>
     <div class="list">
       <div class="item">
@@ -28,16 +28,16 @@
     <div class="list">
       <div class="item">
         <div class="label">妈妈出生年份：</div>
-        <DatePicker v-bind='config1'
-                    @onconfirm="birthDate"></DatePicker>
+        <r-datepicker v-bind='config1'
+                    @onconfirm="birthDate"></r-datepicker>
       </div>
     </div>
 
     <div class="list">
       <div class="item">
         <div class="label">哥哥出生日期：</div>
-        <DatePicker v-bind='config2'
-                    @onconfirm="birthDate"></DatePicker>
+        <r-datepicker v-bind='config2'
+                    @onconfirm="birthDate"></r-datepicker>
       </div>
     </div>
 
@@ -91,6 +91,16 @@ export default {
   },
   methods: {
     birthDate (date) {
+      this.$dialog({
+        propsData: {
+          message: `<p style="word-break: break-all">${JSON.stringify(date)}</p>`
+        },
+        methods: {
+          onConfirm () {
+            this.remove()
+          }
+        }
+      })
       console.log(date);
     },
     onBack () {

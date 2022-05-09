@@ -28,11 +28,11 @@ Vue.use(Swiper)
 <div class="r-doc-card">
 
 ```html
-<Swiper>
-  <SwiperItem @on-click="onClickSwiperItem"><img src="https://m.360buyimg.com/mobilecms/s700x280_jfs/t1/123209/30/16604/143626/5f9bb747Ea155ae71/aadf80788d17d8e0.jpg!q70.jpg.dpg" /></SwiperItem>
-  <SwiperItem><img src="https://m.360buyimg.com/mobilecms/s700x280_jfs/t1/154196/24/3833/121212/5f97d34cEa985896f/e20033d24c553704.jpg!q70.jpg.dpg" /></SwiperItem>
-  <SwiperItem><img src="https://m.360buyimg.com/mobilecms/s700x280_jfs/t1/146862/39/13822/78049/5fa7e418E6c76569b/068b19049e17de7b.jpg!q70.jpg.dpg" /></SwiperItem>
-</Swiper>
+<r-swiper>
+  <r-swiperitem @on-click="onClickSwiperItem"><img src="https://m.360buyimg.com/mobilecms/s700x280_jfs/t1/123209/30/16604/143626/5f9bb747Ea155ae71/aadf80788d17d8e0.jpg!q70.jpg.dpg" /></r-swiperitem>
+  <r-swiperitem><img src="https://m.360buyimg.com/mobilecms/s700x280_jfs/t1/154196/24/3833/121212/5f97d34cEa985896f/e20033d24c553704.jpg!q70.jpg.dpg" /></r-swiperitem>
+  <r-swiperitem><img src="https://m.360buyimg.com/mobilecms/s700x280_jfs/t1/146862/39/13822/78049/5fa7e418E6c76569b/068b19049e17de7b.jpg!q70.jpg.dpg" /></r-swiperitem>
+</r-swiper>
 ```
 </div>
 

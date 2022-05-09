@@ -1,44 +1,44 @@
 <template>
   <div class="checkbox-example">
-    <Titlebar theme="b"
-              @on-back="onBack">Checkbox</Titlebar>
+    <r-titlebar theme="b"
+              @on-back="onBack">Checkbox</r-titlebar>
     <div class="fs-14">一，单个复选框，绑定到布尔值：</div>
-    <Checkbox v-model="checked" shape="circle">北京</Checkbox>
+    <r-checkbox v-model="checked" shape="circle">北京</r-checkbox>
     <div class="fs-14">{{checked}}</div>
 
     <br><br>
     <div class="fs-14">二，多个复选框，绑定到同一个数组：</div>
-    <Checkbox v-model="fruitList" value="apple">苹果</Checkbox>
-    <Checkbox v-model="fruitList" value="pear">梨</Checkbox>
-    <Checkbox v-model="fruitList" value="banana">香蕉</Checkbox>
-    <Checkbox v-model="fruitList" value="orange">橘子</Checkbox>
+    <r-checkbox v-model="fruitList" value="apple">苹果</r-checkbox>
+    <r-checkbox v-model="fruitList" value="pear">梨</r-checkbox>
+    <r-checkbox v-model="fruitList" value="banana">香蕉</r-checkbox>
+    <r-checkbox v-model="fruitList" value="orange">橘子</r-checkbox>
     <div class="fs-14">{{fruitList}}</div>
 
     <br>
-    <Checkbox v-model="fruitList" value="apple" shape="circle">苹果</Checkbox>
-    <Checkbox v-model="fruitList" value="pear" shape="circle" iconStyle="font-size: 25px; color: red">梨</Checkbox>
-    <Checkbox v-model="fruitList" value="banana" shape="circle" checkCircleTwoToneColor='red'>香蕉</Checkbox>
-    <Checkbox v-model="fruitList" value="orange" shape="circle">橘子</Checkbox>
+    <r-checkbox v-model="fruitList" value="apple" shape="circle">苹果</r-checkbox>
+    <r-checkbox v-model="fruitList" value="pear" shape="circle" iconStyle="font-size: 25px; color: red">梨</r-checkbox>
+    <r-checkbox v-model="fruitList" value="banana" shape="circle" checkCircleTwoToneColor='red'>香蕉</r-checkbox>
+    <r-checkbox v-model="fruitList" value="orange" shape="circle">橘子</r-checkbox>
     <div class="fs-14">{{fruitList}}</div>
 
     <br>
     <div class="fs-14">您需要的贷款额度（单选）</div>
-    <Checkbox v-model="loanLimitList" value="1" shape="rect" @on-change="changeLoanLimit('1')">2万以下</Checkbox>
-    <Checkbox v-model="loanLimitList" value="2" shape="rect" @on-change="changeLoanLimit('2')">2-5万</Checkbox>
-    <Checkbox v-model="loanLimitList" value="3" shape="rect" @on-change="changeLoanLimit('3')">5-10万</Checkbox>
-    <Checkbox v-model="loanLimitList" value="4" shape="rect" @on-change="changeLoanLimit('4')">10-50万</Checkbox>
-    <Checkbox v-model="loanLimitList" value="5" shape="rect" @on-change="changeLoanLimit('5')">50万以上</Checkbox>
+    <r-checkbox v-model="loanLimitList" value="1" shape="rect" @on-change="changeLoanLimit('1')">2万以下</r-checkbox>
+    <r-checkbox v-model="loanLimitList" value="2" shape="rect" @on-change="changeLoanLimit('2')">2-5万</r-checkbox>
+    <r-checkbox v-model="loanLimitList" value="3" shape="rect" @on-change="changeLoanLimit('3')">5-10万</r-checkbox>
+    <r-checkbox v-model="loanLimitList" value="4" shape="rect" @on-change="changeLoanLimit('4')">10-50万</r-checkbox>
+    <r-checkbox v-model="loanLimitList" value="5" shape="rect" @on-change="changeLoanLimit('5')">50万以上</r-checkbox>
     <div class="fs-14">{{loanLimitList}}</div>
 
     <br>
     <div class="fs-14">选择您的资质, 提高贷款成功率（可多选）</div>
-    <Checkbox v-model="qualificationsList" value="1" shape="rect" @on-change="changeQualifications('1')">有房</Checkbox>
-    <Checkbox v-model="qualificationsList" value="2" shape="rect" @on-change="changeQualifications('2')">有车</Checkbox>
-    <Checkbox v-model="qualificationsList" value="3" shape="rect" @on-change="changeQualifications('3')">有公积金</Checkbox>
-    <Checkbox v-model="qualificationsList" value="4" shape="rect" @on-change="changeQualifications('4')">有社保</Checkbox>
-    <Checkbox v-model="qualificationsList" value="5" shape="rect" @on-change="changeQualifications('5')">有保单</Checkbox>
-    <Checkbox v-model="qualificationsList" value="6" shape="rect" @on-change="changeQualifications('6')">有企业</Checkbox>
-    <Checkbox v-model="qualificationsList" value="0" shape="rect" @on-change="changeQualifications('0')">以上都无</Checkbox>
+    <r-checkbox v-model="qualificationsList" value="1" shape="rect" @on-change="changeQualifications('1')">有房</r-checkbox>
+    <r-checkbox v-model="qualificationsList" value="2" shape="rect" @on-change="changeQualifications('2')">有车</r-checkbox>
+    <r-checkbox v-model="qualificationsList" value="3" shape="rect" @on-change="changeQualifications('3')">有公积金</r-checkbox>
+    <r-checkbox v-model="qualificationsList" value="4" shape="rect" @on-change="changeQualifications('4')">有社保</r-checkbox>
+    <r-checkbox v-model="qualificationsList" value="5" shape="rect" @on-change="changeQualifications('5')">有保单</r-checkbox>
+    <r-checkbox v-model="qualificationsList" value="6" shape="rect" @on-change="changeQualifications('6')">有企业</r-checkbox>
+    <r-checkbox v-model="qualificationsList" value="0" shape="rect" @on-change="changeQualifications('0')">以上都无</r-checkbox>
     <div class="fs-14">{{qualificationsList}}</div>
 
   </div>

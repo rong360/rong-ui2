@@ -1,7 +1,7 @@
 <template>
   <div class="input-example">
-    <Titlebar theme="b"
-              @on-back="onBack">Input</Titlebar>
+    <r-titlebar theme="b"
+              @on-back="onBack">Input</r-titlebar>
 
     <r-input :title="user.title"
            :name="user.name"
@@ -11,52 +11,52 @@
            maxlength="6"
            v-model="user.value"></r-input>
 
-    <Input v-bind="age"
-           v-model="age.value"></Input>
+    <r-input v-bind="age"
+           v-model="age.value"></r-input>
 
-    <Input v-bind="amount"
+    <r-input v-bind="amount"
            v-model="amount.value"
-           @on-input="handleInputAmount"></Input>
+           @on-input="handleInputAmount"></r-input>
 
-    <Input v-bind="phone"
-           v-model="phone.value"></Input>
-    <Input v-bind="OTP"
+    <r-input v-bind="phone"
+           v-model="phone.value"></r-input>
+    <r-input v-bind="OTP"
            v-model="OTP.value"><span slot="append"
-          style="display: inline-block; border: 1px solid #bebebe; font-size: 0.74667rem; padding: .1rem .3rem; border-radius: 1rem">Get OTP code</span></Input>
+          style="display: inline-block; border: 1px solid #bebebe; font-size: 0.74667rem; padding: .1rem .3rem; border-radius: 1rem">Get OTP code</span></r-input>
 
-    <Input v-bind="email"
-           v-model="email.value"></Input>
+    <r-input v-bind="email"
+           v-model="email.value"></r-input>
 
-    <Input v-bind="IDCard"
-           v-model="IDCard.value"></Input>
+    <r-input v-bind="IDCard"
+           v-model="IDCard.value"></r-input>
 
     <div style="background: lightgray">
       <p></p>
-      <Input v-bind="user"
+      <r-input v-bind="user"
              label-position='right'
              label-width='150px'
              text-position="right"
-             v-model="user.value"></Input>
-      <Input v-bind="age"
+             v-model="user.value"></r-input>
+      <r-input v-bind="age"
              label-position='right'
              label-width='150px'
-             v-model="age.value"></Input>
-      <Input v-bind="amount"
+             v-model="age.value"></r-input>
+      <r-input v-bind="amount"
              label-position='right'
              label-width='150px'
-             v-model="amount.value"></Input>
-      <Input v-bind="phone"
+             v-model="amount.value"></r-input>
+      <r-input v-bind="phone"
              label-position='right'
              label-width='150px'
-             v-model="phone.value"></Input>
-      <Input v-bind="email"
+             v-model="phone.value"></r-input>
+      <r-input v-bind="email"
              label-position='right'
              label-width='150px'
-             v-model="email.value"></Input>
-      <Input v-bind="IDCard"
+             v-model="email.value"></r-input>
+      <r-input v-bind="IDCard"
              label-position='right'
              label-width='150px'
-             v-model="IDCard.value"></Input>
+             v-model="IDCard.value"></r-input>
     </div>
   </div>
 </template>

@@ -1,8 +1,8 @@
 <template>
   <div class="form-reg-example">
-    <Titlebar theme="b"
-              @on-back="onBack">Form 动态注册</Titlebar>
-    <Form :select-arrow-style="{color: '#C8C7CC'}"
+    <r-titlebar theme="b"
+              @on-back="onBack">Form 动态注册</r-titlebar>
+    <r-form :select-arrow-style="{color: '#C8C7CC'}"
           :input-clear-style="{color: '#C8C7CC'}"
           @on-iscompleted="setIsCompleted"
           text-position="right"
@@ -28,7 +28,7 @@
         <div class="btn"
              @click="doReset">重设</div>
       </div>
-    </Form>
+    </r-form>
     <div class="result">
       <p v-for="(field, index) in fields"
          :key="index">{{field.conf ? `${field.conf.title}: ${field.conf.value}` : ''}}</p>

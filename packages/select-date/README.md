@@ -26,7 +26,8 @@ Vue.use(SelectDate)
 <div class="r-doc-card">
 
 ```html
-<r-selectdate :attrs="config" v-model="config.value"></r-selectdate>
+<r-selectdate :title="config.title" :name="config.name"></r-selectdate>
+<r-selectdate v-bind="config" v-model="config.value"></r-selectdate>
 ```
 
 ```js

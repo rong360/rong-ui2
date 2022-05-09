@@ -1,32 +1,32 @@
 <template>
   <div class="select-example">
-    <Titlebar theme="b"
-              @on-back="onBack">Select3</Titlebar>
+    <r-titlebar theme="b"
+              @on-back="onBack">Select3</r-titlebar>
     <div class="tips">标题和选项在同一行展示， 用于性别选择等</div>
     <div class="list">
       请选择以下信息：
-      <Form ref="form"
+      <r-form ref="form"
             text-position="right">
-        <Select3 :title="config.title"
+        <r-select3 :title="config.title"
                  :name="config.name"
                  :data="config.data"
                  v-model="config.value"
-                 ref="select1"></Select3>
-        <Select3 v-bind="config2"
+                 ref="select1"></r-select3>
+        <r-select3 v-bind="config2"
                  v-model="config2.value"
-                 ref="select2"></Select3>
+                 ref="select2"></r-select3>
         <div class="btn-wrap">
-          <Button @on-click="getValue1">获取公积金数据</Button>
-          <Button @on-click="getValue2">获取社保数据</Button>
+          <r-button @on-click="getValue1">获取公积金数据</r-button>
+          <r-button @on-click="getValue2">获取社保数据</r-button>
         </div>
 
         <div class="btn-wrap">
-          <Button @on-click="getValue4">借助Form组件获取所有数据</Button>
+          <r-button @on-click="getValue4">借助Form组件获取所有数据</r-button>
         </div>
         <div class="btn-wrap">
-          <Button @on-click="resetFields">重置</Button>
+          <r-button @on-click="resetFields">重置</r-button>
         </div>
-      </Form>
+      </r-form>
     </div>
   </div>
 
@@ -141,6 +141,16 @@ export default {
     getValue4 () {
       this.$refs.form.validate((valid, validateMessage) => {
         if (valid) {
+          this.$dialog({
+            propsData: {
+              message: this.$refs.form.getValue().map(field => `<p class="ta-l fs-14"><span class="fw-b">${field.title}:</span>${field.value}</p>`).join('')
+            },
+            methods: {
+              onConfirm () {
+                this.remove()
+              }
+            }
+          })
           console.log('getValue', this.$refs.form.getValue())
           console.log('getSerializeValue', this.$refs.form.getSerializeValue())
           console.log('getObjectValue', this.$refs.form.getObjectValue())

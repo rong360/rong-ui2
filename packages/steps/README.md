@@ -13,12 +13,12 @@
 <div class="r-doc-card">
 
 ```html
-<Steps :current="1">
-  <Step>基本信息<br>utama</Step>
-  <Step>个人信息<br>darurat</Step>
-  <Step>联系人<br>wajah</Step>
-  <Step>活体识别<br>wajah</Step>
-</Steps>
+<r-steps :current="1">
+  <r-step>基本信息<br>utama</r-step>
+  <r-step>个人信息<br>darurat</r-step>
+  <r-step>联系人<br>wajah</r-step>
+  <r-step>活体识别<br>wajah</r-step>
+</r-steps>
 ```
 </div>
 

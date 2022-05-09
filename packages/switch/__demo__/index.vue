@@ -1,7 +1,7 @@
 <template>
   <div class="switch-example">
-    <Titlebar theme="b"
-              @on-back="onBack">Switch</Titlebar>
+    <r-titlebar theme="b"
+              @on-back="onBack">Switch</r-titlebar>
 
     <div class="p-15">
       <p class="fs-14">1，默认</p>

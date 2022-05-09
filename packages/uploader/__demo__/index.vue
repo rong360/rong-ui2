@@ -1,7 +1,7 @@
 <template>
   <div class="upload-example">
-    <Titlebar theme="b"
-              @on-back="onBack">Uploader</Titlebar>
+    <r-titlebar theme="b"
+              @on-back="onBack">Uploader</r-titlebar>
     <br>
     <r-uploader action="/test/fileUpload"
             :defaultFileList="fileList"
