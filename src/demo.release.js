@@ -37,7 +37,7 @@ Vue.use(Range)
  *  注意.babelrc 中需删除 ["import", { "libraryName": "rong-ui2", "libraryDirectory": "es", "style": "css" }]
  */
 // import RongUi2 from 'rong-ui2'
-// import 'rong-ui2/lib/rong-ui2.css'
+// import 'rong-ui2/lib/style.css'
 // Vue.use(RongUi2)
 
 Vue.component('NavItem', NavItem)
