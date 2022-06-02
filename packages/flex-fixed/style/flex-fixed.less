@@ -1,32 +1,30 @@
-@flexFixedCls: ~'@{comps-prefix}-flexfixed';
+@flexFixedCls: ~"@{comps-prefix}-flexfixed";
 
 .@{flexFixedCls} {
   display: flex;
   flex-direction: column;
   height: 100%;
   position: relative;
-  &-main {
+  &__main {
     display: block;
     flex: 1;
     width: 100%;
     overflow-x: hidden;
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch; /* 解决ios滑动不流畅问题 */
-    .header-copy,
-    .footer-copy {
-      opacity: 0;
-    }
+    background-attachment: local;
+    background-size: contain;
+    background-repeat: no-repeat;
   }
-  &&-usefixed {
-    >header,
-    >footer {
+  &__header {
+    &--usefixed {
       position: fixed;
       left: 0;
       right: 0;
       z-index: 2;
     }
-    >footer {
-      bottom: 0;
-    }
+  }
+  &__header-copy {
+    opacity: 0;
   }
 }

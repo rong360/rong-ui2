@@ -74,6 +74,22 @@ Vue.use(Titlebar)
 </div>
 
 
+<div class="r-doc-card">
+
+### 样式变量：
+组件提供了下列 Less 变量，可用于自定义样式，使用方法请参考[主题定制](#/theme)。
+
+| 名称 | 描述 | 默认值 |
+| ---- | --- | --- |
+| @titlebar-height | 高度 | 45px |
+| @titlebar-background | 背景 | transparent |
+| @titlebar-arrow-size | 返回按钮大小 | 16px |
+| @titlebar-arrow-color | 返回按钮颜色 | #333 |
+| @titlebar-title-text-color | 字体颜色 | #333 |
+| @titlebar-title-font-size | 字体大小 | 17px |
+
+
+</div>
 
 
 <details>

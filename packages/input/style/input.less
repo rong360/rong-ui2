@@ -3,16 +3,16 @@
 .@{inputCls} {
   position: relative;
   &-inner {
-    border-bottom: 1px solid #f2f2f4;
+    border-bottom: 1px solid @input-inner-border-bottom-color;
     display: flex;
     box-sizing: border-box;
     align-items: center;
-    padding-right: 15px;
+    padding-right: @input-inner-padding-right;
     position: relative;
   }
   &-mode-default &-inner {
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding-top: @input-inner-padding-top;
+    padding-bottom: @input-inner-padding-bottom;
   }
   &-mode-to-top &-inner {
     height: 46px;
@@ -54,30 +54,30 @@
     color: #181c48;
   }
   &-mode-default &-label {
-    font-size: 14px;
-    color: @text-color;
+    font-size: @input-label-font-size;
+    color: @input-label-color;
     line-height: 20px;
   }
   &-mode-default&-text-left &-label {
-    margin-right: 23px;
+    margin-right: @input-label-margin-right;
   }
   &-mode-default &-input {
-    font-size: 14px;
+    font-size: @input-input-font-size;
     line-height: 20px;
-    color: @text-color;
+    color: @input-input-color;
   }
   &-show-edit &-input {
-    font-size: 35px;
-    line-height: 40px;
-    font-weight: 600;
+    font-size: @input-edit-input-font-size;
+    line-height: @input-edit-input-line-height;
+    font-weight: @input-edit-input-font-weight;
   }
   &-show-edit &-error-tip {
     padding-top: 5px;
     line-height: 17px;
   }
   &-show-edit &-inner {
-    padding-top: 0px;
-    padding-bottom: 0px;
+    padding-top: @input-edit-inner-padding-top;
+    padding-bottom: @input-edit-inner-padding-bottom;
   }
   &-label-right &-label {
     text-align: right;
@@ -134,10 +134,10 @@
     z-index: 2;
     &[readonly],
     &[disabled] {
-      color: @disabled-color;
+      color: @input-input-disabled-color;
     }
     &::placeholder {
-      color: @placeholder-color;
+      color: @input-input-placeholder-color;
     }
   }
   .input-edit {
@@ -154,14 +154,11 @@
       font-family: "PingFangSC-Regular PingFang SC", arial, sans-serif;
     }
     .edit-icon {
-      width: 15px;
-      height: 15px;
-      background-image: url(data:image/png;base64,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);
-      background-repeat: no-repeat;
-      background-size: contain;
-      margin-left: 7px;
+      font-size: @input-edit-icon-size;
+      color: #212121;
+      margin-left: @input-edit-icon-margin-left;
       position: relative;
-      top: -5px;
+      top: @input-edit-icon-top;
     }
   }
   &-text-right &-input {
@@ -195,13 +192,12 @@
     display: flex;
     align-items: center;
     z-index: 2;
-  }
-  &-clear svg {
-    width: 30x;
-    height: 30x;
+    font-size: @input-clear-icon-size;
+    color: @input-clear-icon-color;
+    cursor: pointer;
   }
   &-error &-inner {
-    border-color: @border-color-red;
+    border-color: @input-inner-error-bottom-color;
   }
   &-error&-mode-default &-inner {
     margin-bottom: 20px;
@@ -213,8 +209,8 @@
     width: 100%;
     line-height: 17px;
     padding-top: 4px;
-    font-size: 12px;
-    color: @text-color-red;
+    font-size: @input-error-tip-font-size;
+    color: @input-error-tip-color;
     z-index: 1;
   }
   &-error-tip2 {
@@ -223,8 +219,8 @@
     top: 50%;
     width: 100%;
     line-height: 1px;
-    font-size: 12px;
-    color: @text-color-red;
+    font-size: @input-error-tip-font-size;
+    color: @input-error-tip-color;
     z-index: 1;
     transform: translateY(-50%);
     box-sizing: border-box;

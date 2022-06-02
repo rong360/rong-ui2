@@ -2,53 +2,59 @@
 
 .@{switchCls} {
   display: inline-block;
-  height: 22px;
-  border-radius: 22px;
-  border: 1px solid #ccc;
-  background-color: #ccc;
-  box-sizing: border-box;
+  width: @switch-width;
+  height: 1em;
+  border-radius: 1em;
+  font-size: @switch-size;
+  border: 1px solid @switch-border-color;
+  background-color: @switch-background-color;
   position: relative;
   user-select: none;
-  transition: all @transition-duration ease-in-out;
   -webkit-tap-highlight-color:transparent;
-  & .circle {
-    width: 18px;
-    height: 18px;
-    border-radius: 18px;
-    vertical-align: middle;
-    background-color: #fff;
-    position: absolute;
-    top: 1px;
-    left: 1px;
-    transition: left @transition-duration ease-in-out, width @transition-duration ease-in-out;
+  cursor: pointer;
+  &--checked {
+    border-color: @switch-checked-border-color;
+    background-color: @switch-checked-background-color;
   }
-  &-inner {
+  &--checked &__open {
+    opacity: 1;
+  }
+  &--checked &__close {
+    opacity: 0;
+  }
+  &--disabled {
+    opacity: @switch-disabled-opacity;
+    cursor: not-allowed;
+  }
+  &--checked &__circle {
+    transform: translateX(@switch-width - 1em);
+  }
+  &__circle {
+    width: 1em;
+    height: 1em;
+    border-radius: 100%;
+    font-size: inherit;
+    position: absolute;
+    top: 0;
+    background-color: @switch-circle-background-color;
+    box-shadow: @switch-circle-box-shadow;
+    transition: all @transition-duration ease-in-out;
+  }
+  &__inner {
     display: flex;
     align-items: center;
     height: 100%;
-    padding: 0 7px;
+    width: 100%;
   }
-  &-inner .open,
-  &-inner .close {
-    color: #fff;
-    font-size: 12px;
-    min-width: 15px;
+  &__open,
+  &__close {
+    color: @switch-text-color;
+    font-size: @switch-text-font-size;
+    width: 50%;
+    text-align: center;
     box-sizing: border-box;
   }
-  &-inner .open {
-    opacity: 0;
-  }
-  &-inner .close {
-    text-align: right;
-  }
-  &&-checked {
-    border-color: @primary-color;
-    background-color: @primary-color;
-  }
-  &&-checked .open {
-    opacity: 1;
-  }
-  &&-checked .close {
+  &__open {
     opacity: 0;
   }
 }

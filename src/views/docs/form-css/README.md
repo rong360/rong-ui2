@@ -6,5 +6,7 @@
 
 <details>
   <summary>查看右侧demo源码</summary>
+  <div class="r-doc-card">
   {{demo}}
+  </div>
 </details>

@@ -35,7 +35,7 @@ export default {
       actions: [
         { name: '选项一', color: 'red' },
         { name: '选项二', disabled: true },
-        { name: '选项三' }
+        { name: '选项三', fontWeight: 'bold' }
       ],
       showActionSheet: false,
       showCustomActionSheet: false

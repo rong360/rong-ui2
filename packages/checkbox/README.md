@@ -50,6 +50,7 @@ Vue.use(Checkbox)
 | checkedValue  | 可以使用 v-model 双向绑定数据   | `boolean` `array`   | `true` `false` `[]`  | `true` |
 | value  | 复选框的值    | string   |  |  |
 | shape  | checkbox形状    | string   | `square` `circle` `rect`| `square` |
+| twoToneColor  | type为circle，终点渐变色（也可通过 Vue.prototype.checkCircleTwoToneColor = 'red' 进行全局设置） | string  | | |
 </div>
 
 
@@ -71,6 +72,34 @@ Vue.use(Checkbox)
 |---------- |-------- |
 | 不具名slot  | checkbox标题   |
 | prepend  | 前置内容(v.1.1.4) |
+</div>
+
+
+<div class="r-doc-card">
+
+### 样式变量：
+组件提供了下列 Less 变量，可用于自定义样式，使用方法请参考[主题定制](#/theme)。
+
+| 名称 | 默认值 | 描述 |
+| ---- | --- | --- |
+| @checkbox-font-size | 24px |
+| @checkbox-margin-right | 8px |
+| @checkbox-circle-icon-size | 16px |
+| @checkbox-circle-icon-color | @primary-color |
+| @checkbox-square-width | 16px |
+| @checkbox-square-height | 16px |
+| @checkbox-square-uncheck-border-color | #dcdee2 |
+| @checkbox-square-background-color | @primary-color |
+| @checkbox-square-border-radius | 2px |
+| @checkbox-rect-width | 78px |
+| @checkbox-rect-height | 30px |
+| @checkbox-rect-background-color | #e5e5e5 |
+| @checkbox-rect-checked-background-color | #666 |
+| @checkbox-rect-border-radius | 4px |
+| @checkbox-rect-font-size | 12px |
+| @checkbox-rect-margin-top | 5px |
+| @checkbox-rect-margin-right | 10px |
+
 </div>
 
 

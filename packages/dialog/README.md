@@ -202,6 +202,28 @@ dialog实例方法通过`子类组件`覆盖基类组件的的方式实现，因
 </div>
 
 
+<div class="r-doc-card">
+
+### 样式变量：
+组件提供了下列 Less 变量，可用于自定义样式，使用方法请参考[主题定制](#/theme)。
+
+| 名称 | 描述 | 默认值 |
+| ---- | --- | --- |
+| @dialog-inner-font-size | inner元素字体大小 | 15px |
+| @dialog-inner-color | inner元素字体颜色 | @text-color |
+| @dialog-inner-border-radius | inner元素边框圆角 | 6px |
+| @dialog-inner-width | inner元素宽度 | 270px |
+| @dialog-title-line-height | 标题行高 | 48px |
+| @dialog-title-border-bottom-color | 标题下边框颜色 | #d8d9dc |
+| @dialog-content-padding | content元素padding | 15px |
+| @dialog-content-text-align | content元素对齐方式 | center |
+| @dialog-content-line-height | content元素行高 | 24px |
+| @dialog-btn-border-color | btn边框颜色 | #e5e5e5 |
+| @dialog-btn-line-height | btn行高 | 45px |
+| @dialog-mask-bg | 遮罩层背景颜色 | @mask-bg |
+</div>
+
+
 
 
 <details>

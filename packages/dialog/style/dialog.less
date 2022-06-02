@@ -6,63 +6,65 @@
   top: 0;
   right: 0;
   bottom: 0;
-  background-color: @mask-bg;
+  background-color: @dialog-mask-bg;
   z-index: 990;
-  &-inner {
+  &__inner {
     position: fixed;
-    width: 270px;
-    font-size: 15px;
+    width: @dialog-inner-width;
+    font-size: @dialog-inner-font-size;
     line-height: 1;
     background-color: #fff;
-    color: @text-color;
+    color: @dialog-inner-color;
     box-sizing: border-box;
     z-index: 991;
-    border-radius: 6px;
+    border-radius: @dialog-inner-border-radius;
     overflow: hidden;
   }
-  &-title {
+  &__title {
     text-align: center;
-    line-height: 48px;
+    line-height: @dialog-title-line-height;
+    &:after {
+      display: block;
+      content: "";
+      height: 1px;
+      overflow: hidden;
+      background-color: @dialog-title-border-bottom-color;
+    }
   }
-  &-title::after {
-    display: block;
-    content: "";
-    height: 1px;
-    overflow: hidden;
-    background-color: #d8d9dc;
-  }
-  &-close {
+  &__close {
     position: absolute;
     right: 0;
     top: 0;
     line-height: 1;
     padding: 15px;
   }
-  &-content {
-    padding: 15px;
-    text-align: center;
-    line-height: 24px;
+  &__content {
+    padding: @dialog-content-padding;
+    text-align: @dialog-content-text-align;
+    line-height: @dialog-content-line-height;
   }
-  &-btn {
+  &__btn {
     display: flex;
-    line-height: 45px;
-    border-top: 1px solid #e5e5e5;
+    line-height: @dialog-btn-line-height;
+    border-top: 1px solid @dialog-btn-border-color;
   }
-  &-cancel-btn,
-  &-confirm-btn {
+  &__cancel-btn,
+  &__confirm-btn {
     flex: 1;
     text-align: center;
     box-sizing: border-box;
   }
-  &-cancel-btn-show&-confirm-btn-show &-cancel-btn {
-    border-right: 1px solid #e5e5e5;
+  &__cancel-btn {
+    &--right-border {
+      border-right: 1px solid @dialog-btn-border-color;
+    }
   }
-  &-fade-enter-active,
-  &-fade-leave-active {
+  &__fade-enter-active,
+  &__fade-leave-active {
     transition: opacity 0.3s;
   }
-  &-fade-enter,
-  &-fade-leave-to {
+  &__fade-enter,
+  &__fade-leave-to {
     opacity: 0;
   }
 }

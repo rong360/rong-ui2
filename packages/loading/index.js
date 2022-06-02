@@ -1,27 +1,24 @@
 import Vue from "vue"
 import Loading from './loading'
+import { getComponentContext } from '../_utils'
+
+let globalConfig = {
+  loading: null
+}
 
 let LoadingConstructor = Vue.extend(Loading);
 
-let loadingCst = function (options) {
+let loadingCst = function (options = {}) {
+  if (!options.propsData) options.propsData = {}
+  options.propsData = Object.assign({}, globalConfig, options.propsData)
+
+  options.propsData.loading = getComponentContext(options.propsData.loading)
+
   let instance = new LoadingConstructor(options);
 
   document.body.appendChild(instance.$mount().$el);
 
   return instance;
-}
-
-Loading.config = function ({ loading, style }) {
-  let customLoading = null
-  if (loading && loading.render) {
-    customLoading = loading
-  } else if (loading && loading.default && loading.default.render) {
-    customLoading = loading.default
-  }
-  if (customLoading) {
-    Vue.component(customLoading.name, customLoading)
-    Vue.prototype.customLoading = customLoading
-  }
 }
 
 const install = function (Vue) {
@@ -32,6 +29,10 @@ Loading.install = install
 
 if (typeof window !== 'undefined' && window.Vue) {
   install(window.Vue);
+}
+
+Loading.config = function ({ loading, style }) {
+  globalConfig.loading = loading
 }
 
 export default Loading

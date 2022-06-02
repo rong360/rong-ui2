@@ -32,6 +32,13 @@
           "type": "src",
           "show": true,
           "author": "zyx"
+        },
+        {
+          "name": "Theme",
+          "title": "定制主题",
+          "type": "src",
+          "show": true,
+          "author": "zyx"
         }
       ]
     },

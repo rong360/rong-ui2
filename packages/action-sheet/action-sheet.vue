@@ -1,39 +1,39 @@
 <template>
   <div v-if="showWrap"
-       :class="wrapCls">
+       :class="bem()">
     <transition appear
-                name="action-sheet--fade">
+                :name="bem('fade')">
       <div v-if="show"
-           :class="maskCls"
+           :class="bem('mask')"
            v-preventscroll
            @click="handleMask"></div>
     </transition>
     <transition appear
-                name="action-sheet--slideInUp"
+                :name="bem('slide-in-up')"
                 v-on:enter="enter"
                 v-on:after-leave="afterLeave">
       <div v-if="show"
            v-preventscroll
-           :class="contentCls">
-        <div :class="headerCls"
+           :class="bem('content', {radius: radius})">
+        <div :class="bem('header')"
              v-html="title"></div>
         <div v-if="showCloseBtn"
-             :class="closeCls"
+             :class="bem('close')"
              @click="handleClose"></div>
         <slot>
-          <div :class="listCls"
+          <div :class="[bem('list'), {'scroll-area': isScrollY}]"
                ref="list">
             <div v-for="(item, index) in actions"
-                 :style="styleCls(item)"
-                 :class="itemCls(item)"
+                 :style="item"
+                 :class="bem('item', {disabled: item.disabled})"
                  :key="index"
                  @click="handleSelect(item, index)">{{item.name}}</div>
           </div>
         </slot>
         <div v-if="showCancelBtn"
-             :class="gapCls"></div>
+             :class="bem('gap')"></div>
         <div v-if="showCancelBtn"
-             :class="cancelCls"
+             :class="bem('cancel')"
              @click="handleCancel">{{cancelBtnText}}</div>
 
       </div>
@@ -44,7 +44,7 @@
 <script>
 import { createNamespace } from '../_utils'
 import preventscroll from '../_directives/preventscroll'
-const { name, class: prefixCls } = createNamespace('action-sheet')
+const { name, bem } = createNamespace('action-sheet')
 
 export default {
   name,
@@ -73,58 +73,10 @@ export default {
   },
   data () {
     return {
+      bem,
       showWrap: false,
       show: false,
       isScrollY: false
-    }
-  },
-  computed: {
-    wrapCls () {
-      return [
-        `${prefixCls}`,
-        {
-          [`${prefixCls}--radius`]: this.radius
-        }
-      ]
-    },
-    maskCls () {
-      return `${prefixCls}--mask`
-    },
-    contentCls () {
-      return `${prefixCls}--content`
-    },
-    styleCls () {
-      return (item) => item
-    },
-    listCls () {
-      return [
-        `${prefixCls}--list`,
-        {
-          'scroll-area': this.isScrollY
-        }
-      ]
-    },
-    itemCls () {
-      return (item) => {
-        return [
-          `${prefixCls}--item`,
-          {
-            disabled: item.disabled
-          }
-        ]
-      }
-    },
-    gapCls () {
-      return `${prefixCls}--gap`
-    },
-    cancelCls () {
-      return `${prefixCls}--cancel`
-    },
-    headerCls () {
-      return `${prefixCls}--header`
-    },
-    closeCls () {
-      return `${prefixCls}--close`
     }
   },
   watch: {

@@ -4,7 +4,7 @@ const del = require('del');
 const less = require('gulp-less');
 const through2 = require('through2')
 const autoprefixer = require('gulp-autoprefixer')
-const cssnano = require('gulp-cssnano')
+const cleanCSS = require('gulp-clean-css');
 const concat = require('gulp-concat')
 const fse = require('fs-extra')
 const config = require('./config')
@@ -82,9 +82,10 @@ function less2css (done) {
   gulp.src('./packages/*/style/index.less')
     .pipe(less()) // 处理less文件
     .pipe(autoprefixer()) // 根据browserslistrc增加前缀
-    .pipe(cssnano({ zindex: false, reduceIdents: false })) // 压缩
+    .pipe(cleanCSS({ format: 'keep-breaks', compatibility: 'ie8' }))
     .pipe(gulp.dest(paths.dest.styles))
     .pipe(concat(`style.css`)) // 合并文件为all.css
+    .pipe(cleanCSS({ format: 'keep-breaks', level: 2 }))
     .pipe(gulp.dest(paths.dest.styles)) // 输出all.css文件
   done()
 }

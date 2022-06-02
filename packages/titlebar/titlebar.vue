@@ -1,23 +1,19 @@
 <template>
-  <div :class="wrapCls">
-    <div class="l-operate">
+  <div :class="bem([`theme-${theme}`])">
+    <div :class="bem('left')">
       <slot name="l">
-        <div class="back"
+        <div :class="bem('back')"
              v-if="showBackto"
-             @click="onBack"><svg width="10px"
-               height="21px"
-               :style="arrowStyle"
-               viewBox="0 0 10 21"
-               version="1.1"
-               xmlns="http://www.w3.org/2000/svg"
-               xmlns:xlink="http://www.w3.org/1999/xlink">
+             @click="onBack"><svg width="1em"
+               height="1em"
+               viewBox="0 0 10 21">
             <g stroke="none"
                stroke-width="1"
                fill="none"
                fill-rule="evenodd"
                stroke-linecap="round">
               <g transform="translate(-16.000000, -33.000000)"
-                 :stroke="arrowStyle.color">
+                 stroke="currentColor">
                 <polyline id="Path-2"
                           points="25.758131 34 16 43.3837058 26 53"></polyline>
               </g>
@@ -25,10 +21,10 @@
           </svg></div>
       </slot>
     </div>
-    <div class="c-operate">
+    <div :class="bem('title')">
       <slot>{{title}}</slot>
     </div>
-    <div class="r-operate">
+    <div :class="bem('right')">
       <slot name="r"></slot>
     </div>
   </div>
@@ -36,7 +32,7 @@
 
 <script>
 import { createNamespace } from '../_utils'
-const { name, class: prefixCls } = createNamespace('titlebar')
+const { name, bem } = createNamespace('titlebar')
 
 export default {
   name,
@@ -54,13 +50,12 @@ export default {
       default: true
     }
   },
+  data () {
+    return {
+      bem
+    }
+  },
   computed: {
-    wrapCls () {
-      return [
-        `${prefixCls}`,
-        `${prefixCls}-theme-${this.theme}`
-      ]
-    },
     arrowStyle () {
       let style = { color: '#333' }
       if (this.theme == 'b' || this.theme == 'c' || this.theme == 'd' || this.theme == 'e' || this.theme == 'f') {

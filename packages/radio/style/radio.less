@@ -11,7 +11,7 @@
     width: 16px;
     height: 16px;
     position: relative;
-    border: 1px solid #dcdee2;
+    border: 1px solid @radio-unchecked-color;
     border-radius: 50%;
     background-color: #fff;
     transition: all @transition-duration ease-in-out;
@@ -25,7 +25,7 @@
       position: absolute;
       top: 2px;
       left: 2px;
-      background-color: #2d8cf0;
+      background-color: @radio-checked-color;
       opacity: 1;
       border: 0;
       border-radius: 50%;
@@ -35,7 +35,7 @@
     }
   }
   &-checked &-icon {
-    border-color: #2d8cf0;
+    border-color: @radio-checked-color;
     &::after {
       opacity: 1;
       transform: scale(1);

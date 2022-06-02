@@ -1,4 +1,4 @@
-@toastCls: ~'@{comps-prefix}-toast';
+@toastCls: ~"@{comps-prefix}-toast";
 
 .@{toastCls} {
   position: fixed;
@@ -6,18 +6,13 @@
   top: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(
-    255,
-    255,
-    255,
-    0.01
-  ); // 不加背景色touchmove事件有可能无效
+  background-color: @mask-bg; // 不加背景色touchmove事件有可能无效
   z-index: 990;
-  &-inner {
+  &__inner {
     position: fixed;
     left: 50%;
     top: 30%;
-    background-color: #4c4c4c;
+    background-color: @toast-inner-bg;
     border-radius: 6px;
     color: #fff;
     font-size: 14px;
@@ -29,20 +24,21 @@
     justify-content: center;
     align-items: center;
     z-index: 991;
-  }
-  &-long &-inner {
-    width: 226px;
+    width: @toast-inner-width;
     min-height: 95px;
-    margin-left: -113px;
+    transform: translateX(-50%);
+    &--long {
+      width: @toast-inner-long-width;
+    }
   }
-  &-positive &-inner,
-  &-negetive &-inner {
-    width: 184px;
-    min-height: 95px;
-    margin-left: -92px;
-  }
-  .positive-icon,
-  .negetive-icon {
+  &__icon {
+    width: @toast-icon-size;
+    height: @toast-icon-size;
+    color: @toast-icon-color;
     margin-bottom: 10px;
+    svg {
+      width: 100%;
+      height: 100%;
+    }
   }
 }

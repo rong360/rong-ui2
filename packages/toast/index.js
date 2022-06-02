@@ -1,9 +1,14 @@
 import Vue from "vue"
 import Toast from './toast'
+import { getComponentContext } from '../_utils'
+
+let globalConfig = {
+  time: null
+}
 
 let ToastConstructor = Vue.extend(Toast);
 
-let toastCst = function (options) {
+let toastCst = function (options = {}) {
   if (typeof options === 'string') {
     options = {
       propsData: {
@@ -11,6 +16,10 @@ let toastCst = function (options) {
       }
     }
   }
+
+  options.propsData = Object.assign({}, globalConfig, options.propsData)
+
+  options.propsData.icon = getComponentContext(options.propsData.icon)
 
   let instance = new ToastConstructor(options);
 
@@ -51,6 +60,10 @@ Toast.install = install
 
 if (typeof window !== 'undefined' && window.Vue) {
   install(window.Vue);
+}
+
+Toast.config = function ({ time }) {
+  globalConfig.time = time
 }
 
 export default Toast

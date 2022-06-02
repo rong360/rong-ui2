@@ -1,17 +1,17 @@
 
 <template>
-  <div :class="wrapCls" @click="clickSwitch" ref="switch">
-    <div :class="innerCls">
-      <div class="open"><slot name="open"></slot></div>
-      <div class="close"><slot name="close"></slot></div>
+  <div :class="bem([{checked: onOff, disabled: disabled}])" @click="clickSwitch" ref="switch">
+    <div :class="bem('inner')">
+      <div :class="bem('open')"><slot name="open"></slot></div>
+      <div :class="bem('close')"><slot name="close"></slot></div>
     </div>
-    <div class="circle" :style="circleStyle" ref="circle"></div>
+    <div :class="bem('circle')" ref="circle"></div>
   </div>
 </template>
 
 <script>
 import { createNamespace } from '../_utils'
-const { name, class: prefixCls } = createNamespace('switch')
+const { name, bem } = createNamespace('switch')
 
 export default {
   name,
@@ -21,35 +21,14 @@ export default {
   },
   data () {
     return {
-      onOff: this.value,
-      maxLeft: 0
-    }
-  },
-  computed: {
-    wrapCls () {
-      return [
-        `${prefixCls}`,
-        {
-          [`${prefixCls}-checked`]: this.onOff
-        }
-      ]
-    },
-    innerCls () {
-      return `${prefixCls}-inner`
-    },
-    circleStyle () {
-      let style = {}
-      if (this.onOff) style.left = this.maxLeft + 'px'
-      return style
+      bem,
+      onOff: this.value
     }
   },
   watch: {
     value: function (newVal) {
       this.onOff = newVal
     }
-  },
-  mounted () {
-    this.maxLeft = this.$refs.switch.offsetWidth - this.$refs.circle.offsetWidth - 3
   },
   methods: {
     clickSwitch () {

@@ -1,16 +1,16 @@
 @actionsheetCls: ~'@{comps-prefix}-actionsheet';
 .@{actionsheetCls} {
-  &--mask {
+  &__mask {
     position: fixed;
     left: 0;
     right: 0;
     top: 0;
     bottom: 0;
     z-index: 998;
-    background-color: rgba(14, 14, 14, 0.8);
-    transition: opacity 0.3s;
+    background-color: @mask-bg;
+    transition: opacity @transition-duration;
   }
-  &--content {
+  &__content {
     position: fixed;
     left: 0;
     right: 0;
@@ -21,34 +21,36 @@
     overflow: hidden;
     text-align: left;
     transition: transform 0.3s;
+    &--radius {
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
+    }
   }
-  &--gap {
+  &__gap {
     height: 8px;
     background-color: #f7f8fa;
   }
-  &--list {
+  &__list {
     max-height: 325px;
     overflow-y: scroll;
   }
-  &--item,
-  &--cancel {
+  &__item,
+  &__cancel {
     line-height: 50px;
     font-size: 16px;
     text-align: center;
   }
-  &--item.disabled {
-    color: #c8c9cc;
+  &__item {
+    &--disabled {
+      color: #c8c9cc;
+    }
   }
-  &--radius &--content {
-    border-top-left-radius: 16px;
-    border-top-right-radius: 16px;
-  }
-  &--header {
+  &__header {
     font-size: 16px;
     line-height: 50px;
     text-align: center;
   }
-  &--close {
+  &__close {
     position: absolute;
     right: 15px;
     top: 13px;
@@ -56,6 +58,7 @@
     height: 14px;
     overflow: hidden;
     z-index: 2;
+    cursor: pointer;
     &:before,
     &:after {
       display: block;
@@ -75,12 +78,12 @@
       transform: translateX(-50%) rotate(-45deg);
     }
   }
-  &--slideInUp-enter,
-  &--slideInUp-leave-active {
+  &__slide-in-up-enter,
+  &__slide-in-up-leave-active {
     transform: translateY(100%);
   }
-  &--fade-enter,
-  &--fade-leave-active {
+  &__fade-enter,
+  &__fade--leave-active {
     opacity: 0;
   }
 }

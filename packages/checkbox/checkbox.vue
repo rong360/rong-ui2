@@ -6,6 +6,7 @@
           v-if="currentValue">
       <CheckCircleOutline v-if='shape == "circle"'
                           :style="iconStyle"
+                          :class="iconCls"
                           :twoToneColor="checkCircleTwoToneColor" />
       <span v-else
             :class="iconCls"></span>
@@ -13,6 +14,7 @@
     <slot name="iconUncheck"
           v-else>
       <UnCheckCircleOutline v-if='shape == "circle"'
+                            :class="iconCls"
                             :style="iconStyle" />
       <span v-else
             :class="iconCls"></span>

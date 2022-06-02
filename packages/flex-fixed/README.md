@@ -80,7 +80,7 @@ Vue.use(FlexFixed)
 | 参数      | 说明    | 类型      | 可选值       | 默认值   |
 |---------- |-------- |---------- |-------------  |-------- |
 | hideFooterOnKeyboardShow | 键盘弹起时隐藏footer | boolean | - | `false` |
-| useFixed(v1.2.3) | header、footer采用position: fixed方式固定。滚动区域为整个屏幕 | boolean | - | `false` |
+| useFixed(v1.2.3) | 滚动区域包含header, 常用于给滚动区域加背景图 | boolean | - | `false` |
 
 </div>
 

@@ -8,7 +8,7 @@
               slot="header"
               @on-back="onBack">
       FlexFixed
-      <div style="position:fixed; top:49px; right:0; text-align: left; padding: 10px; font-size: 14px; line-height: 24px; background-color: rgba(0, 0, 0, 0.7)">
+      <div v-if="showInfo" style="position:fixed; top:49px; right:0; text-align: left; padding: 10px; font-size: 14px; line-height: 24px; background-color: rgba(0, 0, 0, 0.7)">
         <p>on-scroll</p>
         <p>scrollTop：{{scrollInfo.scrollTop}}</p>
         <p>maxScrollTop：{{scrollInfo.maxScrollTop}}</p>
@@ -23,6 +23,7 @@
     <div>
       <p>心存美好，则无可恼之事；心存善良，则无可恨之人；心若简单，世间纷扰皆成空</p>
       <p v-for="(item, index) in list" :key="index">{{item}}</p>
+      <p><button @click="showInfo=!showInfo">show info</button></p>
       <p><input type="text"></p>
       <p>如果有缘、错过了还会重来，如果无缘、相遇了也会离开；聚有聚的理由、离有离的借口；人生没有如果、只有后果和结果！</p>
     </div>
@@ -42,7 +43,8 @@ export default {
       scrollInfo: {},
       scrollInfo2: {},
       direction: '',
-      theme: ''
+      theme: '',
+      showInfo: false
     }
   },
   methods: {
@@ -61,9 +63,7 @@ export default {
 </script>
 
 <style lang="less">
-.flexfixed-page .main-wrap {
-  background: url("https://img1.baidu.com/it/u=2098938867,1688028566&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=500")
-    no-repeat;
-  background-size: contain;
+.flexfixed-page main {
+  background-image: url("https://img1.baidu.com/it/u=2098938867,1688028566&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=500");
 }
 </style>

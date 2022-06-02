@@ -1,21 +1,21 @@
 <template>
   <transition appear
-              :name="transitionName"
+              :name="bem('fade')"
               @enter="enter"
               @after-leave="afterLeave">
-    <div :class="wrapCls"
+    <div :class="[bem(), className]"
          :style="CliperStyleObj"
          @click.self="onMask"
          v-show="showDlg"
          v-preventscroll>
-      <div :class="innerCls"
+      <div :class="bem('inner')"
            :style="dlgStyleObj"
            @click="onDlg"
            ref="dlgContent">
-        <div :class="titleCls"
+        <div :class="bem('title')"
              :style="titleStyleObj"
              v-if="title">{{title}}</div>
-        <div :class="closeCls"
+        <div :class="bem('close')"
              :style="closeStyleObj"
              @click="onClose"
              v-if="showCloseBtn"><svg width="11px"
@@ -37,21 +37,21 @@
         <slot>
           <Render v-if="typeof message == 'function'"
                   :render="message">fsdf</Render>
-          <div :class="contentCls"
+          <div :class="bem('content')"
                :style="contentStyleObj"
                v-if="(typeof message != 'function' && message)"
                v-html="message"></div>
           <rContent :rContentData="rContentData"
                     ref="rContent"></rContent>
         </slot>
-        <div :class="btnCls"
+        <div :class="bem('btn')"
              v-if="showCancelBtn || showConfirmBtn">
-          <div :class="cancelBtnCls"
+          <div :class="bem('cancel-btn', {'right-border': showCancelBtn&&showConfirmBtn })"
                :style="cancelBtnStyleObj"
                @click="onCancel"
                v-if="showCancelBtn"
                v-html="cancelBtnText"></div>
-          <div :class="confirmBtnCls"
+          <div :class="bem('confirm-btn')"
                :style="confirmBtnStyleObj"
                @click="onConfirm"
                v-if="showConfirmBtn"
@@ -67,7 +67,7 @@
 import { createNamespace } from '../_utils'
 import preventscroll from '../_directives/preventscroll'
 import Render from '../base/render'
-const { name, class: prefixCls } = createNamespace('dialog')
+const { name, bem } = createNamespace('dialog')
 
 export default {
   name,
@@ -138,6 +138,7 @@ export default {
   },
   data () {
     return {
+      bem,
       mouseInfo: {
         startX: 0,
         startY: 0,
@@ -149,42 +150,6 @@ export default {
   watch: {
     value: function (newVal, oldVal) {
       this.showDlg = newVal
-    }
-  },
-  computed: {
-    wrapCls () {
-      return [
-        `${prefixCls}`,
-        this.className,
-        {
-          [`${prefixCls}-cancel-btn-show`]: this.showCancelBtn,
-          [`${prefixCls}-confirm-btn-show`]: this.showConfirmBtn
-        }
-      ]
-    },
-    innerCls () {
-      return `${prefixCls}-inner`
-    },
-    titleCls () {
-      return `${prefixCls}-title`
-    },
-    closeCls () {
-      return `${prefixCls}-close`
-    },
-    contentCls () {
-      return `${prefixCls}-content`
-    },
-    btnCls () {
-      return `${prefixCls}-btn`
-    },
-    cancelBtnCls () {
-      return `${prefixCls}-cancel-btn`
-    },
-    confirmBtnCls () {
-      return `${prefixCls}-confirm-btn`
-    },
-    transitionName () {
-      return `${prefixCls}-fade`
     }
   },
   directives: {

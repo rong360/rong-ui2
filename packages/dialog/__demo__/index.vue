@@ -48,7 +48,8 @@ export default {
       const self = this;
       this.$dialog({
         propsData: {
-          message: '生如夏花之绚烂，死如秋叶之静美<br>泰戈尔《生如夏花》'
+          message: '生如夏花之绚烂，死如秋叶之静美<br>泰戈尔《生如夏花》',
+          className: 'my-dialog'
         },
         methods: {
           onCancel () {

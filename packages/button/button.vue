@@ -1,5 +1,5 @@
 <template>
-  <div :class="wrapCls"
+  <div :class="bem([type, { radius: radius, plain: !fill, disabled: _disabled }])"
        :style="btnStyleObj"
        @click="onClick">
     <slot></slot>
@@ -8,7 +8,7 @@
 
 <script>
 import { createNamespace } from '../_utils'
-const { name, class: prefixCls } = createNamespace('button')
+const { name, bem } = createNamespace('button')
 
 export default {
   name,
@@ -25,18 +25,18 @@ export default {
       type: Boolean,
       default: true
     },
-    btnStyleObj: Object
+    btnStyleObj: Object,
+    // 是否禁用 v1.2.5
+    disabled: Boolean
+  },
+  data () {
+    return {
+      bem
+    }
   },
   computed: {
-    wrapCls () {
-      return [
-        `${prefixCls}`,
-        `${prefixCls}-${this.type}`,
-        {
-          [`${prefixCls}-radius`]: this.radius,
-          [`${prefixCls}-${this.type}-empty`]: !this.fill
-        }
-      ]
+    _disabled () {
+      return this.type.disabled ? true : this.disabled // 兼容老版通过type传递disabled
     }
   },
   methods: {

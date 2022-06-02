@@ -77,9 +77,9 @@ export default {
 
 <style lang="less">
 .checkbox-example {
-  .r--checkbox .r--icon {
-    color: #4080e8;
-    font-size: 16px;
+  .r--checkbox .r--checkbox-icon {
+    // color: red;
+    // font-size: 20px;
   }
 }
 </style>

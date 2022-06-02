@@ -21,31 +21,32 @@ import Toast from './toast/'
 import Dialog from './dialog/'
 import ActionSheet from './action-sheet/'
 
+export const components = [
+  Form,
+  Input,
+  Select,
+  SelectDate,
+  Select2,
+  Select3,
+  DatePicker,
+  Switch,
+  Titlebar,
+  Swiper,
+  Checkbox,
+  Radio,
+  Uploader,
+  Button,
+  Range,
+  FlexFixed,
+  TextScroll,
+  Steps,
+  Loading,
+  Toast,
+  Dialog,
+  ActionSheet
+];
+
 function install (Vue) {
-  const components = [
-    Form,
-    Input,
-    Select,
-    SelectDate,
-    Select2,
-    Select3,
-    DatePicker,
-    Switch,
-    Titlebar,
-    Swiper,
-    Checkbox,
-    Radio,
-    Uploader,
-    Button,
-    Range,
-    FlexFixed,
-    TextScroll,
-    Steps,
-    Loading,
-    Toast,
-    Dialog,
-    ActionSheet
-  ];
   components.forEach(item => {
     if (item.install) {
       Vue.use(item)

@@ -1,19 +1,20 @@
-@checkboxCls: ~'@{comps-prefix}-checkbox';
+@checkboxCls: ~"@{comps-prefix}-checkbox";
 
 .@{checkboxCls} {
   display: inline-block;
-  font-size: 14px;
+  font-size: @checkbox-font-size;
   line-height: 1;
-  margin-right: 8px;
+  margin-right: @checkbox-margin-right;
   -webkit-tap-highlight-color: transparent;
   &-square &-icon {
     display: inline-block;
-    width: 16px;
-    height: 16px;
+    width: @checkbox-square-width;
+    height: @checkbox-square-height;
     position: relative;
-    border: 1px solid #dcdee2;
+    border: 1px solid @checkbox-square-uncheck-border-color;
     background-color: #fff;
-    transition: border-color @transition-duration ease-in-out, background-color @transition-duration ease-in-out,
+    transition: border-color @transition-duration ease-in-out,
+      background-color @transition-duration ease-in-out,
       box-shadow @transition-duration ease-in-out;
     vertical-align: sub;
     &:after {
@@ -30,11 +31,11 @@
       transform: rotate(45deg) scale(0);
       transition: all @transition-duration ease-in-out;
     }
-    border-radius: 2px;
+    border-radius: @checkbox-square-border-radius;
   }
   &-square&-checked &-icon {
-    border-color: @checkbox-square-color;
-    background-color: @checkbox-square-color;
+    border-color: @checkbox-square-background-color;
+    background-color: @checkbox-square-background-color;
     &::after {
       top: 2px;
       left: 5px;
@@ -42,18 +43,18 @@
     }
   }
   &-rect {
-    width: 78px;
-    height: 30px;
-    line-height: 30px;
-    background-color: #e5e5e5;
-    border-radius: 4px;
-    font-size: 12px;
+    width: @checkbox-rect-width;
+    height: @checkbox-rect-height;
+    line-height: @checkbox-rect-height;
+    background-color: @checkbox-rect-background-color;
+    border-radius: @checkbox-rect-border-radius;
+    font-size: @checkbox-rect-font-size;
     text-align: center;
-    margin-right: 10px;
-    margin-top: 5px;
+    margin-right: @checkbox-rect-margin-right;
+    margin-top: @checkbox-rect-margin-top;
   }
   &-rect&-checked {
-    background-color: #666;
+    background-color: @checkbox-rect-checked-background-color;
     color: #fff;
   }
   &-rect &-icon {
@@ -64,5 +65,7 @@
     display: inline-block;
     line-height: 0;
     vertical-align: middle;
+    font-size: @checkbox-circle-icon-size;
+    color: @checkbox-circle-icon-color;
   }
 }

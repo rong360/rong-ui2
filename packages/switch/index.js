@@ -1,4 +1,4 @@
-import _Switch from './Switch'
+import _Switch from './switch'
 import { withInstall } from '../_utils'
 
 const Switch = withInstall(_Switch)

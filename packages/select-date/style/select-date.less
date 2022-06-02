@@ -1,18 +1,18 @@
-@selectdateCls: ~'@{comps-prefix}-selectdate';
+@selectdateCls: ~"@{comps-prefix}-selectdate";
 
 .@{selectdateCls} {
   position: relative;
   &-inner {
-    border-bottom: 1px solid #f2f2f4;
+    border-bottom: 1px solid @selectdate-inner-border-bottom-color;
     display: flex;
     box-sizing: border-box;
     align-items: center;
-    padding-right: 15px;
+    padding-right: @selectdate-inner-padding-right;
     position: relative;
   }
   &-mode-default &-inner {
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding-top: @selectdate-inner-padding-top;
+    padding-bottom: @selectdate-inner-padding-bottom;
   }
   &-mode-to-top &-inner {
     height: 46px;
@@ -41,12 +41,12 @@
     color: #181c48;
   }
   &-mode-default &-label {
-    font-size: 14px;
-    color: @text-color;
+    font-size: @selectdate-label-font-size;
+    color: @selectdate-label-color;
     line-height: 20px;
   }
   &-mode-default&-text-left &-label {
-    margin-right: 23px;
+    margin-right: @selectdate-label-margin-right;
   }
   &-mode-default &-select {
     font-size: 14px;
@@ -79,19 +79,19 @@
   }
   &-select {
     line-height: 1;
-    font-size: 14px;
-    color: @text-color;
+    font-size: @selectdate-select-font-size;
+    color: @selectdate-select-color;
     flex: 1;
     display: flex;
     align-items: center;
     padding: 0 10px 0 0px;
   }
   &-placeholder &-select {
-    color: #c8c7cc;
+    color: @selectdate-select-placeholder-color;
     font-weight: normal;
   }
   &-readonly &-select {
-    color: @disabled-color;
+    color: @selectdate-select-disabled-color;
   }
   &-text-right &-select {
     justify-content: flex-end;
@@ -101,6 +101,9 @@
   }
   &-arrow-right {
     line-height: 1;
+    font-size: @selectdate-arrow-icon-size;
+    color: @selectdate-arrow-icon-color;
+    position: relative;
   }
   &-unit {
     font-size: 12px;
@@ -108,7 +111,7 @@
     padding-left: 5px;
   }
   &-error &-inner {
-    border-color: @border-color-red;
+    border-color: @selectdate-inner-error-bottom-color;
   }
   &-error&-mode-default &-inner {
     margin-bottom: 20px;
@@ -120,8 +123,8 @@
     width: 100%;
     line-height: 1;
     padding-top: 6px;
-    font-size: 12px;
-    color: @text-color-red;
+    font-size: @selectdate-error-tip-font-size;
+    color: @selectdate-error-tip-color;
     z-index: 1;
   }
 }

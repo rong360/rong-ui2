@@ -106,7 +106,15 @@ export default {
 </div>
 
 
+<div class="r-doc-card">
 
+### 特别提示
+弹框里插入滚动区域时，需在滚动区域上添加"scroll-area"样式，如:
+```html
+<div class="scroll-area"></div>
+```
+
+</div>
 
 
 

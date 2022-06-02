@@ -3,16 +3,16 @@
 .@{selectCls} {
   position: relative;
   &-inner {
-    border-bottom: 1px solid #f2f2f4;
+    border-bottom: 1px solid @select2-inner-border-bottom-color;
     display: flex;
     box-sizing: border-box;
     align-items: center;
-    padding-right: 15px;
+    padding-right: @select2-inner-padding-right;
     position: relative;
   }
   &-mode-default &-inner {
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding-top: @select2-inner-padding-top;
+    padding-bottom: @select2-inner-padding-bottom;
   }
   &-mode-to-top &-inner {
     height: 46px;
@@ -41,12 +41,12 @@
     color: #181c48;
   }
   &-mode-default &-label {
-    font-size: 14px;
-    color: @text-color;
+    font-size: @select2-label-font-size;
+    color: @select2-label-color;
     line-height: 20px;
   }
   &-mode-default&-text-left &-label {
-    margin-right: 23px;
+    margin-right: @select2-label-margin-right;
   }
   &-mode-default &-select {
     font-size: 14px;
@@ -79,8 +79,8 @@
   }
   &-select {
     line-height: 1;
-    font-size: 14px;
-    color: @text-color;
+    font-size: @select2-select-font-size;
+    color: @select2-select-color;
     flex: 1;
     display: flex;
     align-items: center;
@@ -89,11 +89,11 @@
     box-sizing: border-box;
   }
   &-placeholder &-select {
-    color: #c8c7cc;
+    color: @select2-select-placeholder-color;
     font-weight: normal;
   }
   &-readonly &-select {
-    color: @disabled-color;
+    color: @select2-select-disabled-color;
   }
   &-text-right &-select {
     justify-content: flex-end;
@@ -103,6 +103,9 @@
   }
   &-arrow-right {
     line-height: 1;
+    font-size: @select2-arrow-icon-size;
+    color: @select2-arrow-icon-color;
+    position: relative;
   }
   &-unit {
     font-size: 12px;
@@ -150,7 +153,7 @@
     }
   }
   &-error &-inner {
-    border-color: @border-color-red;
+    border-color: @select2-inner-error-bottom-color;
   }
   &-error&-mode-default &-inner {
     margin-bottom: 20px;
@@ -162,8 +165,8 @@
     width: 100%;
     line-height: 1;
     padding-top: 6px;
-    font-size: 12px;
-    color: @text-color-red;
+    font-size: @select2-error-tip-font-size;
+    color: @select2-error-tip-color;
     z-index: 1;
   }
   &-error-tip2 {

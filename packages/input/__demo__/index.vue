@@ -7,7 +7,7 @@
            :name="user.name"
            :type="user.type"
            :rules="user.rules"
-           :showEdit="false"
+           :showEdit="true"
            maxlength="6"
            v-model="user.value"></r-input>
 

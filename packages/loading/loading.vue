@@ -1,116 +1,53 @@
 <template>
-  <div :class="wrapCls">
-    <component :is="_customLoading"
-               v-if="_customLoading">
+  <div :class="bem()">
+    <component :is="loading" v-bind="$props"
+               v-if="loading">
       {{ text }}
     </component>
     <template v-else>
-      <div class="r-content"
-           :style="wrapStyle">
-        <div class="r-content1">
-          <div class="r-arc1"
-               :style="arcStyle"></div>
-          <div class="r-arc2"
-               :style="arcStyle"></div>
-          <div class="r-arc3"
-               :style="arcStyle"></div>
-          <div class="r-arc4"
-               :style="arcStyle"></div>
-        </div>
-        <div class="r-content2">
-          <div class="r-arc1"
-               :style="arcStyle"></div>
-          <div class="r-arc2"
-               :style="arcStyle"></div>
-          <div class="r-arc3"
-               :style="arcStyle"></div>
-          <div class="r-arc4"
-               :style="arcStyle"></div>
-        </div>
+      <div :class="bem('container')">
+        <span :class="bem('icon', type)" :style="iconStyle">
+          <svg :class="bem('circular')" viewBox="25 25 50 50" v-if="type === 'circular'">
+            <circle cx="50" cy="50" r="20" fill="none" />
+          </svg>
+          <template v-if="type === 'spinner'">
+            <i v-for="n in 12" :key="n"></i>
+          </template>
+        </span>
+        <div :class="bem('text')" v-html="text" v-if="text" :style="textStyle"></div>
       </div>
-      <div :class="['r-content3', textInside ? 'inside':'outside']"
-           v-if="text!=''"
-           :style="txtStyle"
-           v-html="text" />
     </template>
   </div>
 </template>
 <script>
 import { createNamespace } from '../_utils'
-const { name, class: prefixCls } = createNamespace('loading')
+const { name, bem } = createNamespace('loading')
 
 export default {
   name,
   data () {
-    return {}
+    return {
+      bem
+    }
   },
   props: {
+    type: {
+      type: String,
+      default: 'circular'
+    },
     text: {
       type: String,
       default: ""
     },
-    textInside: {
-      type: Boolean,
-      default: false
-    },
-    width: {
-      type: Number,
-      default: 100
-    },
-    cwidth: {
-      type: Number,
-      default: 30
-    },
-    color: {
-      type: String,
-      default: ""
-    },
-    textColor: {
-      type: String,
-      default: "#fff"
-    },
-    textFontSize: {
-      type: Number,
-      default: 28
-    },
+    iconStyle: Object,
+    textStyle: Object,
     // hash变化时移除dialog
     removeDialogOnHashChange: {
       type: Boolean,
       default: false
-    }
-  },
-  computed: {
-    txtLen () {
-      return this.text.replace(/[\u0391-\uFFE5]/g, "aa").length;
     },
-    wrapCls () {
-      return prefixCls
-    },
-    wrapStyle () {
-      return {
-        width: this.width / 2 / 18.75 + "rem",
-        height: this.width / 2 / 18.75 + "rem",
-        "margin-left": -1 * this.width / 4 / 18.75 + "rem"
-      }
-    },
-    arcStyle () {
-      let style = {
-        width: this.cwidth / 2 / 18.75 + "rem",
-        height: this.cwidth / 2 / 18.75 + "rem"
-      }
-      this.color && (Object.assign(style, { "background-color": this.color }))
-      return style
-    },
-    txtStyle () {
-      let obj = {
-        color: this.textColor,
-        "font-size": this.textFontSize / 2 / 18.75 + "rem"
-      }
-      return obj;
-    },
-    _customLoading () {
-      return this.customLoading
-    }
+    // 自定义loading
+    loading: Object
   },
   mounted () {
     this.removeDialogOnHashChange && window.addEventListener('hashchange', this.remove);

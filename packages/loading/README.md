@@ -72,11 +72,13 @@ var timer = setInterval(function(){
 
 <div class="r-doc-card">
 
-#### 自定义loading
+### 全局自定义loading
 ```js
 import {Loading, Titlebar, Input} from 'rong-ui2'
+import LoadingCattle from './components/LoadingCattle.vue'
 Loading.config({
-  loading: require('./components/LoadingCattle.vue') // 项目中添加Loading组件
+  // loading: require('./components/LoadingCattle.vue') // 项目中添加Loading组件
+  loading: h => h(LoadingCattle, { props: { color: 'red' } })
 })
 Vue.use(Loading)
 Vue.use(Titlebar)
@@ -84,16 +86,34 @@ Vue.use(Input)
 ```
 or
 ```js
-import rongUI2, {Loading} from 'rong-ui2'
+import RongUi2, { Loading } from 'rong-ui2'
+import LoadingCattle from './components/LoadingCattle.vue'
 Loading.config({
-  loading: require('./components/LoadingCattle.vue')
+  // loading: require('./components/LoadingCattle.vue') // 项目中添加Loading组件
+  loading: h => h(LoadingCattle, { props: { color: 'red' } })
 })
-Vue.use(rongUI2)
+Vue.use(RongUi2)
 ```
 
 </div>
 
 
+
+<div class="r-doc-card">
+
+### 局部自定义loading
+```js
+import LoadingCattle from './components/LoadingCattle.vue'
+
+this.$loading({
+  propsData: {
+    message: `自定义loading`,
+    loading: (h) => h(LoadingCattle, { props: { color: 'red' } })
+  }
+})
+```
+
+</div>
 
 
 ## API
@@ -101,18 +121,34 @@ Vue.use(rongUI2)
 
 loading实例方法通过`子类组件`覆盖基类组件的的方式实现，因此传入的对象是组件相关的一些属性：propsData、methods、computed、mounted...
 
-#### propsData属性传入的数据如下：
+### propsData属性传入的数据如下：
 
-| 参数      | 说明    | 类型      | 可选值       | 默认值   |
-|---------- |-------- |---------- |-------------  |-------- |
-| text  | 加载文案    | string   |   | `false` |
-| width  | loading区的长度（750px设计图下）    | number   |  | `100` |
-| cwidth  | loading区圆圈的大小（750px设计图下）    | number   |  | `30` |
-| textInside  | 文案位置是否在圆圈内    | boolean   |  | `false` |
-| color  | loading圆圈的颜色    | string   |  | `#4080e8` |
-| textColor  | 文案的颜色   | string   |  | `#ffffff` |
-| textFontSize  | 文案的字体大小（750px设计图下）    | number   |  | `28` |
+| 参数 | 说明 | 类型 | 可选值 | 默认值 |
+| --- | --- | --- | --- | --- |
+| type  | icon类型 | string | `circular` `spinner`  | `circular` |
+| text  | 加载文案 | string | |  |
+| iconStyle  | icon样式 | object |  |  |
+| textStyle  | 字体样式 | object |  |  |
+| loading | 自定义loading | object | `.vue文件` |  |
+| removeDialogOnHashChange  | hash变化时移除dialog | boolean |  | `false` |
 
+</div>
+
+
+<div class="r-doc-card">
+
+### 样式变量：
+组件提供了下列 Less 变量，可用于自定义样式，使用方法请参考[主题定制](#/theme)。
+
+| 名称 | 描述 | 默认值 |
+| ---- | --- | --- |
+| @loading-icon-color | loading颜色 | #fff |
+| @loading-icon-size | loading大小 | 30px |
+| @loading-icon-animation-duration | 动画持续时间 | 0.8s |
+| @loading-text-color | 字体颜色 | #fff |
+| @loading-text-font-size | 字体大小 | 14px |
+| @loading-mask-bg | 遮罩层背景颜色 | @mask-bg |
+| @loading-container-bg | 内容区域背景颜色 | @mask-container-bg |
 </div>
 
 

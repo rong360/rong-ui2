@@ -24,19 +24,15 @@
                     ref="datePicker"></DatePicker>
         <div :class="arrowCls">
           <slot name="arrow-icon">
-            <svg width="6px"
-                 height="10px"
-                 :style="arrowStyle"
-                 viewBox="0 0 6 10"
-                 version="1.1"
-                 xmlns="http://www.w3.org/2000/svg"
-                 xmlns:xlink="http://www.w3.org/1999/xlink">
+            <svg width="1em"
+                 height="1em"
+                 viewBox="0 0 6 10">
               <g stroke="none"
                  stroke-width="1"
                  fill="none"
                  fill-rule="evenodd">
                 <g transform="translate(-350.000000, -20.000000)"
-                   :fill="arrowStyle.color || '#C8C7CC'">
+                   fill="currentColor">
                   <g>
                     <g transform="translate(346.000000, 18.000000)">
                       <g transform="translate(7.000000, 7.000000) rotate(-270.000000) translate(-7.000000, -7.000000) translate(2.750000, 4.500000)">
@@ -178,9 +174,6 @@ export default {
         return oneOf(value, ['left', 'center', 'right'])
       }
     },
-    selectArrowStyle: {
-      type: Object
-    },
     // 是否显示校验错误信息
     showMessage: {
       type: Boolean,
@@ -283,10 +276,6 @@ export default {
     },
     appendCls () {
       return `${prefixCls}-append`
-    },
-    arrowStyle () {
-      let style = { color: '#666', width: '0.32rem' }
-      return this.conf.selectArrowStyle || (this.form && this.form.selectArrowStyle) || style
     },
     contentCls () {
       return `${prefixCls}-content`

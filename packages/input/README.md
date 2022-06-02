@@ -62,10 +62,10 @@ export default {
 | label-width | lebel标签宽度 | string | 如 `150px` `10rem`等 |-|
 | label-position | label标签对齐方式 | string | `left` `right` `top`  | `left` |
 | text-position | input文字对齐方式 | string | `left` `center` `right`  | `left` |
-| input-clear-style | 清空按钮样式 | object | - | {} |
 | show-message | 是否显示错误信息 | boolean | - | true |
 | required（v1.1.3） | 是否必填 | boolean | - | true |
 | className（v1.1.3） | 自定义class | string | - | - |
+| show-edit（v1.2.1） | 显示可编辑图标 | boolean | - | false |
 
 <font color='red'>特别说明：v1.2.2之前版本下列参数通过attrs对象传入 :attrs="{}"</font>
 
@@ -132,6 +132,41 @@ export default {
 | append  | 后置内容 |
 </div>
 
+
+
+<div class="r-doc-card">
+
+### 样式变量：
+组件提供了下列 Less 变量，可用于自定义样式，使用方法请参考[主题定制](#/theme)。
+
+| 名称 | 默认值 | 描述 |
+| ---- | --- | --- |
+| @input-inner-padding-right | @form-item-padding-right | - |
+| @input-inner-border-bottom-color | @form-item-border-bottom-color | - |
+| @input-inner-error-bottom-color | @form-item-error-border-color | - |
+| @input-inner-padding-top | @form-item-padding-top | - |
+| @input-inner-padding-bottom | @form-item-padding-bottom | - |
+| @input-label-font-size | 14px | - |
+| @input-label-color | @text-color | - |
+| @input-label-margin-right | 23px | - |
+| @input-input-font-size | 14px | - |
+| @input-input-color | @text-color | - |
+| @input-input-disabled-color | @disabled-color | - |
+| @input-input-placeholder-color | @placeholder-color | - |
+| @input-edit-input-font-size | 35px | - |
+| @input-edit-input-line-height | 40px | - |
+| @input-edit-input-font-weight | 600 | - |
+| @input-edit-inner-padding-top | 0px | - |
+| @input-edit-inner-padding-bottom | 0px | - |
+| @input-edit-icon-size | 15px | - |
+| @input-edit-icon-margin-left | 7px | - |
+| @input-edit-icon-top | -5px | - |
+| @input-clear-icon-size | 15px | - |
+| @input-clear-icon-color | #C8C7C | - |
+| @input-error-tip-color | @text-color-red | - |
+| @input-error-tip-font-size | 12px | - |
+
+</div>
 
 
 <details>

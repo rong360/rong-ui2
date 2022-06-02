@@ -1,39 +1,41 @@
-@buttonCls: ~'@{comps-prefix}-button';
+@buttonCls: ~"@{comps-prefix}-button";
 
 .@{buttonCls} {
   height: @btn-height;
   line-height: @btn-height;
   text-align: center;
   box-sizing: border-box;
-  &-default {
-    color: #fff;
-    background-image: -webkit-linear-gradient(0deg, #39b9ff, @primary-color);
+  font-size: @btn-font-size;
+  &--plain {
+    background: #fff !important;
   }
-  &-default-empty {
+  &--default {
+    color: @btn-default-color;
+    background: @btn-default-background;
+    border: @btn-default-border;
+  }
+  &--default&--plain {
     color: @primary-color;
     border: 1px solid @primary-color;
-    background-image: none;
   }
-  &-warning {
+  &--warning {
+    color: @btn-warning-color;
+    background: @btn-warning-background;
+    border: @btn-warning-border;
+  }
+  &--warning&--plain {
+    color: @btn-warning-plain-color;
+    border: 1px solid @btn-warning-plain-border-color;
+  }
+  &&--disabled {
     color: #fff;
-    background-image: -webkit-linear-gradient(0deg, #ff8a71, #ff3061);
+    background: @btn-disabled-background;
   }
-  &-warning-empty {
-    color: #ff3061;
-    border: 1px solid #ff3061;
-    background-image: none;
-  }
-  &-disabled {
-    color: #fff;
-    background-color: @btn-disabled-color;
-    font-size: 16px;
-  }
-  &-disabled-empty {
+  &&--disabled&--plain {
     color: @btn-disabled-color;
     border: 1px solid @btn-disabled-color;
-    background-color: #fff !important;
   }
-  &-radius {
+  &--radius {
     border-radius: @btn-height;
   }
 }

@@ -73,6 +73,19 @@ Vue.use(Radio)
 </div>
 
 
+<div class="r-doc-card">
+
+### 样式变量：
+组件提供了下列 Less 变量，可用于自定义样式，使用方法请参考[主题定制](#/theme)。
+
+| 名称 | 默认值 | 描述 |
+| ---- | --- | --- |
+| @radio-unchecked-color | #dcdee2 | |
+| @radio-checked-color | @primary-color | |
+
+</div>
+
+
 <details>
   <summary>查看右侧demo源码</summary>
   <div class="r-doc-card">

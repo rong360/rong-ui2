@@ -4,7 +4,9 @@
               @on-back="onBack">Loading</r-titlebar>
     <div class="p-20">
       <nav-item class="item"
-           @on-click="showLoading0">默认</nav-item>
+           @on-click="showLoading0">圆环形状（type="circular"）, 默认</nav-item>
+      <nav-item class="item"
+           @on-click="showLoading0_2">旋转形状（type="spinner"）</nav-item>
       <nav-item class="item"
            @on-click="showLoading1">添加文案</nav-item>
       <nav-item class="item"
@@ -17,12 +19,23 @@
   </div>
 </template>
 <script>
+import LoadingCattle from '../../../src/components/LoadingCattle.vue'
 
 export default {
   name: "loadingExample",
   methods: {
     showLoading0 () {
       let loading = this.$loading();
+      setTimeout(function () {
+        loading.remove();
+      }, 2000)
+    },
+    showLoading0_2 () {
+      let loading = this.$loading({
+        propsData: {
+          type: 'spinner'
+        }
+      });
       setTimeout(function () {
         loading.remove();
       }, 2000)
@@ -59,11 +72,8 @@ export default {
       let loading = this.$loading({
         propsData: {
           text: 'Hello World，disappear in 2s',
-          width: 140,
-          cwidth: 40,
-          textFontSize: 32,
-          color: '#e0a711',
-          textColor: '#e0a711'
+          textStyle: { color: '#e0a711' },
+          iconStyle: { width: '60px', height: '60px', color: 'pink' }
         }
       })
 
@@ -72,28 +82,16 @@ export default {
       }, 2000)
     },
     showLoading4 () {
-      this.$dialog({
+      let loading = this.$loading({
         propsData: {
-          message: `
-<div style="width: 100%; overflow: scroll;" class="scroll-area">
-<pre>
-  注册Loading组件之前添加Loading.config配置文件即可，如：
-  import {Loading, Input, Titlebar} from 'rong-ui2'
-  Loading.config({
-    loading: require('./components/LoadingCattle.vue')
-  })
-  Vue.use(Loading)
-</pre>
-</div>
-          `,
-          showCancelBtn: false
-        },
-        methods: {
-          onConfirm () {
-            this.remove()
-          }
+          message: `自定义loading`,
+          loading: (h) => h(LoadingCattle, { props: { color: 'red' } })
         }
       })
+
+      setTimeout(function () {
+        loading.remove();
+      }, 2000)
     },
     onBack () {
       this.$router.push('/')

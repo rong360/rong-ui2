@@ -1,56 +1,66 @@
-@titlebarCls: ~'@{comps-prefix}-titlebar';
+@titlebarCls: ~"@{comps-prefix}-titlebar";
 
 .@{titlebarCls} {
-  height: 45px;
-  line-height: 45px;
+  height: @titlebar-height;
+  line-height: @titlebar-height;
   text-align: center;
   position: relative;
   box-sizing: border-box;
-  .l-operate,
-  .r-operate {
+  &__left,
+  &__right {
     position: absolute;
     top: 0;
     bottom: 0;
     font-size: 15px;
   }
-  .l-operate {
+  &__left {
     left: 0;
   }
-  .r-operate {
+  &__right {
     right: 0;
   }
-  .c-operate {
-    font-size: 17px;
+  &__title {
+    font-size: @titlebar-title-font-size;
   }
-  .back {
+  &__back {
     box-sizing: border-box;
     line-height: 1;
     display: flex;
     align-items: center;
     height: 100%;
     padding: 0 15px;
+    font-size: @titlebar-arrow-size;
+    color: @titlebar-arrow-color;
   }
-  &-theme-a {
-    color: #333;
+  &--theme-a {
+    color: @titlebar-title-text-color;
+    background: @titlebar-background;
   }
-  &-theme-b {
+  &--theme-b {
     color: #fff;
     background-image: linear-gradient(90deg, #39b9ff 0%, #4080e8 100%);
   }
-  &-theme-c {
+  &--theme-c {
     color: #fff;
     background-image: linear-gradient(-90deg, #4d78f6 2%, #919fff 100%);
   }
-  &-theme-d {
+  &--theme-d {
     color: #fff;
     background-image: linear-gradient(-269deg, #15ddc5 1%, #01a6d0 99%);
   }
-  &-theme-e {
+  &--theme-e {
     color: #fff;
     background-image: linear-gradient(-90deg, #f86b4a 0%, #fec351 100%);
   }
-  &-theme-f {
+  &--theme-f {
     color: #fff;
     background-image: linear-gradient(-90deg, #ff3061 0%, #fe8166 100%);
+  }
+  &--theme-b &__back,
+  &--theme-c &__back,
+  &--theme-d &__back,
+  &--theme-e &__back,
+  &--theme-f &__back {
+    color: #fff;
   }
 }

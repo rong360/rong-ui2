@@ -69,6 +69,27 @@ Vue.use(Switch)
 </div>
 
 
+<div class="r-doc-card">
+
+### 样式变量：
+组件提供了下列 Less 变量，可用于自定义样式，使用方法请参考[主题定制](#/theme)。
+
+| 名称 | 默认值 | 描述 |
+| ---- | --- | --- |
+| @switch-size | 28px |
+| @switch-width | 2em |
+| @switch-background-color | #ccc |
+| @switch-border-color | #ccc |
+| @switch-checked-background-color | @primary-color |
+| @switch-checked-border-color | @primary-color |
+| @switch-disabled-opacity | @disabled-opacity |
+| @switch-circle-background-color | #fff |
+| @switch-circle-box-shadow | 0 3px 1px 0 rgba(0, 0, 0, 0.1) |
+| @switch-text-font-size | 14px |
+| @switch-text-color | #fff |
+
+</div>
+
 
 
 <details>

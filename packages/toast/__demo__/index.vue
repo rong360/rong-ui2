@@ -10,12 +10,18 @@
       <nav-item class="item"
            @on-click="negetiveOnClick">消极文案（type="negetive"）</nav-item>
       <nav-item class="item"
+           @on-click="timeOnClick">定义时长</nav-item>
+      <nav-item class="item"
+           @on-click="customOnClick">自定义icon</nav-item>
+      <nav-item class="item"
            @on-click="callbackOnClick">消失时回调</nav-item>
     </div>
   </div>
 </template>
 
 <script>
+import ClockCircle from './ClockCircle.vue'
+
 export default {
   methods: {
     defaultOnClick () {
@@ -34,6 +40,24 @@ export default {
         propsData: {
           type: 'negetive',
           message: '消极文案不超过十个字'
+        }
+      })
+    },
+    timeOnClick () {
+      this.$toast({
+        propsData: {
+          time: 5000,
+          message: '5秒后消失'
+        }
+      })
+    },
+    customOnClick () {
+      this.$toast({
+        propsData: {
+          // icon: h => h('span', { domProps: { innerHTML: 'Icon' } }),
+          // icon: { template: '<span>Icon</span>' },
+          icon: h => h(ClockCircle),
+          message: '自定义loading'
         }
       })
     },
