@@ -1,8 +1,8 @@
 <template>
-  <div :class="bem([`theme-${theme}`])">
-    <div :class="bem('left')">
+  <div :class="wrapCls">
+    <div class="l-operate">
       <slot name="l">
-        <div :class="bem('back')"
+        <div class="back"
              v-if="showBackto"
              @click="onBack"><svg width="1em"
                height="1em"
@@ -21,10 +21,10 @@
           </svg></div>
       </slot>
     </div>
-    <div :class="bem('title')">
+    <div class="c-operate">
       <slot>{{title}}</slot>
     </div>
-    <div :class="bem('right')">
+    <div class="r-operate">
       <slot name="r"></slot>
     </div>
   </div>
@@ -32,7 +32,7 @@
 
 <script>
 import { createNamespace } from '../_utils'
-const { name, bem } = createNamespace('titlebar')
+const { name, bem, class: prefixCls } = createNamespace('titlebar')
 
 export default {
   name,
@@ -41,9 +41,6 @@ export default {
     theme: {
       type: String,
       default: 'a'
-    },
-    backArrowStyle: {
-      type: Object
     },
     showBackto: {
       type: Boolean,
@@ -56,12 +53,11 @@ export default {
     }
   },
   computed: {
-    arrowStyle () {
-      let style = { color: '#333' }
-      if (this.theme == 'b' || this.theme == 'c' || this.theme == 'd' || this.theme == 'e' || this.theme == 'f') {
-        style.color = '#fff'
-      }
-      return this.backArrowStyle || style
+    wrapCls () {
+      return [
+        `${prefixCls}`,
+        `${prefixCls}-theme-${this.theme}`
+      ]
     }
   },
   methods: {

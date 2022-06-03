@@ -1,7 +1,7 @@
 <template>
-  <div :class="bem()">
-    <div :class="bem('menu')">
-      <div :class="bem('item')"
+  <div :class="wrapCls">
+    <div :class="menuCls">
+      <div :class="menuItemCls"
            :key="index"
            v-for="(item, index) in rContentData.menus"
            @click="onClick(item)">{{item.title}}</div>
@@ -11,7 +11,7 @@
 
 <script>
 import { createNamespace } from '../_utils'
-const { name, bem } = createNamespace('dialog-select')
+const { name, bem, class: prefixCls } = createNamespace('dialog-select')
 
 export default {
   name: name,
@@ -26,6 +26,17 @@ export default {
   data () {
     return {
       bem
+    }
+  },
+  computed: {
+    wrapCls () {
+      return [prefixCls]
+    },
+    menuCls () {
+      return `${prefixCls}-menu`
+    },
+    menuItemCls () {
+      return `${prefixCls}-item`
     }
   },
   methods: {

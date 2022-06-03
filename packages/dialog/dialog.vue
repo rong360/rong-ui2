@@ -1,35 +1,32 @@
 <template>
   <transition appear
-              :name="bem('fade')"
+              :name="transitionName"
               @enter="enter"
               @after-leave="afterLeave">
-    <div :class="[bem(), className]"
+    <div :class="wrapCls"
          :style="CliperStyleObj"
          @click.self="onMask"
          v-show="showDlg"
          v-preventscroll>
-      <div :class="bem('inner')"
+      <div :class="innerCls"
            :style="dlgStyleObj"
            @click="onDlg"
            ref="dlgContent">
-        <div :class="bem('title')"
+        <div :class="titleCls"
              :style="titleStyleObj"
              v-if="title">{{title}}</div>
-        <div :class="bem('close')"
+        <div :class="closeCls"
              :style="closeStyleObj"
              @click="onClose"
-             v-if="showCloseBtn"><svg width="11px"
-               height="11px"
-               viewBox="0 0 11 11"
-               version="1.1"
-               xmlns="http://www.w3.org/2000/svg"
-               xmlns:xlink="http://www.w3.org/1999/xlink">
+             v-if="showCloseBtn"><svg width="1em"
+               height="1em"
+               viewBox="0 0 11 11">
             <g stroke="none"
                stroke-width="1"
                fill="none"
                fill-rule="evenodd">
               <g transform="translate(-249.000000, -10.000000)"
-                 fill="#999999">
+                 fill="currentColor">
                 <path d="M254.50013,14.8683272 L249.762514,10.1306735 C249.588122,9.95644215 249.305423,9.95644215 249.130794,10.1306735 C248.956402,10.3052215 248.956402,10.5880359 249.130794,10.7624255 L253.868428,15.500023 L249.130795,20.2376113 C248.956402,20.4120016 248.956402,20.6948302 249.130795,20.8692073 C249.305425,21.0435976 249.588125,21.0435976 249.76228,20.8692073 L254.499971,16.1315614 L259.237665,20.8692176 C259.411819,21.0435941 259.694768,21.0435941 259.869384,20.8692176 C260.043539,20.694828 260.043539,20.4120004 259.869384,20.2376239 L255.131668,15.4998705 L259.869205,10.7623788 C260.043598,10.5880017 260.043598,10.3053314 259.869205,10.1307828 C259.694588,9.95640572 259.411875,9.95640572 259.23772,10.1307828 L254.50013,14.8683272 Z"></path>
               </g>
             </g>
@@ -37,21 +34,21 @@
         <slot>
           <Render v-if="typeof message == 'function'"
                   :render="message">fsdf</Render>
-          <div :class="bem('content')"
+          <div :class="contentCls"
                :style="contentStyleObj"
                v-if="(typeof message != 'function' && message)"
                v-html="message"></div>
           <rContent :rContentData="rContentData"
                     ref="rContent"></rContent>
         </slot>
-        <div :class="bem('btn')"
+        <div :class="btnCls"
              v-if="showCancelBtn || showConfirmBtn">
-          <div :class="bem('cancel-btn', {'right-border': showCancelBtn&&showConfirmBtn })"
+          <div :class="cancelBtnCls"
                :style="cancelBtnStyleObj"
                @click="onCancel"
                v-if="showCancelBtn"
                v-html="cancelBtnText"></div>
-          <div :class="bem('confirm-btn')"
+          <div :class="confirmBtnCls"
                :style="confirmBtnStyleObj"
                @click="onConfirm"
                v-if="showConfirmBtn"
@@ -67,7 +64,7 @@
 import { createNamespace } from '../_utils'
 import preventscroll from '../_directives/preventscroll'
 import Render from '../base/render'
-const { name, bem } = createNamespace('dialog')
+const { name, bem, class: prefixCls } = createNamespace('dialog')
 
 export default {
   name,
@@ -152,12 +149,51 @@ export default {
       this.showDlg = newVal
     }
   },
+  computed: {
+    wrapCls () {
+      return [
+        `${prefixCls}`,
+        this.className,
+        {
+          [`${prefixCls}-cancel-btn-show`]: this.showCancelBtn,
+          [`${prefixCls}-confirm-btn-show`]: this.showConfirmBtn
+        }
+      ]
+    },
+    innerCls () {
+      return [
+        `${prefixCls}-inner`,
+        `${prefixCls}-inner---${this.position.x}-${this.position.y}`
+      ]
+    },
+    titleCls () {
+      return `${prefixCls}-title`
+    },
+    closeCls () {
+      return `${prefixCls}-close`
+    },
+    contentCls () {
+      return `${prefixCls}-content`
+    },
+    btnCls () {
+      return `${prefixCls}-btn`
+    },
+    cancelBtnCls () {
+      return `${prefixCls}-cancel-btn`
+    },
+    confirmBtnCls () {
+      return `${prefixCls}-confirm-btn`
+    },
+    transitionName () {
+      return `${prefixCls}-fade`
+    }
+  },
   directives: {
     preventscroll
   },
   components: {
     rContent: {
-      template: '<div></div>'
+      render: h => h('div')
     },
     Render
   },
@@ -216,14 +252,16 @@ export default {
 
       let dialogWidth = this.$refs.dlgContent.offsetWidth
       let dialogHeight = this.$refs.dlgContent.offsetHeight
-      let screenWidth =
-        window.innerWidth ||
-        document.documentElement.clientWidth ||
-        document.body.clientWidth
-      let screenHeight =
-        window.innerHeight ||
-        document.documentElement.clientHeight ||
-        document.body.clientHeight
+      // let screenWidth =
+      //   window.innerWidth ||
+      //   document.documentElement.clientWidth ||
+      //   document.body.clientWidth
+      // let screenHeight =
+      //   window.innerHeight ||
+      //   document.documentElement.clientHeight ||
+      //   document.body.clientHeight
+      let screenWidth = window.screen.width
+      let screenHeight = window.screen.height
 
       if (dialogWidth > screenWidth) {
         this.$refs.dlgContent.style.width = screenWidth + 'px'

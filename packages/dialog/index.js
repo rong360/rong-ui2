@@ -97,7 +97,10 @@ let select = function (options = {}) {
 
 const Dialog = withInstall(_Dialog)
 
+Dialog.create = dlgCst
+
 Vue.prototype.$dialog = dlgCst;
+
 // dialog拓展
 Vue.prototype.$dialog.tip = tip
 Vue.prototype.$dialog.confirm = confirm

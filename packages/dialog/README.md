@@ -221,6 +221,8 @@ dialog实例方法通过`子类组件`覆盖基类组件的的方式实现，因
 | @dialog-btn-border-color | btn边框颜色 | #e5e5e5 |
 | @dialog-btn-line-height | btn行高 | 45px |
 | @dialog-mask-bg | 遮罩层背景颜色 | @mask-bg |
+| @dialog-close-size | 关闭按钮大小 | 12px |
+| @dialog-close-color | 关闭按钮颜色 | #999 |
 </div>
 
 

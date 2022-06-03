@@ -1,18 +1,22 @@
 <template>
-  <div :class="bem()"
+  <div :class="wrapCls"
        v-preventscroll>
-    <header :class="bem('header', { usefixed: useFixed})">
+    <header>
       <slot name="header"></slot>
     </header>
-    <main :class="[bem('main'), 'scroll-area']"
+    <main :class="mainCls"
           ref="main"
           @touchstart="touchstartMain"
           @scroll.passive="onScroll">
-      <div :class="bem('header-copy')"
+      <div class="header-copy"
            v-if="useFixed">
         <slot name="header"></slot>
       </div>
       <slot></slot>
+      <div class="footer-copy"
+            v-if="useFixed">
+        <slot name="footer"></slot>
+      </div>
     </main>
     <footer v-show="showFooter">
       <slot name="footer"></slot>
@@ -24,7 +28,7 @@
 <script>
 import { createNamespace } from '../_utils'
 import preventscroll from '../_directives/preventscroll'
-const { name, bem } = createNamespace('flex-fixed')
+const { name, bem, class: prefixCls } = createNamespace('flex-fixed')
 
 export default {
   name,
@@ -49,6 +53,19 @@ export default {
       },
       showFooter: true,
       docHeight: document.documentElement.clientHeight
+    }
+  },
+  computed: {
+    wrapCls () {
+      return [
+        `${prefixCls}`,
+        {
+          [`${prefixCls}-usefixed`]: this.useFixed
+        }
+      ]
+    },
+    mainCls () {
+      return [`${prefixCls}-main`, 'scroll-area']
     }
   },
   directives: {

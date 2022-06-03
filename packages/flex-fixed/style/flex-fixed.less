@@ -1,11 +1,11 @@
-@flexFixedCls: ~"@{comps-prefix}-flexfixed";
+@flexFixedCls: ~'@{comps-prefix}-flexfixed';
 
 .@{flexFixedCls} {
   display: flex;
   flex-direction: column;
   height: 100%;
   position: relative;
-  &__main {
+  &-main {
     display: block;
     flex: 1;
     width: 100%;
@@ -15,16 +15,21 @@
     background-attachment: local;
     background-size: contain;
     background-repeat: no-repeat;
+    .header-copy,
+    .footer-copy {
+      opacity: 0;
+    }
   }
-  &__header {
-    &--usefixed {
+  &&-usefixed {
+    >header,
+    >footer {
       position: fixed;
       left: 0;
       right: 0;
       z-index: 2;
     }
-  }
-  &__header-copy {
-    opacity: 0;
+    >footer {
+      bottom: 0;
+    }
   }
 }
