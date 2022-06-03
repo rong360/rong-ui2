@@ -123,6 +123,7 @@ export default {
     touchendDot (e) {
       if (this.disabled) return
       this.isDragDot = false
+      this.$emit('on-touchend', e)
     },
     // 修正currentValue为step的整数倍
     fixCurrentValue (currentValue) {
