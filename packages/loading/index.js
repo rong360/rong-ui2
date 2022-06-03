@@ -26,6 +26,7 @@ const install = function (Vue) {
 }
 
 Loading.install = install
+Loading.create = loadingCst
 
 if (typeof window !== 'undefined' && window.Vue) {
   install(window.Vue);
