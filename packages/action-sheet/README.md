@@ -79,7 +79,7 @@ export default {
 | showCloseBtn | 是否显示右上角关闭按钮 | boolean | `false` |
 | showCancelBtn | 是否显示底部取消按钮 | boolean | `true` |
 | cancelBtnText | 底部取消按钮文案 | string | `取消` |
-
+| closeOnClickMask`v1.2.7` | 是否在点击遮罩层后关闭 | boolean | `true` |
 
 
 ### actiions数据结构

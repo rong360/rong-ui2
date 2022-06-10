@@ -9,6 +9,7 @@
                     :actions="actions"
                     :show-close-btn="true"
                     :radius="true"
+                    :close-on-click-mask="false"
                     @on-select="handleSelect"
                     @on-close="handleClose"></r-actionsheet>
 

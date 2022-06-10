@@ -69,6 +69,11 @@ export default {
     cancelBtnText: {
       type: String,
       default: '取消'
+    },
+    // 是否在点击遮罩层后关闭 v1.2.7
+    closeOnClickMask: {
+      type: Boolean,
+      default: true
     }
   },
   data () {
@@ -164,7 +169,7 @@ export default {
       this.$emit('on-cancel', e)
     },
     handleMask (e) {
-      this.show = false
+      if (this.closeOnClickMask) this.show = false
       this.$emit('on-mask', e)
     },
     enter () {

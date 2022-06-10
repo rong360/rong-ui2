@@ -57,6 +57,7 @@ const install = function (Vue) {
 }
 
 Toast.install = install
+Toast.create = toastCst
 
 if (typeof window !== 'undefined' && window.Vue) {
   install(window.Vue);
