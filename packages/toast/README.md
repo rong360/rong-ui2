@@ -129,6 +129,7 @@ toast实例方法通过`子类组件`覆盖基类组件的的方式实现，因�
 | @toast-inner-width | toast宽度 | 184px |
 | @toast-inner-long-width | 长toast宽度 | 226px |
 | @toast-inner-bg | 内容区域背景颜色 | @mask-container-bg |
+| @toast-mask-bg | 遮罩层背景颜色 | @mask-bg |
 </div>
 
 
