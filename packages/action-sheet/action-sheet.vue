@@ -2,14 +2,14 @@
   <div v-if="showWrap"
        :class="wrapCls">
     <transition appear
-                name="action-sheet--fade">
+                name="r-actionsheet--fade">
       <div v-if="show"
            :class="maskCls"
            v-preventscroll
            @click="handleMask"></div>
     </transition>
     <transition appear
-                name="action-sheet--slideInUp"
+                name="r-actionsheet--slideInUp"
                 v-on:enter="enter"
                 v-on:after-leave="afterLeave">
       <div v-if="show"
