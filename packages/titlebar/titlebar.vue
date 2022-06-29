@@ -5,7 +5,6 @@
         <div class="back"
              v-if="showBackto"
              @click="onBack"><svg width="1em"
-               height="1em"
                viewBox="0 0 10 21">
             <g stroke="none"
                stroke-width="1"

@@ -83,8 +83,8 @@ Vue.use(Titlebar)
 | ---- | --- | --- |
 | @titlebar-height | 高度 | 45px |
 | @titlebar-background | 背景 | transparent |
-| @titlebar-arrow-size | 返回按钮大小 | 16px |
-| @titlebar-arrow-color | 返回按钮颜色 | #333 |
+| @titlebar-arrow-size | 返回按钮大小 | 10px |
+| @titlebar-arrow-color | 返回按钮颜色 | inherit |
 | @titlebar-title-text-color | 字体颜色 | #333 |
 | @titlebar-title-font-size | 字体大小 | 17px |
 
