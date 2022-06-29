@@ -82,7 +82,7 @@ Vue.use(Checkbox)
 
 | 名称 | 默认值 | 描述 |
 | ---- | --- | --- |
-| @checkbox-font-size | 24px |
+| @checkbox-font-size | 14px |
 | @checkbox-margin-right | 8px |
 | @checkbox-circle-icon-size | 16px |
 | @checkbox-circle-icon-color | @primary-color |
