@@ -24,7 +24,7 @@ rong-ui2 使用了 Less 对样式进行预处理，并内置了一些样式变�
 @placeholder-color: #c8c7cc;
 
 // ---- base ----
-@mask-bg: rgba(0, 0, 0, 0.5);
+@mask-bg: inherit;
 @mask-container-bg: rgba(0, 0, 0, 0.87);
 
 // ---- Border color ----
