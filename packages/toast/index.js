@@ -2,9 +2,7 @@ import Vue from "vue"
 import Toast from './toast'
 import { getComponentContext } from '../_utils'
 
-let globalConfig = {
-  time: null
-}
+let globalConfig = {}
 
 let ToastConstructor = Vue.extend(Toast);
 
@@ -63,8 +61,8 @@ if (typeof window !== 'undefined' && window.Vue) {
   install(window.Vue);
 }
 
-Toast.config = function ({ time }) {
-  globalConfig.time = time
+Toast.config = function (opts) {
+  Object.assign(globalConfig, opts)
 }
 
 export default Toast
