@@ -175,7 +175,7 @@ export default {
         },
         callback () {
           let d = self.$refs.swiperWraper[self.direction]
-          if (d >= self.maxScroll) {
+          if (Math.ceil(d) >= self.maxScroll) {
             self.$refs.swiperWraper[self.direction] = 0
             self.mark = 0
           }
