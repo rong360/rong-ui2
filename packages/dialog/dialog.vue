@@ -252,16 +252,14 @@ export default {
 
       let dialogWidth = this.$refs.dlgContent.offsetWidth
       let dialogHeight = this.$refs.dlgContent.offsetHeight
-      // let screenWidth =
-      //   window.innerWidth ||
-      //   document.documentElement.clientWidth ||
-      //   document.body.clientWidth
-      // let screenHeight =
-      //   window.innerHeight ||
-      //   document.documentElement.clientHeight ||
-      //   document.body.clientHeight
-      let screenWidth = window.screen.width
-      let screenHeight = window.screen.height
+      let screenWidth =
+        window.innerWidth ||
+        document.documentElement.clientWidth ||
+        document.body.clientWidth
+      let screenHeight =
+        window.innerHeight ||
+        document.documentElement.clientHeight ||
+        document.body.clientHeight
 
       if (dialogWidth > screenWidth) {
         this.$refs.dlgContent.style.width = screenWidth + 'px'
