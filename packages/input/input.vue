@@ -589,7 +589,7 @@ export default {
       this.validateState = 'validating'
       this.validateDisabled = false
 
-      let hasMaskCode = this.initialValue.indexOf('*') > -1 // 掩码
+      let hasMaskCode = this.initialValue.indexOf && this.initialValue.indexOf('*') > -1 // 掩码
       if (this.conf.readonly || hasMaskCode && this.initialValue == this.currentValue) {
         this.validateState = 'success'
         this.validateMessage = ''
