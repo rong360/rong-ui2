@@ -83,6 +83,7 @@
         <component :is="child.componentType"
                    v-bind="child"
                    v-model="child.value"
+                   :attrs="child"
                    :ref="child.name"
                    :key="child.name"></component>
       </template>
